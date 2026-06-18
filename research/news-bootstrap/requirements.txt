@@ -1,0 +1,6 @@
+# calibrate_graph.py, labels.py, splits.py, demo_label.py, build_dataset.py core
+#   -> stdlib only (no install needed).
+#
+# Only the external-source ingests need extra packages:
+google-cloud-bigquery==3.27.0   # gdelt.py (BigQuery free tier)
+datasets==3.2.0                 # fnspid.py (HuggingFace streaming)

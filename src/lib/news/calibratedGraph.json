@@ -1,0 +1,536 @@
+{
+  "generatedAt": "2026-06-15T11:28:25.081482+00:00",
+  "range": "2y",
+  "minObs": 30,
+  "method": "pearson_corr(asset_returns, factor_proxy_returns) over prior edge set",
+  "calibratedEdges": 33,
+  "priorEdges": 6,
+  "factorProxies": {
+    "rates_us": "^TNX",
+    "rates_br": null,
+    "usd": "DX-Y.NYB",
+    "brl": "BRL=X",
+    "inflation": null,
+    "growth": "HG=F",
+    "risk": "^GSPC",
+    "energy": "CL=F",
+    "metals": "HG=F",
+    "agriculture": "ZS=F",
+    "credit": "HYG",
+    "technology": "^IXIC",
+    "defense": "ITA",
+    "power": "XLU"
+  },
+  "assetSymbols": {
+    "DI": null,
+    "UST": "^TNX",
+    "BRL": "BRL=X",
+    "DXY": "DX-Y.NYB",
+    "IBOV": "^BVSP",
+    "SPX": "^GSPC",
+    "OIL": "CL=F",
+    "GOLD": "GC=F",
+    "COPPER": "HG=F",
+    "SOY": "ZS=F"
+  },
+  "weights": {
+    "rates_br": {
+      "DI": 1,
+      "BRL": 0.4,
+      "IBOV": -0.25
+    },
+    "rates_us": {
+      "UST": 1.0,
+      "DXY": 0.3972,
+      "SPX": -0.061,
+      "GOLD": -0.1313
+    },
+    "usd": {
+      "DXY": 1.0,
+      "BRL": -0.2067,
+      "GOLD": -0.3543,
+      "COPPER": -0.2529
+    },
+    "brl": {
+      "BRL": 1.0,
+      "IBOV": 0.2922
+    },
+    "inflation": {
+      "DI": 0.5,
+      "UST": 0.5,
+      "GOLD": 0.2
+    },
+    "growth": {
+      "SPX": 0.2638,
+      "IBOV": 0.2117,
+      "COPPER": 1.0,
+      "OIL": 0.0266
+    },
+    "risk": {
+      "SPX": 1.0,
+      "IBOV": 0.4065,
+      "BRL": 0.2818,
+      "GOLD": -0.1222,
+      "DXY": -0.0183
+    },
+    "energy": {
+      "OIL": 1.0,
+      "IBOV": 0.0914
+    },
+    "metals": {
+      "COPPER": 1.0,
+      "GOLD": 0.3963,
+      "IBOV": 0.2117
+    },
+    "agriculture": {
+      "SOY": 1.0,
+      "BRL": 0.1539
+    },
+    "credit": {
+      "SPX": 0.7698,
+      "IBOV": 0.4402,
+      "UST": -0.2501
+    },
+    "technology": {
+      "SPX": 0.9689
+    },
+    "defense": {
+      "SPX": -0.6845
+    },
+    "power": {
+      "SPX": 0.3382,
+      "OIL": 0.0141
+    }
+  },
+  "edges": [
+    {
+      "factor": "rates_br",
+      "asset": "DI",
+      "prior": 1,
+      "weight": 1,
+      "source": "prior",
+      "corr": null,
+      "n": 0,
+      "proxy": null,
+      "assetSymbol": null
+    },
+    {
+      "factor": "rates_br",
+      "asset": "BRL",
+      "prior": 0.4,
+      "weight": 0.4,
+      "source": "prior",
+      "corr": null,
+      "n": 0,
+      "proxy": null,
+      "assetSymbol": "BRL=X"
+    },
+    {
+      "factor": "rates_br",
+      "asset": "IBOV",
+      "prior": -0.25,
+      "weight": -0.25,
+      "source": "prior",
+      "corr": null,
+      "n": 0,
+      "proxy": null,
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "rates_us",
+      "asset": "UST",
+      "prior": 1,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 501,
+      "proxy": "^TNX",
+      "assetSymbol": "^TNX"
+    },
+    {
+      "factor": "rates_us",
+      "asset": "DXY",
+      "prior": 0.45,
+      "weight": 0.3972,
+      "source": "calibrated",
+      "corr": 0.3972,
+      "n": 498,
+      "proxy": "^TNX",
+      "assetSymbol": "DX-Y.NYB"
+    },
+    {
+      "factor": "rates_us",
+      "asset": "SPX",
+      "prior": -0.25,
+      "weight": -0.061,
+      "source": "calibrated",
+      "corr": 0.061,
+      "n": 500,
+      "proxy": "^TNX",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "rates_us",
+      "asset": "GOLD",
+      "prior": -0.2,
+      "weight": -0.1313,
+      "source": "calibrated",
+      "corr": -0.1313,
+      "n": 498,
+      "proxy": "^TNX",
+      "assetSymbol": "GC=F"
+    },
+    {
+      "factor": "usd",
+      "asset": "DXY",
+      "prior": 1,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 501,
+      "proxy": "DX-Y.NYB",
+      "assetSymbol": "DX-Y.NYB"
+    },
+    {
+      "factor": "usd",
+      "asset": "BRL",
+      "prior": -0.7,
+      "weight": -0.2067,
+      "source": "calibrated",
+      "corr": 0.2067,
+      "n": 443,
+      "proxy": "DX-Y.NYB",
+      "assetSymbol": "BRL=X"
+    },
+    {
+      "factor": "usd",
+      "asset": "GOLD",
+      "prior": -0.45,
+      "weight": -0.3543,
+      "source": "calibrated",
+      "corr": -0.3543,
+      "n": 500,
+      "proxy": "DX-Y.NYB",
+      "assetSymbol": "GC=F"
+    },
+    {
+      "factor": "usd",
+      "asset": "COPPER",
+      "prior": -0.25,
+      "weight": -0.2529,
+      "source": "calibrated",
+      "corr": -0.2529,
+      "n": 500,
+      "proxy": "DX-Y.NYB",
+      "assetSymbol": "HG=F"
+    },
+    {
+      "factor": "brl",
+      "asset": "BRL",
+      "prior": 1,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 515,
+      "proxy": "BRL=X",
+      "assetSymbol": "BRL=X"
+    },
+    {
+      "factor": "brl",
+      "asset": "IBOV",
+      "prior": 0.25,
+      "weight": 0.2922,
+      "source": "calibrated",
+      "corr": -0.2922,
+      "n": 438,
+      "proxy": "BRL=X",
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "inflation",
+      "asset": "DI",
+      "prior": 0.5,
+      "weight": 0.5,
+      "source": "prior",
+      "corr": null,
+      "n": 0,
+      "proxy": null,
+      "assetSymbol": null
+    },
+    {
+      "factor": "inflation",
+      "asset": "UST",
+      "prior": 0.5,
+      "weight": 0.5,
+      "source": "prior",
+      "corr": null,
+      "n": 0,
+      "proxy": null,
+      "assetSymbol": "^TNX"
+    },
+    {
+      "factor": "inflation",
+      "asset": "GOLD",
+      "prior": 0.2,
+      "weight": 0.2,
+      "source": "prior",
+      "corr": null,
+      "n": 0,
+      "proxy": null,
+      "assetSymbol": "GC=F"
+    },
+    {
+      "factor": "growth",
+      "asset": "SPX",
+      "prior": 0.6,
+      "weight": 0.2638,
+      "source": "calibrated",
+      "corr": 0.2638,
+      "n": 498,
+      "proxy": "HG=F",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "growth",
+      "asset": "IBOV",
+      "prior": 0.5,
+      "weight": 0.2117,
+      "source": "calibrated",
+      "corr": 0.2117,
+      "n": 485,
+      "proxy": "HG=F",
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "growth",
+      "asset": "COPPER",
+      "prior": 0.5,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 501,
+      "proxy": "HG=F",
+      "assetSymbol": "HG=F"
+    },
+    {
+      "factor": "growth",
+      "asset": "OIL",
+      "prior": 0.35,
+      "weight": 0.0266,
+      "source": "calibrated",
+      "corr": 0.0266,
+      "n": 501,
+      "proxy": "HG=F",
+      "assetSymbol": "CL=F"
+    },
+    {
+      "factor": "risk",
+      "asset": "SPX",
+      "prior": 0.8,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 500,
+      "proxy": "^GSPC",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "risk",
+      "asset": "IBOV",
+      "prior": 0.8,
+      "weight": 0.4065,
+      "source": "calibrated",
+      "corr": 0.4065,
+      "n": 485,
+      "proxy": "^GSPC",
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "risk",
+      "asset": "BRL",
+      "prior": 0.55,
+      "weight": 0.2818,
+      "source": "calibrated",
+      "corr": -0.2818,
+      "n": 440,
+      "proxy": "^GSPC",
+      "assetSymbol": "BRL=X"
+    },
+    {
+      "factor": "risk",
+      "asset": "GOLD",
+      "prior": -0.45,
+      "weight": -0.1222,
+      "source": "calibrated",
+      "corr": 0.1222,
+      "n": 498,
+      "proxy": "^GSPC",
+      "assetSymbol": "GC=F"
+    },
+    {
+      "factor": "risk",
+      "asset": "DXY",
+      "prior": -0.35,
+      "weight": -0.0183,
+      "source": "calibrated",
+      "corr": 0.0183,
+      "n": 498,
+      "proxy": "^GSPC",
+      "assetSymbol": "DX-Y.NYB"
+    },
+    {
+      "factor": "energy",
+      "asset": "OIL",
+      "prior": 1,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 501,
+      "proxy": "CL=F",
+      "assetSymbol": "CL=F"
+    },
+    {
+      "factor": "energy",
+      "asset": "IBOV",
+      "prior": 0.2,
+      "weight": 0.0914,
+      "source": "calibrated",
+      "corr": -0.0914,
+      "n": 485,
+      "proxy": "CL=F",
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "metals",
+      "asset": "COPPER",
+      "prior": 0.8,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 501,
+      "proxy": "HG=F",
+      "assetSymbol": "HG=F"
+    },
+    {
+      "factor": "metals",
+      "asset": "GOLD",
+      "prior": 0.6,
+      "weight": 0.3963,
+      "source": "calibrated",
+      "corr": 0.3963,
+      "n": 501,
+      "proxy": "HG=F",
+      "assetSymbol": "GC=F"
+    },
+    {
+      "factor": "metals",
+      "asset": "IBOV",
+      "prior": 0.2,
+      "weight": 0.2117,
+      "source": "calibrated",
+      "corr": 0.2117,
+      "n": 485,
+      "proxy": "HG=F",
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "agriculture",
+      "asset": "SOY",
+      "prior": 1,
+      "weight": 1.0,
+      "source": "calibrated",
+      "corr": 1.0,
+      "n": 500,
+      "proxy": "ZS=F",
+      "assetSymbol": "ZS=F"
+    },
+    {
+      "factor": "agriculture",
+      "asset": "BRL",
+      "prior": 0.2,
+      "weight": 0.1539,
+      "source": "calibrated",
+      "corr": -0.1539,
+      "n": 442,
+      "proxy": "ZS=F",
+      "assetSymbol": "BRL=X"
+    },
+    {
+      "factor": "credit",
+      "asset": "SPX",
+      "prior": 0.4,
+      "weight": 0.7698,
+      "source": "calibrated",
+      "corr": 0.7698,
+      "n": 500,
+      "proxy": "HYG",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "credit",
+      "asset": "IBOV",
+      "prior": 0.35,
+      "weight": 0.4402,
+      "source": "calibrated",
+      "corr": 0.4402,
+      "n": 485,
+      "proxy": "HYG",
+      "assetSymbol": "^BVSP"
+    },
+    {
+      "factor": "credit",
+      "asset": "UST",
+      "prior": -0.2,
+      "weight": -0.2501,
+      "source": "calibrated",
+      "corr": -0.2501,
+      "n": 500,
+      "proxy": "HYG",
+      "assetSymbol": "^TNX"
+    },
+    {
+      "factor": "technology",
+      "asset": "SPX",
+      "prior": 0.5,
+      "weight": 0.9689,
+      "source": "calibrated",
+      "corr": 0.9689,
+      "n": 500,
+      "proxy": "^IXIC",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "defense",
+      "asset": "SPX",
+      "prior": -0.1,
+      "weight": -0.6845,
+      "source": "calibrated",
+      "corr": 0.6845,
+      "n": 500,
+      "proxy": "ITA",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "power",
+      "asset": "SPX",
+      "prior": 0.2,
+      "weight": 0.3382,
+      "source": "calibrated",
+      "corr": 0.3382,
+      "n": 500,
+      "proxy": "XLU",
+      "assetSymbol": "^GSPC"
+    },
+    {
+      "factor": "power",
+      "asset": "OIL",
+      "prior": 0.1,
+      "weight": 0.0141,
+      "source": "calibrated",
+      "corr": -0.0141,
+      "n": 498,
+      "proxy": "XLU",
+      "assetSymbol": "CL=F"
+    }
+  ]
+}

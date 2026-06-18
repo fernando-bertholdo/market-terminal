@@ -1,0 +1,9 @@
+.env
+.env.*
+data
+deploy
+*.log
+*.txt
+.claude
+AGENTS.md
+CLAUDE.md

@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── ATLAS design tokens ──────────────────────────────────────────────────────
+   Deep blue-black surfaces, one restrained blue accent, Inter for text,
+   JetBrains Mono reserved for numerals. Themes override these on the shell. */
+:root {
+  --bg: #0a0d13;
+  --surface: #10141d;
+  --surface-2: #151a26;
+  --surface-3: #1b2230;
+  --border: #1f2735;
+  --border-strong: #2c3750;
+
+  --text-1: #e8ecf4;
+  --text-2: #98a2b8;
+  --text-3: #566076;
+  --value: #dde3ef;
+
+  --accent: #5e8bff;
+  --accent-soft: rgba(94, 139, 255, 0.12);
+  --up: #34c98e;
+  --down: #f0647a;
+  --warn: #e8a13c;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --font-ui: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Sizing defaults for legacy widget components (previously injected by
+     TerminalLayout's density settings). */
+  --terminal-row-height: 28px;
+  --terminal-panel-header-height: 36px;
+  --terminal-group-height: 24px;
+  --terminal-column-height: 22px;
+  --terminal-text-size: 12px;
+  --terminal-meta-size: 10.5px;
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-1);
+    font-family: var(--font-ui);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  p, a, span[data-selectable], [data-selectable="true"] {
+    user-select: text;
+  }
+
+  ::selection {
+    background-color: rgba(94, 139, 255, 0.35);
+    color: #ffffff;
+  }
+}
+
+/* ─── Scrollbars ───────────────────────────────────────────────────────────── */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+}
+
+/* ─── Shell + components ───────────────────────────────────────────────────── */
+@layer components {
+  .terminal-shell {
+    background: var(--bg);
+    color: var(--text-1);
+  }
+
+  .terminal-header {
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+
+  .terminal-shell .bg-panel {
+    background-color: var(--surface);
+  }
+
+  .terminal-shell .border-panel-border {
+    border-color: var(--border);
+  }
+
+  .terminal-shell .bg-panel-border {
+    background-color: var(--border);
+  }
+
+  .text-up {
+    color: var(--up);
+  }
+
+  .text-down {
+    color: var(--down);
+  }
+
+  .text-neutral {
+    color: var(--text-1);
+  }
+
+  .text-dim {
+    color: var(--text-2);
+  }
+
+  .status-dot {
+    @apply inline-block w-1.5 h-1.5 rounded-full mr-1.5;
+  }
+
+  .status-dot-live {
+    background-color: var(--up);
+    @apply animate-pulse;
+  }
+
+  .status-dot-stale {
+    background-color: var(--warn);
+  }
+
+  .status-dot-error {
+    background-color: var(--down);
+  }
+
+  .flash-up {
+    @apply animate-flash-up;
+  }
+
+  .flash-down {
+    @apply animate-flash-down;
+  }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.1rem;
+    height: 1.15rem;
+    padding: 0 0.3rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    font-family: var(--font-mono), monospace;
+    color: var(--text-2);
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+  }
+
+  .terminal-shell button:focus-visible,
+  .terminal-shell a:focus-visible,
+  .terminal-shell input:focus-visible,
+  .terminal-shell select:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1.5px var(--accent);
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ─── Utilities ────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Numerals: always tabular and monospaced */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .glow-orange {
+    text-shadow: 0 0 12px rgba(94, 139, 255, 0.45);
+  }
+}

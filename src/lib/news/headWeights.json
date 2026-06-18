@@ -1,0 +1,10 @@
+{
+  "note": "PRIOR SEED — safe day-1 weights. The head here simply follows the economic graph (graph_prior) and ABSA; it is NOT trained yet. With NEWS_HEAD_ENABLED=true it behaves ~like the graph+ABSA merge and then improves automatically as the news-nlp service retrains on the forward-collected tape (writes head_weights to Neon, loaded at runtime by head.ts). GDELT/FNSPID are an optional cold-start accelerator, not a prerequisite.",
+  "generatedAt": "2026-06-15T00:00:00.000000+00:00",
+  "featureOrder": ["bias", "graph_prior", "absa", "tone", "relevance", "confidence"],
+  "priorAnchor": [0.0, 1.6, 0.0, 0.0, 0.0, 0.0],
+  "margin": 0.0,
+  "source": "prior-seed",
+  "global": { "coef": [0.0, 1.6, 1.6, 0.0, 0.0, 0.0] },
+  "assets": {}
+}

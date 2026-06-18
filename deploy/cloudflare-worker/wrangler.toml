@@ -1,0 +1,12 @@
+name = "atlas-terminal-tick"
+main = "src/index.ts"
+compatibility_date = "2026-06-01"
+workers_dev = false
+
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+TERMINAL_URL = "https://atlas-quant-terminal.vercel.app"
+NEWS_NLP_URL = "https://joaopreto-news-nlp.hf.space"
+RETRAIN_HOUR_UTC = "6"
