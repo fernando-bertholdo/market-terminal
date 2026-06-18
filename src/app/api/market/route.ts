@@ -20,6 +20,10 @@ import {
   providerResultToMarketObservations,
 } from '@/lib/marketData/providerBridge';
 import { collectProviderObservations } from '@/lib/providers';
+import {
+  fetchPythonTerminalMarket,
+  isPythonBackendRequired,
+} from '@/lib/backend/pythonBackendClient';
 import type { ApiResponse, SourceStatus } from '@/types/market';
 
 export const dynamic = 'force-dynamic';
@@ -196,6 +200,40 @@ export async function GET(): Promise<NextResponse<ApiResponse<MarketData>>> {
   const fetchedAt = new Date().toISOString();
 
   try {
+    try {
+      const pythonMarket = await fetchPythonTerminalMarket<Partial<MarketData>>();
+      if (pythonMarket?.data) {
+        const pythonData = pythonMarket.data;
+        const responseData: MarketData = {
+          brazil: pythonData.brazil ?? NULL_BRAZIL,
+          us: pythonData.us ?? NULL_US,
+          fx: pythonData.fx ?? NULL_FX,
+          commodities: pythonData.commodities ?? NULL_CMDTY,
+          global: pythonData.global ?? NULL_GLOBAL,
+          fixedIncomeRisk: calculateFixedIncomeRisk({
+            brazil: pythonData.brazil ?? NULL_BRAZIL,
+            us: pythonData.us ?? NULL_US,
+          }),
+          fixedIncomeCurves: buildFixedIncomeCurves([]),
+          b3Futures: {},
+          marketIntelligence: {
+            quotes: {},
+            providers: [],
+            persistence: 'disabled',
+          },
+        };
+        return NextResponse.json({
+          data: responseData,
+          fetchedAt,
+          error: null,
+          sources: pythonMarket.sources as Record<string, SourceStatus>,
+        });
+      }
+    } catch (error) {
+      console.error('[PythonBackend] /market/terminal failed:', error);
+      if (isPythonBackendRequired()) throw error;
+    }
+
     const YAHOO_TICKERS = [
       'BRL=X', 'EURBRL=X', 'DX-Y.NYB',
       'EURUSD=X', 'USDJPY=X', 'GBPUSD=X',

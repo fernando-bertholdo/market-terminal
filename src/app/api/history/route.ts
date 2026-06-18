@@ -4,6 +4,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchYahooHistories, type HistorySeries } from '@/lib/fetchers/yahooHistory';
+import {
+  fetchPythonHistory,
+  isPythonBackendRequired,
+} from '@/lib/backend/pythonBackendClient';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +29,21 @@ export async function GET(req: NextRequest) {
       { data: null, fetchedAt, error: 'No symbols provided' },
       { status: 400 }
     );
+  }
+
+  try {
+    const pythonData = await fetchPythonHistory(symbols, range);
+    if (pythonData) {
+      return NextResponse.json({ data: pythonData, fetchedAt, error: null });
+    }
+  } catch (error) {
+    console.error('[PythonBackend] /history failed:', error);
+    if (isPythonBackendRequired()) {
+      return NextResponse.json(
+        { data: null, fetchedAt, error: 'History backend unavailable' },
+        { status: 200 }
+      );
+    }
   }
 
   const histories = await fetchYahooHistories(symbols, range);

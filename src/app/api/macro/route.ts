@@ -8,6 +8,10 @@ import { NextResponse } from 'next/server';
 import { fetchFredHistory, type FredObservationParsed } from '@/lib/fetchers/fred';
 import { fetchBcbSeries } from '@/lib/fetchers/bcb';
 import { fetchFocusAnnual, type FocusExpectation } from '@/lib/fetchers/focus';
+import {
+  fetchPythonMacro,
+  isPythonBackendRequired,
+} from '@/lib/backend/pythonBackendClient';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,6 +70,18 @@ function yoyPoint(history: FredObservationParsed[] | null): MacroSeriesPoint {
 
 export async function GET() {
   const fetchedAt = new Date().toISOString();
+
+  try {
+    const pythonData = await fetchPythonMacro<MacroData>();
+    if (pythonData) {
+      return NextResponse.json({ data: pythonData, fetchedAt, error: null });
+    }
+  } catch (error) {
+    console.error('[PythonBackend] /macro failed:', error);
+    if (isPythonBackendRequired()) {
+      return NextResponse.json({ data: null, fetchedAt, error: 'Macro backend unavailable' }, { status: 200 });
+    }
+  }
 
   const [cpi, coreCpi, unrate, hyOas, nfci, t10yie, dfii10, ipca12m, focusIpca, focusSelic] =
     await Promise.allSettled([

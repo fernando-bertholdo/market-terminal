@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 
-from market import market_snapshot
+from market import macro_snapshot, market_snapshot, terminal_market_snapshot, yahoo_histories
 from news import news_snapshot
 from strategy import compute_signals
 
@@ -61,6 +61,31 @@ def market(
     bcb_codes = [item.strip() for item in bcb.split(",") if item.strip()]
     fred_ids = [item.strip() for item in fred.split(",") if item.strip()]
     return market_snapshot(symbol_list, bcb_codes, fred_ids)
+
+
+@app.get("/market/terminal")
+def terminal_market(authorization: Optional[str] = Header(default=None)) -> dict:
+    _check_auth(authorization)
+    return terminal_market_snapshot()
+
+
+@app.get("/history")
+def history(
+    symbols: str,
+    range: str = "1y",
+    authorization: Optional[str] = Header(default=None),
+) -> dict:
+    _check_auth(authorization)
+    allowed = {"3mo", "6mo", "1y", "2y", "5y"}
+    range_ = range if range in allowed else "1y"
+    symbol_list = [item.strip() for item in symbols.split(",") if item.strip()][:20]
+    return {"data": yahoo_histories(symbol_list, range_), "range": range_}
+
+
+@app.get("/macro")
+def macro(authorization: Optional[str] = Header(default=None)) -> dict:
+    _check_auth(authorization)
+    return {"data": macro_snapshot()}
 
 
 @app.get("/news")

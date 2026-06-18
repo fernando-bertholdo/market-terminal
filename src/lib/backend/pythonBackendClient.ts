@@ -64,3 +64,43 @@ export async function fetchPythonNews(): Promise<NewsFetchResult | null> {
     },
   };
 }
+
+async function fetchPythonJson<T>(path: string): Promise<T | null> {
+  const url = backendUrl();
+  if (!url) return null;
+
+  const token = backendToken();
+  const res = await fetch(`${url}${path}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    cache: 'no-store',
+    signal: AbortSignal.timeout(backendTimeoutMs()),
+  });
+  if (!res.ok) {
+    throw new Error(`Python backend ${path} HTTP ${res.status}: ${await res.text()}`);
+  }
+  return await res.json() as T;
+}
+
+export async function fetchPythonHistory(
+  symbols: string[],
+  range: string
+): Promise<Record<string, unknown> | null> {
+  const params = new URLSearchParams({
+    symbols: symbols.join(','),
+    range,
+  });
+  const payload = await fetchPythonJson<{ data?: Record<string, unknown> }>(`/history?${params}`);
+  return payload?.data ?? null;
+}
+
+export async function fetchPythonMacro<T>(): Promise<T | null> {
+  const payload = await fetchPythonJson<{ data?: T }>('/macro');
+  return payload?.data ?? null;
+}
+
+export async function fetchPythonTerminalMarket<T>(): Promise<{
+  data: T;
+  sources: Record<string, unknown>;
+} | null> {
+  return await fetchPythonJson<{ data: T; sources: Record<string, unknown> }>('/market/terminal');
+}
