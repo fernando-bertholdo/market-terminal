@@ -12,8 +12,9 @@ import { fetchBcbSeries } from '@/lib/fetchers/bcb';
 import { fetchFredSeries } from '@/lib/fetchers/fred';
 import { fetchNewsHeadlines } from '@/lib/fetchers/news';
 import {
-  computeSignals, CONTEXT_SYMBOLS, DEFAULT_PARAMS, SIM_UNIVERSE, type StrategyParams,
+  CONTEXT_SYMBOLS, DEFAULT_PARAMS, SIM_UNIVERSE, type StrategyParams,
 } from '@/lib/sim/strategies';
+import { computeSignals } from '@/lib/sim/modelEngineClient';
 import { runScenarios } from '@/lib/sim/scenarios';
 import {
   describePositions, recordSimulatorMutation, stepPaperPortfolio,
@@ -278,7 +279,7 @@ async function buildResponse(
   );
 
   const closes = closesWithLive(sim.histories, liveForSignals);
-  const signalSet = computeSignals(closes, sim.params, {
+  const signalSet = await computeSignals(closes, sim.params, {
     newsIntelligence: news?.intelligence ?? null,
     newsTriggeredSymbols: triggeredSymbols,
   });

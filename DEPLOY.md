@@ -33,9 +33,33 @@ FRED_API_KEY=...
 APP_USERNAME=your-private-username
 APP_PASSWORD=a-long-random-password
 CRON_SECRET=a-different-long-random-secret
+MODEL_ENGINE_URL=https://your-model-engine.example.com
+MODEL_ENGINE_TOKEN=optional-shared-bearer-token
+MODEL_ENGINE_REQUIRED=false
 ```
 
 All variables are server-side. None should use the `NEXT_PUBLIC_` prefix.
+
+### Python Model Engine
+
+The quant signal engine lives in `services/model-engine` and exposes
+`POST /signals`. Next.js remains the app/API shell and paper-book executor.
+
+Local run:
+
+```powershell
+cd services/model-engine
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app:app --reload --port 8010
+```
+
+Then set `MODEL_ENGINE_URL=http://127.0.0.1:8010` for the Next.js app. In
+production, deploy this service separately and set `MODEL_ENGINE_URL` in Vercel.
+Keep `MODEL_ENGINE_REQUIRED=false` until the Python service is stable; switch it
+to `true` once simulator ticks should fail closed instead of falling back to the
+legacy TypeScript strategy.
 
 After deployment, open the Vercel URL and confirm:
 

@@ -55,6 +55,7 @@ __pycache__/
 *.pyc
 research/news-bootstrap/*.jsonl
 services/news-nlp/.venv/
+services/model-engine/.venv/
 
 # Local Codex session exports
 2026-*-this-session-is-being-continued-from-a-previous-c.txt
