@@ -42,9 +42,10 @@ All variables are server-side. None should use the `NEXT_PUBLIC_` prefix.
 
 ### Python Backend
 
-The backend lives in `services/model-engine` and exposes market data, news
-intelligence/sentiment and model signals. Next.js remains the UI shell and thin
-BFF while routes migrate.
+The backend lives in `services/model-engine` and exposes market data, historical
+closes, macro data, news intelligence/sentiment, earnings risk controls and model
+signals. Next.js remains the UI shell, auth layer, paper-book executor and thin
+BFF.
 
 Local run:
 
@@ -59,8 +60,8 @@ uvicorn app:app --reload --port 8010
 Then set `ATLAS_BACKEND_URL=http://127.0.0.1:8010` for the Next.js app. In
 production, deploy this service separately and set `ATLAS_BACKEND_URL` in Vercel.
 Keep `ATLAS_BACKEND_REQUIRED=false` until the Python service is stable; switch it
-to `true` once routes should fail closed instead of falling back to legacy
-TypeScript code.
+to `true` once data/model routes should fail closed instead of falling back to
+legacy TypeScript fetchers.
 
 After deployment, open the Vercel URL and confirm:
 

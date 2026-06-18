@@ -31,6 +31,11 @@ import {
   applyEarningsPolicy, getEarningsRisks,
 } from '@/lib/sim/earnings';
 import {
+  fetchPythonHistory,
+  fetchPythonMarket,
+  isPythonBackendRequired,
+} from '@/lib/backend/pythonBackendClient';
+import {
   consolidateByInstrument, isExecutionEligible,
 } from '@/lib/marketData/consolidator';
 import { yahooQuotesToObservations } from '@/lib/marketData/adapters';
@@ -61,11 +66,31 @@ const LIVE_TTL_MS = 10_000;
 let liveCache: { fetchedAt: number; quotes: Map<string, YahooQuoteResult> } | null = null;
 let mutationQueue: Promise<void> = Promise.resolve();
 
+function valuesToMap<T>(values: Record<string, T> | null | undefined): Map<string, T> {
+  return new Map(Object.entries(values ?? {}));
+}
+
 async function getLiveQuotes(): Promise<Map<string, YahooQuoteResult>> {
   if (liveCache && Date.now() - liveCache.fetchedAt < LIVE_TTL_MS) return liveCache.quotes;
-  const quotes = await fetchYahooQuotes([
+  const symbols = [
     ...SIM_UNIVERSE.map((a) => a.symbol),
     ...CONTEXT_SYMBOLS,
+  ];
+
+  try {
+    const pythonMarket = await fetchPythonMarket({ symbols, bcb: [], fred: [] });
+    const quotes = valuesToMap(pythonMarket?.yahoo);
+    if (quotes.size > 0) {
+      liveCache = { fetchedAt: Date.now(), quotes };
+      return quotes;
+    }
+  } catch (error) {
+    if (isPythonBackendRequired()) throw error;
+    console.warn('[Sim] Python live quotes unavailable; falling back to TS Yahoo fetcher', error);
+  }
+
+  const quotes = await fetchYahooQuotes([
+    ...symbols,
   ]);
   if (quotes.size > 0) liveCache = { fetchedAt: Date.now(), quotes };
   return liveCache?.quotes ?? quotes;
@@ -111,9 +136,33 @@ function closesWithLive(
 
 async function getSimData(): Promise<SimCache | null> {
   if (cache && Date.now() - cache.fetchedAt < HISTORY_TTL_MS) return cache;
+  const symbols = [...SIM_UNIVERSE.map((a) => a.symbol), ...CONTEXT_SYMBOLS];
+
+  try {
+    const [historyRecord, market] = await Promise.all([
+      fetchPythonHistory(symbols, '2y'),
+      fetchPythonMarket({ symbols: [], bcb: ['1178'], fred: ['FEDFUNDS'] }),
+    ]);
+    const histories = valuesToMap(historyRecord);
+    if (histories.size > 0) {
+      cache = {
+        fetchedAt: Date.now(),
+        histories,
+        params: {
+          ...DEFAULT_PARAMS,
+          selic: market?.bcb?.['1178']?.value ?? null,
+          fedFunds: market?.fred?.FEDFUNDS?.current ?? null,
+        },
+      };
+      return cache;
+    }
+  } catch (error) {
+    if (isPythonBackendRequired()) throw error;
+    console.warn('[Sim] Python historical inputs unavailable; falling back to TS fetchers', error);
+  }
 
   const [histories, selicResult, ffResult] = await Promise.all([
-    fetchYahooHistories([...SIM_UNIVERSE.map((a) => a.symbol), ...CONTEXT_SYMBOLS], '2y'),
+    fetchYahooHistories(symbols, '2y'),
     fetchBcbSeries('1178').catch(() => null),
     fetchFredSeries('FEDFUNDS').catch(() => null),
   ]);

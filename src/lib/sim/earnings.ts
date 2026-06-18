@@ -1,4 +1,8 @@
 import type { AssetSignal, SimAsset } from './strategies';
+import {
+  fetchPythonEarningsRisks,
+  isPythonBackendRequired,
+} from '@/lib/backend/pythonBackendClient';
 
 export type EarningsStatus = 'CLEAR' | 'BLOCKED' | 'UNKNOWN';
 
@@ -59,6 +63,18 @@ export async function getEarningsRisks(
 ): Promise<Map<string, EarningsRisk>> {
   const stocks = universe.filter((asset) => asset.thematicEquity);
   if (cache && Date.now() - cache.fetchedAt < CACHE_TTL_MS) return cache.risks;
+
+  try {
+    const pythonRisks = await fetchPythonEarningsRisks<EarningsRisk>(stocks.map((asset) => asset.symbol));
+    if (pythonRisks) {
+      const risks = new Map(Object.entries(pythonRisks));
+      cache = { fetchedAt: Date.now(), risks };
+      return risks;
+    }
+  } catch (error) {
+    if (isPythonBackendRequired()) throw error;
+    console.warn('[Earnings] Python backend failed; falling back to TS NASDAQ fetcher', error);
+  }
 
   const dates = Array.from({ length: LOOKAHEAD_DAYS + 1 }, (_, offset) => {
     const date = new Date(now);

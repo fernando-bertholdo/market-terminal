@@ -210,13 +210,13 @@ export async function GET(): Promise<NextResponse<ApiResponse<MarketData>>> {
           fx: pythonData.fx ?? NULL_FX,
           commodities: pythonData.commodities ?? NULL_CMDTY,
           global: pythonData.global ?? NULL_GLOBAL,
-          fixedIncomeRisk: calculateFixedIncomeRisk({
+          fixedIncomeRisk: pythonData.fixedIncomeRisk ?? calculateFixedIncomeRisk({
             brazil: pythonData.brazil ?? NULL_BRAZIL,
             us: pythonData.us ?? NULL_US,
           }),
-          fixedIncomeCurves: buildFixedIncomeCurves([]),
-          b3Futures: {},
-          marketIntelligence: {
+          fixedIncomeCurves: pythonData.fixedIncomeCurves ?? buildFixedIncomeCurves([]),
+          b3Futures: pythonData.b3Futures ?? {},
+          marketIntelligence: pythonData.marketIntelligence ?? {
             quotes: {},
             providers: [],
             persistence: 'disabled',

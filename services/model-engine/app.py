@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 
+from earnings import earnings_risks
 from market import macro_snapshot, market_snapshot, terminal_market_snapshot, yahoo_histories
 from news import news_snapshot
 from strategy import compute_signals
@@ -45,7 +46,7 @@ def health() -> dict:
         "status": "ok",
         "backend": "python",
         "version": "0.2.0",
-        "capabilities": ["market", "news", "signals"],
+        "capabilities": ["market", "history", "macro", "news", "earnings", "signals"],
     }
 
 
@@ -54,13 +55,15 @@ def market(
     symbols: str = "",
     bcb: str = "1178,4392,433",
     fred: str = "DGS2,DGS5,DGS10,DGS30,FEDFUNDS",
+    includePtax: bool = False,
+    includeB3: bool = False,
     authorization: Optional[str] = Header(default=None),
 ) -> dict:
     _check_auth(authorization)
     symbol_list = [item.strip() for item in symbols.split(",") if item.strip()]
     bcb_codes = [item.strip() for item in bcb.split(",") if item.strip()]
     fred_ids = [item.strip() for item in fred.split(",") if item.strip()]
-    return market_snapshot(symbol_list, bcb_codes, fred_ids)
+    return market_snapshot(symbol_list, bcb_codes, fred_ids, includePtax, includeB3)
 
 
 @app.get("/market/terminal")
@@ -92,6 +95,13 @@ def macro(authorization: Optional[str] = Header(default=None)) -> dict:
 def news(authorization: Optional[str] = Header(default=None)) -> dict:
     _check_auth(authorization)
     return news_snapshot()
+
+
+@app.get("/earnings")
+def earnings(symbols: str, authorization: Optional[str] = Header(default=None)) -> dict:
+    _check_auth(authorization)
+    symbol_list = [item.strip() for item in symbols.split(",") if item.strip()][:50]
+    return {"data": earnings_risks(symbol_list)}
 
 
 @app.post("/signals")

@@ -1,4 +1,6 @@
 import type { NewsFetchResult } from '@/lib/fetchers/news';
+import type { YahooQuoteResult } from '@/lib/fetchers/yahoo';
+import type { HistorySeries } from '@/lib/fetchers/yahooHistory';
 
 function backendUrl(): string | null {
   return (
@@ -84,12 +86,44 @@ async function fetchPythonJson<T>(path: string): Promise<T | null> {
 export async function fetchPythonHistory(
   symbols: string[],
   range: string
-): Promise<Record<string, unknown> | null> {
+): Promise<Record<string, HistorySeries> | null> {
   const params = new URLSearchParams({
     symbols: symbols.join(','),
     range,
   });
-  const payload = await fetchPythonJson<{ data?: Record<string, unknown> }>(`/history?${params}`);
+  const payload = await fetchPythonJson<{ data?: Record<string, HistorySeries> }>(`/history?${params}`);
+  return payload?.data ?? null;
+}
+
+export interface PythonMarketPayload {
+  mode?: string;
+  yahoo?: Record<string, YahooQuoteResult>;
+  bcb?: Record<string, { value: number; date: string }>;
+  ptax?: Record<string, unknown>;
+  fred?: Record<string, { current: number; previous: number; date: string }>;
+  b3?: Record<string, unknown>;
+}
+
+export async function fetchPythonMarket(params: {
+  symbols?: string[];
+  bcb?: string[];
+  fred?: string[];
+  includePtax?: boolean;
+  includeB3?: boolean;
+}): Promise<PythonMarketPayload | null> {
+  const search = new URLSearchParams({
+    symbols: (params.symbols ?? []).join(','),
+    bcb: (params.bcb ?? []).join(','),
+    fred: (params.fred ?? []).join(','),
+    includePtax: params.includePtax ? 'true' : 'false',
+    includeB3: params.includeB3 ? 'true' : 'false',
+  });
+  return await fetchPythonJson<PythonMarketPayload>(`/market?${search}`);
+}
+
+export async function fetchPythonEarningsRisks<T>(symbols: string[]): Promise<Record<string, T> | null> {
+  const params = new URLSearchParams({ symbols: symbols.join(',') });
+  const payload = await fetchPythonJson<{ data?: Record<string, T> }>(`/earnings?${params}`);
   return payload?.data ?? null;
 }
 
