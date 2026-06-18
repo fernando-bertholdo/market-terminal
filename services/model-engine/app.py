@@ -1,4 +1,4 @@
-"""FastAPI wrapper for the ATLAS quant model engine."""
+"""FastAPI backend for ATLAS market data, news intelligence and model signals."""
 
 from __future__ import annotations
 
@@ -8,11 +8,13 @@ from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 
+from market import market_snapshot
+from news import news_snapshot
 from strategy import compute_signals
 
-AUTH_TOKEN = os.getenv("MODEL_ENGINE_TOKEN", "")
+AUTH_TOKEN = os.getenv("ATLAS_BACKEND_TOKEN", "") or os.getenv("MODEL_ENGINE_TOKEN", "")
 
-app = FastAPI(title="atlas-model-engine", version="0.1.0")
+app = FastAPI(title="atlas-backend", version="0.2.0")
 
 
 class StrategyParams(BaseModel):
@@ -39,7 +41,32 @@ def _check_auth(authorization: Optional[str]) -> None:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "engine": "python", "version": "0.1.0"}
+    return {
+        "status": "ok",
+        "backend": "python",
+        "version": "0.2.0",
+        "capabilities": ["market", "news", "signals"],
+    }
+
+
+@app.get("/market")
+def market(
+    symbols: str = "",
+    bcb: str = "1178,4392,433",
+    fred: str = "DGS2,DGS5,DGS10,DGS30,FEDFUNDS",
+    authorization: Optional[str] = Header(default=None),
+) -> dict:
+    _check_auth(authorization)
+    symbol_list = [item.strip() for item in symbols.split(",") if item.strip()]
+    bcb_codes = [item.strip() for item in bcb.split(",") if item.strip()]
+    fred_ids = [item.strip() for item in fred.split(",") if item.strip()]
+    return market_snapshot(symbol_list, bcb_codes, fred_ids)
+
+
+@app.get("/news")
+def news(authorization: Optional[str] = Header(default=None)) -> dict:
+    _check_auth(authorization)
+    return news_snapshot()
 
 
 @app.post("/signals")

@@ -1,10 +1,9 @@
-# ATLAS Model Engine
+# ATLAS Python Backend
 
-Python service for quant signals and model logic.
+Python service for market data, news intelligence/sentiment and quant signals.
 
-The Next.js app remains the UI/API shell and paper-book executor. This service owns
-the strategy/model computation so research and production logic can move into the
-Python stack incrementally.
+The Next.js app remains the UI shell and a thin BFF while backend responsibilities
+move here incrementally.
 
 ## Run Locally
 
@@ -19,9 +18,12 @@ uvicorn app:app --reload --port 8010
 Then set the Next.js app:
 
 ```bash
-MODEL_ENGINE_URL=http://127.0.0.1:8010
-MODEL_ENGINE_TOKEN=
+ATLAS_BACKEND_URL=http://127.0.0.1:8010
+ATLAS_BACKEND_TOKEN=
 ```
 
-`POST /signals` receives close histories, strategy params and news intelligence,
-and returns the same signal shape the TypeScript simulator expects.
+Endpoints:
+
+- `GET /market`: Yahoo/BCB/FRED market-data feeders.
+- `GET /news`: RSS aggregation, deterministic classification and sentiment graph.
+- `POST /signals`: macro strategy signal engine.

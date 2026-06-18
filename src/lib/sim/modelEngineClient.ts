@@ -11,11 +11,20 @@ interface ModelEngineOptions {
 }
 
 function modelEngineUrl(): string | null {
-  return process.env.MODEL_ENGINE_URL?.trim().replace(/\/$/, '') || null;
+  return (
+    process.env.ATLAS_BACKEND_URL?.trim() ||
+    process.env.MODEL_ENGINE_URL?.trim() ||
+    ''
+  ).replace(/\/$/, '') || null;
 }
 
 function modelEngineRequired(): boolean {
-  return process.env.MODEL_ENGINE_REQUIRED === 'true' || process.env.MODEL_ENGINE_REQUIRED === '1';
+  return (
+    process.env.ATLAS_BACKEND_REQUIRED === 'true' ||
+    process.env.ATLAS_BACKEND_REQUIRED === '1' ||
+    process.env.MODEL_ENGINE_REQUIRED === 'true' ||
+    process.env.MODEL_ENGINE_REQUIRED === '1'
+  );
 }
 
 function historiesPayload(closesBySymbol: Map<string, number[]>): Record<string, number[]> {
@@ -34,8 +43,8 @@ async function computeSignalsPython(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...(process.env.MODEL_ENGINE_TOKEN
-        ? { Authorization: `Bearer ${process.env.MODEL_ENGINE_TOKEN}` }
+      ...(process.env.ATLAS_BACKEND_TOKEN || process.env.MODEL_ENGINE_TOKEN
+        ? { Authorization: `Bearer ${process.env.ATLAS_BACKEND_TOKEN || process.env.MODEL_ENGINE_TOKEN}` }
         : {}),
     },
     body: JSON.stringify({
@@ -44,7 +53,7 @@ async function computeSignalsPython(
       newsIntelligence: options.newsIntelligence ?? null,
       newsTriggeredSymbols: [...(options.newsTriggeredSymbols ?? new Set<string>())],
     }),
-    signal: AbortSignal.timeout(Number(process.env.MODEL_ENGINE_TIMEOUT_MS ?? 8_000)),
+    signal: AbortSignal.timeout(Number(process.env.ATLAS_BACKEND_TIMEOUT_MS ?? process.env.MODEL_ENGINE_TIMEOUT_MS ?? 8_000)),
   });
 
   if (!res.ok) {

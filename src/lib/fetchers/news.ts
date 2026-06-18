@@ -1,5 +1,9 @@
 import Parser from 'rss-parser';
 import { NEWS_FILTER_KEYWORDS, NEWS_SOURCES } from '@/lib/constants';
+import {
+  fetchPythonNews,
+  isPythonBackendRequired,
+} from '@/lib/backend/pythonBackendClient';
 import { aggregateNews } from '@/lib/news/aggregates';
 import { classifyHeadlines } from '@/lib/news/classify';
 import { dedupeNewsItems } from '@/lib/news/dedupe';
@@ -269,6 +273,14 @@ async function getSource(source: NewsSource): Promise<SourceResult> {
 }
 
 export async function fetchNewsHeadlines(): Promise<NewsFetchResult> {
+  try {
+    const pythonNews = await fetchPythonNews();
+    if (pythonNews) return pythonNews;
+  } catch (error) {
+    console.error('[PythonBackend] /news failed:', error);
+    if (isPythonBackendRequired()) throw error;
+  }
+
   const now = new Date();
   const results = await Promise.all(NEWS_SOURCES.map((source) => getSource(source)));
   const sourceStatuses: Record<string, SourceStatus> = {};
