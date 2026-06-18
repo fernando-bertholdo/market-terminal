@@ -5,7 +5,7 @@
 // price cards with 3-month sparklines, a ranked movers board, the Brazil policy
 // stack, and the latest headlines.
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { MarketDataState } from "@/hooks/useMarketData";
 import type { NewsState } from "@/hooks/useNews";
 import { useHistory } from "@/hooks/useHistory";
@@ -107,10 +107,16 @@ export default function OverviewPage({
 
   const maxMove = movers.length ? Math.max(...movers.map((m) => Math.abs(m.chg))) : 1;
 
-  const greeting = (() => {
-    const h = new Date().getHours();
-    return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
-  })();
+  const [heroDate, setHeroDate] = useState<{ greeting: string; label: string } | null>(null);
+
+  useEffect(() => {
+    const now = new Date();
+    const h = now.getHours();
+    setHeroDate({
+      greeting: h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening",
+      label: now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }),
+    });
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
@@ -123,7 +129,7 @@ export default function OverviewPage({
         }}
       >
         <div className="text-[12px] font-medium uppercase tracking-[0.14em]" style={{ color: "var(--accent)" }}>
-          {greeting} · {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+          {heroDate ? `${heroDate.greeting} · ${heroDate.label}` : "Market briefing"}
         </div>
         <h1 className="mt-1 text-[22px] font-semibold leading-snug" style={{ color: "var(--text-1)" }}>
           Today&apos;s briefing
