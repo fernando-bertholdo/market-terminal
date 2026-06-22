@@ -6,24 +6,38 @@
 // batch on service failure — with the deterministic regex classifier. With the
 // flag off (default), this is byte-for-byte the original regex behaviour.
 
-import type { NewsClassification, NewsItem } from '@/types/market';
+import type { NewsClassification, NewsClassificationStatus, NewsItem } from '@/types/market';
 import { classifyHeadline } from '@/lib/news/classifier';
-import { classifyHeadlinesML, mlEnabled } from '@/lib/news/mlClassifier';
+import { classifyHeadlinesMLDetailed, mlEnabled } from '@/lib/news/mlClassifier';
 
 export async function classifyHeadlines(
   items: NewsItem[],
   now: Date = new Date()
 ): Promise<Map<string, NewsClassification>> {
-  const mlResults = mlEnabled()
-    ? await classifyHeadlinesML(items, now)
-    : new Map<string, NewsClassification>();
+  return (await classifyHeadlinesWithStatus(items, now)).classifications;
+}
+
+export async function classifyHeadlinesWithStatus(
+  items: NewsItem[],
+  now: Date = new Date()
+): Promise<{ classifications: Map<string, NewsClassification>; status: NewsClassificationStatus }> {
+  const ml = mlEnabled()
+    ? await classifyHeadlinesMLDetailed(items, now)
+    : await classifyHeadlinesMLDetailed([], now).then((result) => ({
+        results: new Map<string, NewsClassification>(),
+        status: {
+          ...result.status,
+          requestedItems: items.length,
+          fallbackItems: items.length,
+        },
+      }));
 
   const out = new Map<string, NewsClassification>();
   for (const item of items) {
     out.set(
       item.id,
-      mlResults.get(item.id) ?? classifyHeadline(item.title, item.publishedAt, now)
+      ml.results.get(item.id) ?? classifyHeadline(item.title, item.publishedAt, now)
     );
   }
-  return out;
+  return { classifications: out, status: ml.status };
 }

@@ -30,6 +30,15 @@ export default function NewsPage({ news }: { news: NewsState }) {
   const [query, setQuery] = useState("");
   const mlStatus = useNewsMlStatus(30_000);
   const ml = mlStatus.data;
+  const classification = news.classification;
+  const hasTrainedHead = Boolean(ml?.database?.headWeights?.generatedAt);
+  const effectiveMode = classification?.mode === "ml"
+    ? hasTrainedHead
+      ? "ml-trained"
+      : "ml-seed"
+    : classification?.mode === "fallback"
+    ? "fallback"
+    : ml?.mode;
 
   const sources = useMemo(() => {
     const set = new Set(news.items.map((item) => item.source));
@@ -58,12 +67,12 @@ export default function NewsPage({ news }: { news: NewsState }) {
           <span
             className="rounded px-2 py-0.5 text-[10px] font-semibold uppercase"
             style={{
-              color: modeColor(ml?.mode),
+              color: modeColor(effectiveMode),
               backgroundColor: "var(--surface-3)",
               border: "1px solid var(--border)",
             }}
           >
-            {modeLabel(ml?.mode)}
+            {modeLabel(effectiveMode)}
           </span>
         }
       >
@@ -81,10 +90,12 @@ export default function NewsPage({ news }: { news: NewsState }) {
           <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}>
             <div className="text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--text-3)" }}>Classifier runtime</div>
             <div className="tabular-nums mt-0.5 text-[13px] font-semibold" style={{ color: "var(--value)" }}>
-              {ml?.service?.runtime?.successes ?? 0}/{ml?.service?.runtime?.attempts ?? 0}
+              {classification
+                ? `${classification.mlClassifiedItems}/${classification.sentItems}`
+                : `${ml?.service?.runtime?.successes ?? 0}/${ml?.service?.runtime?.attempts ?? 0}`}
             </div>
             <div className="text-[10px]" style={{ color: "var(--text-3)" }}>
-              successes / attempts
+              ML classified / sent
             </div>
           </div>
           <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}>
@@ -106,9 +117,9 @@ export default function NewsPage({ news }: { news: NewsState }) {
             </div>
           </div>
         </div>
-        {(ml?.service?.health?.message || ml?.database?.error || ml?.service?.runtime?.lastError) && (
+        {(classification?.error || ml?.service?.health?.message || ml?.database?.error || ml?.service?.runtime?.lastError) && (
           <div className="mt-2 rounded-lg px-3 py-2 text-[11px]" style={{ color: "var(--warn)", backgroundColor: "rgba(232,161,60,0.10)", border: "1px solid rgba(232,161,60,0.28)" }}>
-            {ml?.service?.health?.message ?? ml?.database?.error ?? ml?.service?.runtime?.lastError}
+            {classification?.error ?? ml?.service?.health?.message ?? ml?.database?.error ?? ml?.service?.runtime?.lastError}
           </div>
         )}
       </Card>

@@ -64,6 +64,21 @@ export async function fetchPythonNews(): Promise<NewsFetchResult | null> {
       oldestSourceAgeMs: null,
       newestPublishedAt: null,
     },
+    classification: payload.classification ?? {
+      mode: 'fallback',
+      mlEnabled: false,
+      mlConfigured: false,
+      mlAttempted: false,
+      mlSuccess: false,
+      requestedItems: payload.items?.length ?? 0,
+      sentItems: 0,
+      mlClassifiedItems: 0,
+      fallbackItems: payload.items?.length ?? 0,
+      maxItemsPerBatch: 0,
+      durationMs: null,
+      error: 'Python backend did not return classification status',
+      httpStatus: null,
+    },
   };
 }
 

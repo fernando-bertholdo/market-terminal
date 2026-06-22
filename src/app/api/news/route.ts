@@ -26,6 +26,7 @@ export async function GET(): Promise<NextResponse<NewsApiResponse>> {
         sources: result.sources,
         intelligence: result.intelligence,
         freshness: result.freshness,
+        classification: result.classification,
       },
       { headers: NO_STORE_HEADERS }
     );
@@ -63,6 +64,21 @@ export async function GET(): Promise<NextResponse<NewsApiResponse>> {
           staleIfErrorMs: 0,
           oldestSourceAgeMs: null,
           newestPublishedAt: null,
+        },
+        classification: {
+          mode: 'fallback',
+          mlEnabled: false,
+          mlConfigured: false,
+          mlAttempted: false,
+          mlSuccess: false,
+          requestedItems: 0,
+          sentItems: 0,
+          mlClassifiedItems: 0,
+          fallbackItems: 0,
+          maxItemsPerBatch: 0,
+          durationMs: null,
+          error: 'News data is temporarily unavailable',
+          httpStatus: null,
         },
       },
       { status: 200, headers: NO_STORE_HEADERS }

@@ -98,9 +98,26 @@ export interface NewsFreshness {
   newestPublishedAt: string | null;
 }
 
+export interface NewsClassificationStatus {
+  mode: 'disabled' | 'unconfigured' | 'ml' | 'fallback';
+  mlEnabled: boolean;
+  mlConfigured: boolean;
+  mlAttempted: boolean;
+  mlSuccess: boolean;
+  requestedItems: number;
+  sentItems: number;
+  mlClassifiedItems: number;
+  fallbackItems: number;
+  maxItemsPerBatch: number;
+  durationMs: number | null;
+  error: string | null;
+  httpStatus: number | null;
+}
+
 export interface NewsApiResponse extends ApiResponse<NewsItem[]> {
   intelligence: NewsIntelligence;
   freshness: NewsFreshness;
+  classification?: NewsClassificationStatus;
 }
 
 export interface MarketDataPoint {

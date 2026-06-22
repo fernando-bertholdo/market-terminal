@@ -12,6 +12,7 @@
 //  - Contract unchanged: output is a plain `NewsClassification`.
 
 import type {
+  NewsClassificationStatus,
   NewsClassification,
   NewsItem,
   NewsSignal,
@@ -88,7 +89,7 @@ const TIMEOUT_MS = (() => {
 })();
 const MAX_ITEMS_PER_BATCH = (() => {
   const value = Number(process.env.NEWS_ML_MAX_ITEMS);
-  return Number.isFinite(value) ? Math.min(50, Math.max(1, Math.floor(value))) : 8;
+  return Number.isFinite(value) ? Math.min(50, Math.max(1, Math.floor(value))) : 2;
 })();
 
 const runtimeStatus = {
@@ -108,6 +109,29 @@ const runtimeStatus = {
 
 export function mlEnabled(): boolean {
   return ML_ENABLED && SERVICE_URL.length > 0;
+}
+
+function baseBatchStatus(items: NewsItem[]): NewsClassificationStatus {
+  const mode = !ML_ENABLED ? 'disabled' : !SERVICE_URL ? 'unconfigured' : 'fallback';
+  return {
+    mode,
+    mlEnabled: ML_ENABLED,
+    mlConfigured: SERVICE_URL.length > 0,
+    mlAttempted: false,
+    mlSuccess: false,
+    requestedItems: items.length,
+    sentItems: 0,
+    mlClassifiedItems: 0,
+    fallbackItems: items.length,
+    maxItemsPerBatch: MAX_ITEMS_PER_BATCH,
+    durationMs: null,
+    error: mode === 'disabled'
+      ? 'NEWS_ML_ENABLED is off'
+      : mode === 'unconfigured'
+      ? 'NEWS_NLP_URL is not configured'
+      : null,
+    httpStatus: null,
+  };
 }
 
 export function getMlClassifierRuntimeStatus(): MlClassifierRuntimeStatus {
@@ -295,10 +319,20 @@ export async function classifyHeadlinesML(
   items: NewsItem[],
   now: Date
 ): Promise<Map<string, NewsClassification>> {
+  return (await classifyHeadlinesMLDetailed(items, now)).results;
+}
+
+export async function classifyHeadlinesMLDetailed(
+  items: NewsItem[],
+  now: Date
+): Promise<{ results: Map<string, NewsClassification>; status: NewsClassificationStatus }> {
   const out = new Map<string, NewsClassification>();
-  if (!mlEnabled() || items.length === 0) return out;
+  if (!mlEnabled() || items.length === 0) {
+    return { results: out, status: baseBatchStatus(items) };
+  }
   const serviceItems = items.slice(0, MAX_ITEMS_PER_BATCH);
   recordAttempt(serviceItems.length);
+  const started = Date.now();
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -323,7 +357,17 @@ export async function classifyHeadlinesML(
     if (!response.ok) {
       console.error(`[News/ML] Service returned HTTP ${response.status}`);
       recordFailure(serviceItems.length, `HTTP ${response.status}`, response.status);
-      return out;
+      return {
+        results: out,
+        status: {
+          ...baseBatchStatus(items),
+          mlAttempted: true,
+          sentItems: serviceItems.length,
+          durationMs: Date.now() - started,
+          error: `HTTP ${response.status}`,
+          httpStatus: response.status,
+        },
+      };
     }
 
     const payload = (await response.json()) as ServiceResponse;
@@ -334,12 +378,39 @@ export async function classifyHeadlinesML(
       out.set(item.id, toClassification(result, item, now));
     }
     recordSuccess(serviceItems.length, out.size);
-    return out;
+    return {
+      results: out,
+      status: {
+        mode: 'ml',
+        mlEnabled: ML_ENABLED,
+        mlConfigured: true,
+        mlAttempted: true,
+        mlSuccess: true,
+        requestedItems: items.length,
+        sentItems: serviceItems.length,
+        mlClassifiedItems: out.size,
+        fallbackItems: Math.max(0, items.length - out.size),
+        maxItemsPerBatch: MAX_ITEMS_PER_BATCH,
+        durationMs: Date.now() - started,
+        error: null,
+        httpStatus: 200,
+      },
+    };
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'unknown error';
     console.error(`[News/ML] Classification request failed (${reason}); falling back to regex`);
     recordFailure(serviceItems.length, reason);
-    return out;
+    return {
+      results: out,
+      status: {
+        ...baseBatchStatus(items),
+        mlAttempted: true,
+        sentItems: serviceItems.length,
+        durationMs: Date.now() - started,
+        error: reason,
+        httpStatus: null,
+      },
+    };
   } finally {
     clearTimeout(timer);
   }

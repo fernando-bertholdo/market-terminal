@@ -31,6 +31,7 @@ export interface NewsState {
   headlineAgeSeconds: number | null;
   intelligence: any | null;
   freshness: any | null;
+  classification: any | null;
   refreshInterval: number;
   refresh: () => void;
 }
@@ -86,6 +87,7 @@ export function useNews(refreshInterval: number = 30_000): NewsState {
         : null,
     intelligence: raw?.intelligence ?? null,
     freshness: raw?.freshness ?? null,
+    classification: raw?.classification ?? null,
     refreshInterval,
     refresh,
   };

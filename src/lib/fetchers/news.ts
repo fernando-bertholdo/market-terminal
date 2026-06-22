@@ -5,12 +5,13 @@ import {
   isPythonBackendRequired,
 } from '@/lib/backend/pythonBackendClient';
 import { aggregateNews } from '@/lib/news/aggregates';
-import { classifyHeadlines } from '@/lib/news/classify';
+import { classifyHeadlinesWithStatus } from '@/lib/news/classify';
 import { dedupeNewsItems } from '@/lib/news/dedupe';
 import { ensureHeadWeights } from '@/lib/news/head';
 import { recordForwardHeadlines } from '@/lib/news/forwardCollector';
 import type {
   NewsFreshness,
+  NewsClassificationStatus,
   NewsIntelligence,
   NewsItem,
   SourceStatus,
@@ -56,6 +57,7 @@ export interface NewsFetchResult {
   sources: Record<string, SourceStatus>;
   intelligence: NewsIntelligence;
   freshness: NewsFreshness;
+  classification: NewsClassificationStatus;
 }
 
 const MAX_HEADLINES = 50;
@@ -299,7 +301,8 @@ export async function fetchNewsHeadlines(): Promise<NewsFetchResult> {
     .slice(0, MAX_HEADLINES);
   // Pull the latest continuously-retrained head weights (Phase 4) before scoring.
   await ensureHeadWeights();
-  const classifications = await classifyHeadlines(ranked, now);
+  const classificationRun = await classifyHeadlinesWithStatus(ranked, now);
+  const classifications = classificationRun.classifications;
   const items = ranked.map((item) => ({
     ...item,
     classification: classifications.get(item.id),
@@ -343,6 +346,7 @@ export async function fetchNewsHeadlines(): Promise<NewsFetchResult> {
     items,
     sources: sourceStatuses,
     intelligence: aggregateNews(items, now),
+    classification: classificationRun.status,
     freshness: {
       ttlMs: CACHE_TTL_MS,
       staleIfErrorMs: STALE_IF_ERROR_MS,
