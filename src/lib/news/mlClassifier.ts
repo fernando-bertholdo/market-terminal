@@ -53,6 +53,26 @@ interface ServiceResponse {
 
 type NewsRegion = 'br' | 'us';
 
+export interface MlClassifierRuntimeStatus {
+  enabled: boolean;
+  configured: boolean;
+  serviceUrl: string | null;
+  timeoutMs: number;
+  attempts: number;
+  successes: number;
+  failures: number;
+  requestedItems: number;
+  classifiedItems: number;
+  fallbackItems: number;
+  fallbackRate: number | null;
+  lastAttemptAt: string | null;
+  lastSuccessAt: string | null;
+  lastFailureAt: string | null;
+  lastError: string | null;
+  lastHttpStatus: number | null;
+  lastResultCount: number | null;
+}
+
 const BR_DOMESTIC_FACTORS = new Set(['rates_br', 'brl', 'inflation']);
 const BR_DOMESTIC_ASSETS = new Set(['DI', 'BRL', 'IBOV']);
 const GLOBAL_MARKERS =
@@ -66,8 +86,63 @@ const TIMEOUT_MS = (() => {
   return Number.isFinite(value) ? Math.min(30_000, Math.max(500, value)) : 8_000;
 })();
 
+const runtimeStatus = {
+  attempts: 0,
+  successes: 0,
+  failures: 0,
+  requestedItems: 0,
+  classifiedItems: 0,
+  fallbackItems: 0,
+  lastAttemptAt: null as string | null,
+  lastSuccessAt: null as string | null,
+  lastFailureAt: null as string | null,
+  lastError: null as string | null,
+  lastHttpStatus: null as number | null,
+  lastResultCount: null as number | null,
+};
+
 export function mlEnabled(): boolean {
   return ML_ENABLED && SERVICE_URL.length > 0;
+}
+
+export function getMlClassifierRuntimeStatus(): MlClassifierRuntimeStatus {
+  return {
+    enabled: ML_ENABLED,
+    configured: SERVICE_URL.length > 0,
+    serviceUrl: SERVICE_URL || null,
+    timeoutMs: TIMEOUT_MS,
+    ...runtimeStatus,
+    fallbackRate:
+      runtimeStatus.requestedItems > 0
+        ? runtimeStatus.fallbackItems / runtimeStatus.requestedItems
+        : null,
+  };
+}
+
+function recordAttempt(itemCount: number): void {
+  runtimeStatus.attempts += 1;
+  runtimeStatus.requestedItems += itemCount;
+  runtimeStatus.lastAttemptAt = new Date().toISOString();
+  runtimeStatus.lastError = null;
+  runtimeStatus.lastHttpStatus = null;
+}
+
+function recordSuccess(itemCount: number, resultCount: number): void {
+  runtimeStatus.successes += 1;
+  runtimeStatus.classifiedItems += resultCount;
+  runtimeStatus.fallbackItems += Math.max(0, itemCount - resultCount);
+  runtimeStatus.lastSuccessAt = new Date().toISOString();
+  runtimeStatus.lastResultCount = resultCount;
+  runtimeStatus.lastHttpStatus = 200;
+}
+
+function recordFailure(itemCount: number, error: string, httpStatus: number | null = null): void {
+  runtimeStatus.failures += 1;
+  runtimeStatus.fallbackItems += itemCount;
+  runtimeStatus.lastFailureAt = new Date().toISOString();
+  runtimeStatus.lastError = error;
+  runtimeStatus.lastHttpStatus = httpStatus;
+  runtimeStatus.lastResultCount = null;
 }
 
 function toDirection(value: unknown): Direction {
@@ -216,6 +291,7 @@ export async function classifyHeadlinesML(
 ): Promise<Map<string, NewsClassification>> {
   const out = new Map<string, NewsClassification>();
   if (!mlEnabled() || items.length === 0) return out;
+  recordAttempt(items.length);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -239,6 +315,7 @@ export async function classifyHeadlinesML(
 
     if (!response.ok) {
       console.error(`[News/ML] Service returned HTTP ${response.status}`);
+      recordFailure(items.length, `HTTP ${response.status}`, response.status);
       return out;
     }
 
@@ -249,10 +326,12 @@ export async function classifyHeadlinesML(
       if (!item) continue;
       out.set(item.id, toClassification(result, item, now));
     }
+    recordSuccess(items.length, out.size);
     return out;
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'unknown error';
     console.error(`[News/ML] Classification request failed (${reason}); falling back to regex`);
+    recordFailure(items.length, reason);
     return out;
   } finally {
     clearTimeout(timer);

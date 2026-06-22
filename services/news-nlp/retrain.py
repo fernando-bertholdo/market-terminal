@@ -208,6 +208,10 @@ def save_weights(weights: Dict) -> None:
             "updated_at timestamptz NOT NULL DEFAULT now())"
         )
         cur.execute(
+            "ALTER TABLE head_weights "
+            "ADD COLUMN IF NOT EXISTS updated_at timestamptz NOT NULL DEFAULT now()"
+        )
+        cur.execute(
             "INSERT INTO head_weights (id, weights) VALUES ('current', %s) "
             "ON CONFLICT (id) DO UPDATE SET weights = EXCLUDED.weights, updated_at = now()",
             (json.dumps(weights),),

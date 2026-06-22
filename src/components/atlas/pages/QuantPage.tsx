@@ -7,6 +7,7 @@
 
 import React, { useMemo, useState } from "react";
 import { useSim } from "@/hooks/useSim";
+import { useNewsMlStatus } from "@/hooks/useNewsMlStatus";
 import { Card, HEX, RegimeMeter, Sparkline, StatTile, fmt, relTime } from "../ui";
 
 function convictionColor(direction: string, conviction: number): string {
@@ -26,6 +27,7 @@ function saoPauloDateKey(value: Date | string): string {
 
 export default function QuantPage() {
   const sim = useSim(15_000); // display refresh only; the cloud executor mutates the book
+  const mlStatus = useNewsMlStatus(30_000);
   const [busy, setBusy] = useState<"reset" | "rebalance" | null>(null);
   const portfolio = sim.data?.portfolio;
   const decisions: any[] = sim.data?.decisions ?? [];
@@ -36,6 +38,7 @@ export default function QuantPage() {
   const liveAsOf: string | null = sim.data?.live?.asOf ?? null;
   const freshQuoteCount: number = sim.data?.live?.freshExecutionQuoteCount ?? 0;
   const newsRead: any | null = sim.data?.news ?? null;
+  const newsModelMode: string | undefined = mlStatus.data?.mode;
   const activeTriggers: any[] = sim.data?.newsTriggers?.active ?? [];
   const recentTriggers: any[] = sim.data?.newsTriggers?.recent ?? [];
   const automation: any | null = portfolio?.automation ?? null;
@@ -158,7 +161,15 @@ export default function QuantPage() {
           <div className="tabular-nums text-[13px] font-medium" style={{ color: newsRead ? "var(--accent)" : "var(--text-3)" }}>
             {newsRead ? `${newsRead.classifiedCount}/${newsRead.itemCount} classified` : "unavailable"}
           </div>
-          <div className="text-[10px]" style={{ color: "var(--text-3)" }}>feeds the live macro decision layer</div>
+          <div className="text-[10px]" style={{ color: "var(--text-3)" }}>
+            {newsModelMode === "ml-trained"
+              ? "trained ML head feeds live macro layer"
+              : newsModelMode === "ml-seed"
+              ? "ML service online, using seed head"
+              : newsModelMode === "fallback"
+              ? "fallback rules active; ML service failing"
+              : "feeds the live macro decision layer"}
+          </div>
         </div>
         <div className="min-w-[220px] flex-1">
           {todayMarks.length >= 2 ? (

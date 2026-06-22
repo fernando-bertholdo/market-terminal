@@ -28,6 +28,11 @@ interface HeadWeights {
   margin?: number;
   global?: { coef: number[] };
   assets?: Partial<Record<NewsAsset, AssetModel>>;
+  generatedAt?: string;
+  source?: string;
+  rows?: number;
+  headlines?: number;
+  note?: string;
 }
 
 const REFRESH_TTL_MS = (() => {
@@ -36,7 +41,9 @@ const REFRESH_TTL_MS = (() => {
 })();
 
 let activeWeights: HeadWeights = seedWeights as HeadWeights;
+let activeSource: 'seed' | 'database' = 'seed';
 let lastLoadedAt = 0;
+let lastLoadError: string | null = null;
 let inFlight: Promise<void> | null = null;
 
 function headFlagOn(): boolean {
@@ -45,6 +52,22 @@ function headFlagOn(): boolean {
 
 export function headEnabled(): boolean {
   return headFlagOn() && Array.isArray(activeWeights.global?.coef);
+}
+
+export function getHeadRuntimeStatus() {
+  return {
+    enabled: headFlagOn(),
+    ready: headEnabled(),
+    source: headFlagOn() ? activeSource : 'disabled',
+    lastLoadedAt: lastLoadedAt > 0 ? new Date(lastLoadedAt).toISOString() : null,
+    lastLoadError,
+    generatedAt: activeWeights.generatedAt ?? null,
+    trainedSource: activeWeights.source ?? null,
+    rows: typeof activeWeights.rows === 'number' ? activeWeights.rows : null,
+    headlines: typeof activeWeights.headlines === 'number' ? activeWeights.headlines : null,
+    assetModels: activeWeights.assets ? Object.keys(activeWeights.assets).length : 0,
+    seedNote: activeSource === 'seed' ? activeWeights.note ?? null : null,
+  };
 }
 
 // Refresh the head weights from Neon if enabled and the TTL has elapsed. Awaited
@@ -64,9 +87,15 @@ export async function ensureHeadWeights(): Promise<void> {
       const loaded = rows[0]?.weights as HeadWeights | undefined;
       if (loaded && Array.isArray(loaded.global?.coef)) {
         activeWeights = loaded;
+        activeSource = 'database';
+        lastLoadError = null;
+      } else {
+        activeSource = 'seed';
       }
       lastLoadedAt = Date.now();
     } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      lastLoadError = message;
       console.error('[News/head] weight refresh failed; keeping current weights:', error);
       lastLoadedAt = Date.now(); // back off; don't hammer the DB on every request
     } finally {

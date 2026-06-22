@@ -6,11 +6,30 @@
 
 import React, { useMemo, useState } from "react";
 import type { NewsState } from "@/hooks/useNews";
-import { relTime } from "../ui";
+import { useNewsMlStatus } from "@/hooks/useNewsMlStatus";
+import { Card, relTime } from "../ui";
+
+function modeLabel(mode: string | undefined): string {
+  if (mode === "ml-trained") return "ML trained";
+  if (mode === "ml-seed") return "ML seed";
+  if (mode === "fallback") return "Fallback";
+  if (mode === "disabled") return "Disabled";
+  if (mode === "unconfigured") return "Unconfigured";
+  return "Checking";
+}
+
+function modeColor(mode: string | undefined): string {
+  if (mode === "ml-trained") return "var(--up)";
+  if (mode === "ml-seed") return "var(--warn)";
+  if (mode === "fallback" || mode === "disabled" || mode === "unconfigured") return "var(--down)";
+  return "var(--text-3)";
+}
 
 export default function NewsPage({ news }: { news: NewsState }) {
   const [source, setSource] = useState<string>("ALL");
   const [query, setQuery] = useState("");
+  const mlStatus = useNewsMlStatus(30_000);
+  const ml = mlStatus.data;
 
   const sources = useMemo(() => {
     const set = new Set(news.items.map((item) => item.source));
@@ -31,6 +50,69 @@ export default function NewsPage({ news }: { news: NewsState }) {
 
   return (
     <div className="mx-auto flex w-full max-w-[860px] flex-col gap-3">
+      <Card
+        title="News model status"
+        subtitle="Shows whether headlines are using trained ML weights or the deterministic fallback"
+        bodyClassName="px-4 pb-4 pt-2"
+        right={
+          <span
+            className="rounded px-2 py-0.5 text-[10px] font-semibold uppercase"
+            style={{
+              color: modeColor(ml?.mode),
+              backgroundColor: "var(--surface-3)",
+              border: "1px solid var(--border)",
+            }}
+          >
+            {modeLabel(ml?.mode)}
+          </span>
+        }
+      >
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+          <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}>
+            <div className="text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--text-3)" }}>NLP service</div>
+            <div className="tabular-nums mt-0.5 text-[13px] font-semibold" style={{ color: ml?.service?.health?.ok ? "var(--up)" : "var(--down)" }}>
+              {ml?.service?.health?.ok ? "healthy" : mlStatus.isLoading ? "checking" : "offline"}
+            </div>
+            <div className="truncate text-[10px]" style={{ color: "var(--text-3)" }}>
+              {ml?.service?.url ?? "no url"}
+              {ml?.service?.health?.latencyMs != null ? ` · ${ml.service.health.latencyMs}ms` : ""}
+            </div>
+          </div>
+          <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}>
+            <div className="text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--text-3)" }}>Classifier runtime</div>
+            <div className="tabular-nums mt-0.5 text-[13px] font-semibold" style={{ color: "var(--value)" }}>
+              {ml?.service?.runtime?.successes ?? 0}/{ml?.service?.runtime?.attempts ?? 0}
+            </div>
+            <div className="text-[10px]" style={{ color: "var(--text-3)" }}>
+              successes / attempts
+            </div>
+          </div>
+          <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}>
+            <div className="text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--text-3)" }}>Forward tape</div>
+            <div className="tabular-nums mt-0.5 text-[13px] font-semibold" style={{ color: (ml?.database?.forward?.rows ?? 0) > 0 ? "var(--up)" : "var(--warn)" }}>
+              {ml?.database?.forward?.rows ?? "n/a"}
+            </div>
+            <div className="text-[10px]" style={{ color: "var(--text-3)" }}>
+              collected headlines
+            </div>
+          </div>
+          <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}>
+            <div className="text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--text-3)" }}>Head weights</div>
+            <div className="tabular-nums mt-0.5 text-[13px] font-semibold" style={{ color: ml?.database?.headWeights?.generatedAt ? "var(--up)" : "var(--warn)" }}>
+              {ml?.database?.headWeights?.generatedAt ? "trained" : "seed"}
+            </div>
+            <div className="truncate text-[10px]" style={{ color: "var(--text-3)" }}>
+              {ml?.database?.headWeights?.updatedAt ? `updated ${relTime(ml.database.headWeights.updatedAt)}` : "no DB weights yet"}
+            </div>
+          </div>
+        </div>
+        {(ml?.service?.health?.message || ml?.database?.error || ml?.service?.runtime?.lastError) && (
+          <div className="mt-2 rounded-lg px-3 py-2 text-[11px]" style={{ color: "var(--warn)", backgroundColor: "rgba(232,161,60,0.10)", border: "1px solid rgba(232,161,60,0.28)" }}>
+            {ml?.service?.health?.message ?? ml?.database?.error ?? ml?.service?.runtime?.lastError}
+          </div>
+        )}
+      </Card>
+
       <div
         className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl px-4 py-3"
         style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)" }}

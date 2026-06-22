@@ -12,6 +12,8 @@ Auth: if NEWS_NLP_TOKEN is set, requests must send `Authorization: Bearer <token
 from __future__ import annotations
 
 import os
+import time
+from datetime import datetime, timezone
 from typing import List, Optional
 
 from fastapi import FastAPI, Header, HTTPException
@@ -26,6 +28,15 @@ WARMUP = os.getenv("WARMUP", "false").lower() in ("1", "true", "yes")
 
 _retrain_lock = threading.Lock()
 _retrain_status: dict = {"running": False, "last": None}
+_warmup_status: dict = {
+    "enabled": WARMUP,
+    "running": False,
+    "ok": None,
+    "started_at": None,
+    "finished_at": None,
+    "seconds": None,
+    "error": None,
+}
 
 app = FastAPI(title="atlas-news-nlp", version="0.1.0")
 
@@ -40,10 +51,38 @@ class ClassifyRequest(BaseModel):
     items: List[HeadlineIn]
 
 
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _do_warmup() -> None:
+    started = time.time()
+    _warmup_status.update({
+        "running": True,
+        "ok": None,
+        "started_at": _utc_now(),
+        "finished_at": None,
+        "seconds": None,
+        "error": None,
+    })
+    try:
+        pipeline.warmup()
+        _warmup_status["ok"] = True
+    except Exception as err:  # noqa: BLE001
+        _warmup_status["ok"] = False
+        _warmup_status["error"] = str(err)
+    finally:
+        _warmup_status["running"] = False
+        _warmup_status["finished_at"] = _utc_now()
+        _warmup_status["seconds"] = round(time.time() - started, 1)
+
+
 @app.on_event("startup")
 def _startup() -> None:
     if WARMUP:
-        pipeline.warmup()
+        # Keep /health responsive even when HF free-tier CPU is still loading
+        # transformer weights. Classification waits for lazy model loading.
+        threading.Thread(target=_do_warmup, daemon=True).start()
 
 
 def _check_auth(authorization: Optional[str]) -> None:
@@ -56,7 +95,11 @@ def _check_auth(authorization: Optional[str]) -> None:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "models_loaded": sorted(pipeline._models.keys())}
+    return {
+        "status": "ok",
+        "models_loaded": sorted(pipeline._models.keys()),
+        "warmup": _warmup_status,
+    }
 
 
 @app.post("/classify")
