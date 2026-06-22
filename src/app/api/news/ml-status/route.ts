@@ -171,7 +171,10 @@ export async function GET() {
 
   const head = getHeadRuntimeStatus();
   const usingTrainedWeights = head.source === 'database' || Boolean(database.headWeights.generatedAt);
-  const liveMlHealthy = runtime.enabled && runtime.configured && health.ok;
+  const lastSuccessAt = runtime.lastSuccessAt ? Date.parse(runtime.lastSuccessAt) : 0;
+  const lastFailureAt = runtime.lastFailureAt ? Date.parse(runtime.lastFailureAt) : 0;
+  const classifierHealthy = runtime.attempts === 0 || lastSuccessAt > lastFailureAt;
+  const liveMlHealthy = runtime.enabled && runtime.configured && health.ok && classifierHealthy;
   const mode = !runtime.enabled
     ? 'disabled'
     : !runtime.configured

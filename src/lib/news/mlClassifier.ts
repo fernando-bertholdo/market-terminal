@@ -58,6 +58,7 @@ export interface MlClassifierRuntimeStatus {
   configured: boolean;
   serviceUrl: string | null;
   timeoutMs: number;
+  maxItemsPerBatch: number;
   attempts: number;
   successes: number;
   failures: number;
@@ -85,6 +86,10 @@ const TIMEOUT_MS = (() => {
   const value = Number(process.env.NEWS_NLP_TIMEOUT_MS);
   return Number.isFinite(value) ? Math.min(30_000, Math.max(500, value)) : 8_000;
 })();
+const MAX_ITEMS_PER_BATCH = (() => {
+  const value = Number(process.env.NEWS_ML_MAX_ITEMS);
+  return Number.isFinite(value) ? Math.min(50, Math.max(1, Math.floor(value))) : 8;
+})();
 
 const runtimeStatus = {
   attempts: 0,
@@ -111,6 +116,7 @@ export function getMlClassifierRuntimeStatus(): MlClassifierRuntimeStatus {
     configured: SERVICE_URL.length > 0,
     serviceUrl: SERVICE_URL || null,
     timeoutMs: TIMEOUT_MS,
+    maxItemsPerBatch: MAX_ITEMS_PER_BATCH,
     ...runtimeStatus,
     fallbackRate:
       runtimeStatus.requestedItems > 0
@@ -291,7 +297,8 @@ export async function classifyHeadlinesML(
 ): Promise<Map<string, NewsClassification>> {
   const out = new Map<string, NewsClassification>();
   if (!mlEnabled() || items.length === 0) return out;
-  recordAttempt(items.length);
+  const serviceItems = items.slice(0, MAX_ITEMS_PER_BATCH);
+  recordAttempt(serviceItems.length);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -305,7 +312,7 @@ export async function classifyHeadlinesML(
         ...(AUTH_TOKEN ? { Authorization: `Bearer ${AUTH_TOKEN}` } : {}),
       },
       body: JSON.stringify({
-        items: items.map((item) => ({
+        items: serviceItems.map((item) => ({
           id: item.id,
           title: item.title,
           publishedAt: item.publishedAt.toISOString(),
@@ -315,23 +322,23 @@ export async function classifyHeadlinesML(
 
     if (!response.ok) {
       console.error(`[News/ML] Service returned HTTP ${response.status}`);
-      recordFailure(items.length, `HTTP ${response.status}`, response.status);
+      recordFailure(serviceItems.length, `HTTP ${response.status}`, response.status);
       return out;
     }
 
     const payload = (await response.json()) as ServiceResponse;
-    const byId = new Map(items.map((item) => [item.id, item]));
+    const byId = new Map(serviceItems.map((item) => [item.id, item]));
     for (const result of payload.results ?? []) {
       const item = result && typeof result.id === 'string' ? byId.get(result.id) : undefined;
       if (!item) continue;
       out.set(item.id, toClassification(result, item, now));
     }
-    recordSuccess(items.length, out.size);
+    recordSuccess(serviceItems.length, out.size);
     return out;
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'unknown error';
     console.error(`[News/ML] Classification request failed (${reason}); falling back to regex`);
-    recordFailure(items.length, reason);
+    recordFailure(serviceItems.length, reason);
     return out;
   } finally {
     clearTimeout(timer);
