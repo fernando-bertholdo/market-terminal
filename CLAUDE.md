@@ -19,29 +19,45 @@ No test suite exists. Verify changes with `type-check` + `lint`, then smoke-test
 
 ## Environment Variables
 
-`.env.local` (gitignored): `FRED_API_KEY=` — required, free key from fredaccount.stlouisfed.org/apikeys. BCB, Yahoo, B3, and RSS need no auth.
+`.env.local` (gitignored). All are server-side — never use the `NEXT_PUBLIC_` prefix.
+
+- `FRED_API_KEY=` — required for US rates/breakevens, free key from fredaccount.stlouisfed.org/apikeys. BCB, Yahoo, B3, and RSS need no auth.
+- `DATABASE_URL=` — Neon Postgres connection string. Backs the paper book (`sim_state`) **and** authentication (`auth_credentials`, `auth_sessions`). Without it, auth is unavailable and the paper book falls back to a local `data/sim-state.json` file (dev only).
+- `APP_USERNAME=` / `APP_PASSWORD=` — bootstrap the single login credential on first sign-in (then stored hashed in Postgres).
+- `CRON_SECRET=` — shared secret for the periodic tick (sent as a `Bearer` token); the auth middleware lets matching requests through to `/api/sim` and `/api/market`.
+- `ATLAS_BACKEND_URL=` (alias `MODEL_ENGINE_URL`) — base URL of the Python `model-engine`; when set, Next delegates heavy data/signals to it. Optional `ATLAS_BACKEND_TOKEN`/`MODEL_ENGINE_TOKEN` (Bearer) and `ATLAS_BACKEND_REQUIRED=true` (fail closed instead of falling back to the TypeScript fetchers).
+- `NEWS_NLP_URL=` (optional `NEWS_NLP_TOKEN`) — base URL of the Python `news-nlp` service for ML headline classification; any error/timeout falls back to the deterministic regex classifier.
 
 ## Architecture
 
-Source lives in `src/` (not `/app`). Data flow: **fetchers → API routes → SWR hooks → widgets**, all rendered inside a workspace grid.
+Source lives in `src/` (not `/app`). Front-end data flow: **fetchers → API routes → SWR hooks → widgets**, all rendered inside the ATLAS navigation shell. The Next app is now a **UI shell + session auth + paper-book executor + BFF**: when `ATLAS_BACKEND_URL`/`MODEL_ENGINE_URL` is set, the API routes delegate heavy data and signals to the Python `model-engine` (`src/lib/backend/pythonBackendClient.ts`); otherwise they fall back to the local TypeScript fetchers.
 
 ```
 src/
+  middleware.ts       — Edge auth gate: redirect to /login (401 for /api/*) unless a valid
+                        `atlas_session` cookie exists; lets the `Bearer CRON_SECRET` tick through
+  app/login/page.tsx  — login screen (auth API routes below)
   app/api/
     market/route.ts   — aggregates BCB + FRED + Yahoo + B3 via Promise.allSettled;
                         partial failures return null fields + per-source SourceStatus
     news/route.ts     — RSS aggregation (Bloomberg + Google News proxy for Reuters)
     history/route.ts  — daily closes per symbol (?symbols=BRL=X,CL=F&range=1y)
-    sim/route.ts      — live quant model: signals + persistent paper book
+    sim/route.ts      — live quant model: signals + persistent paper book;
+                        POST {action: tick|rebalance|reset} (cron token may only tick)
     macro/route.ts    — macro dashboard: FRED (CPI/core YoY computed from index
                         levels, UNRATE, HY OAS, NFCI, T10YIE, DFII10) + BCB IPCA
                         12m (SGS 13522) + BCB Focus survey medians (Olinda
                         Expectativas API, ExpectativasMercadoAnuais, no auth)
+    auth/login|logout|credentials/route.ts — session login/logout + change credentials
   lib/
     fetchers/         — one adapter per source (bcb, fred, yahoo, yahooHistory, b3, news);
                         all return null on failure and log, never throw to callers
+    backend/pythonBackendClient.ts — BFF client: delegates market/history/macro/news/
+                        earnings/signals to the Python model-engine when configured
+    auth.ts           — session auth (PBKDF2-SHA256, 210k iters) backed by Neon Postgres
     analytics.ts      — pure stats: returns, EWMA vol, z-score, Sharpe, max drawdown
-    sim/strategies.ts — signal engine: TSMOM, CARRY, MEANREV sleeves + vol targeting
+    sim/strategies.ts — signal engine: TSMOM, CARRY, MACRO sleeves + vol targeting
+    sim/stateStore.ts — paper-book persistence: Neon Postgres (sim_state) or JSON fallback
     sim/engine.ts     — paper portfolio (fills, costs, persistence); legacy research backtest is not routed
     constants.ts      — INSTRUMENTS, tickers/series codes, PanelId, colors, refresh rates
     widgetRegistry.ts — widget metadata (title, category, default spans)
@@ -53,6 +69,14 @@ src/
     widgets/          — one panel per widget: Rates, FX, Commodity, News, Chart,
                         Watchlist, Analytics, Sim
 ```
+
+Outside `src/`: `services/model-engine` + `services/news-nlp` (Python FastAPI backends, see below), `deploy/cloudflare-worker` (periodic tick), `DEPLOY.md` (deploy notes).
+
+### Backend services, auth & persistence
+
+- **Python backends** (`services/`, FastAPI): `model-engine` (`atlas-backend`, port 8010) serves market data, history, macro, news and the quant signal engine (`compute_signals`) via `GET /health|/market|/market/terminal|/history|/macro|/news|/earnings` + `POST /signals`; `news-nlp` (`atlas-news-nlp`, port 8000) classifies headlines (`POST /classify`, `POST /retrain`, `GET /retrain/status`). Next reaches them through `src/lib/backend/pythonBackendClient.ts` (`ATLAS_BACKEND_URL`/`MODEL_ENGINE_URL`, `NEWS_NLP_URL`); a TypeScript fetcher fallback keeps the app working if a service is down, and `ATLAS_BACKEND_REQUIRED=true` makes data/signal routes fail closed instead.
+- **Authentication** (`src/lib/auth.ts`, `src/middleware.ts`, `src/app/api/auth/*`, `src/app/login`, `AccountSettings`): cookie session `atlas_session`, password hashed with PBKDF2-SHA256 (210k iterations), 30-day sessions. The Edge middleware validates the session against Postgres on every request (redirect to `/login`, or 401 for `/api/*`) and lets the `Bearer CRON_SECRET` tick through. **Single-tenant today**: one global credential (`CREDENTIAL_ID = 'primary'`) and one global book (`STATE_ID = 'paper-book'`).
+- **Persistence — Neon Postgres** (`@neondatabase/serverless`, Edge-compatible): tables `sim_state`, `auth_credentials`, `auth_sessions`. The paper book is the JSONB `sim_state` row with optimistic version checks; if `DATABASE_URL` is absent it falls back to `data/sim-state.json` (dev only) and `/api/sim` reports `"persistence": "file"` instead of `"postgres"`.
 
 ### Key patterns
 
@@ -69,9 +93,9 @@ Paper trading only — never sends real orders. Three sleeves, grounded in publi
 
 - **TSMOM** — time-series momentum (Moskowitz/Ooi/Pedersen, JFE 2012): sign of trailing 12m return blended with 3m, each position scaled by `volTarget / exAnteEWMAVol`.
 - **CARRY** — Koijen/Moskowitz/Pedersen/Vrugt (JFE 2017): FX carry from rate differentials; implemented for USD/BRL using SELIC (BCB 1178) vs FEDFUNDS (FRED). Positive differential → short `BRL=X`.
-- **MACRO** — economic trend / macro momentum (Brooks, AQR "A Half Century of Macro Momentum" 2017 + "Economic Trend" 2023): factor reads computed from prices only (walk-forward safe) — risk sentiment (VIX vs 1y median + SPX 3m trend), growth (copper/gold ratio trend), USD trend (DXY 3m) — mapped per asset with economic signs (gold anti-dollar/haven, JPY haven, EM hurt by strong USD…). Non-traded `CONTEXT_SYMBOLS` (`^VIX`, `DX-Y.NYB`) must be fetched alongside the universe.
+- **MACRO** — economic trend / macro momentum (Brooks, AQR "A Half Century of Macro Momentum" 2017 + "Economic Trend" 2023): factor reads computed from prices only (walk-forward safe) — risk sentiment (VIX vs 1y median + SPX 3m trend), growth (copper/gold ratio trend), USD trend (DXY 3m) — mapped per asset with economic signs (gold anti-dollar/haven, JPY haven, EM hurt by strong USD…). Non-traded `CONTEXT_SYMBOLS` (`^VIX`, `DX-Y.NYB`, `^TNX`, `ITA`, `SOXX`, `XLU`) must be fetched alongside the universe.
 
-Risk layer: **regime conditioning** (book de-grosses ×0.6 in RISK-OFF, ×1.1 in RISK-ON) and **covariance-based portfolio vol targeting** (weights scaled so √(wᵀΣw) over trailing-90d covariance hits 10% — correlations size the book, not per-asset vol alone). Caps: 40% per asset, 3x gross. Universe: 11 Yahoo symbols in `SIM_UNIVERSE`.
+Risk layer: **regime conditioning** (book de-grosses ×0.6 in RISK-OFF, ×1.1 in RISK-ON) and **covariance-based portfolio vol targeting** (weights scaled so √(wᵀΣw) over trailing-90d covariance hits 10% — correlations size the book, not per-asset vol alone). Caps: 40% per asset, 3x gross; single-name thematic equities are further capped at 5% per name and 8% per theme (`THEMATIC_EQUITY_THEME_CAP`). Universe: **27 tradable assets** in `SIM_UNIVERSE` (4 FX, 5 commodities, 8 equity index/ETF, 10 single-name thematic equities), plus non-traded `CONTEXT_SYMBOLS` (`^VIX`, `DX-Y.NYB`, `^TNX`, `ITA`, `SOXX`, `XLU`) read by the macro sleeve and regime filter.
 
 `computeSignals` internally combines price trend, rate differentials, economic context/news, regime and risk scaling into one live portfolio. `/api/sim` exposes this as `decisions[]` with one final `LONG`/`SHORT`/`FLAT` decision, conviction, target weight and rationale per asset; internal components are not presented as separate strategies. `lib/sim/scenarios.ts` stress-tests the live book through correlation betas.
 
@@ -80,7 +104,7 @@ Risk layer: **regime conditioning** (book de-grosses ×0.6 in RISK-OFF, ×1.1 in
 - **News intelligence**: `lib/news/` classifies live headlines deterministically into themes, macro factors, and asset impacts with confidence and time decay. `/api/news` has per-source memory cache, single-flight refresh, stale-if-error, source health, and freshness metadata. The live model applies a capped news overlay to the macro decision layer.
 - **Live-only product**: `/api/sim` and the Quant page expose only the live model, current paper book, P&L, hedged expressions, scenarios and rationale. Historical closes remain inputs for live momentum, volatility, covariance and hedge ratios; no backtest is computed or returned.
 - **Live mode**: every GET fetches real-time Yahoo quotes (10s module micro-cache, `getLivePrices`) and splices them into the daily closes (`closesWithLive` — replaces today's partial bar or appends, never double-counts), so signals, marks, fills and scenarios all run off the live tape. The Quant page polls every 15s.
-- **Paper book**: persisted to `data/sim-state.json` (gitignored). Marked to market at live prices each request. Trading: full rebalance once/day (daily anchor) + **intraday tolerance-band rebalancing** (asset trades only when |target−actual| > 2% of equity — `driftBandPct`). `state.intradayEquity` keeps a rolling ~400-mark tape (≥1min spacing) for the live P&L chart; older state files are migrated on load. `POST /api/sim` accepts `{action: "reset"}` and `{action: "rebalance"}`.
+- **Paper book**: persisted to **Neon Postgres** (`sim_state` JSONB row, optimistic version checks, via `lib/sim/stateStore.ts`); falls back to `data/sim-state.json` (gitignored) only when `DATABASE_URL` is unset, and `/api/sim` reports the active backend as `"persistence": "postgres"` or `"file"`. Marked to market at live prices each request. Trading: full rebalance once/day (daily anchor) + **intraday tolerance-band rebalancing** (asset trades only when |target−actual| > 2% of equity — `driftBandPct`). `state.intradayEquity` keeps a rolling ~400-mark tape (≥1min spacing) for the live P&L chart; older state shapes are migrated on load. `POST /api/sim` accepts `{action: "tick"}` (advance/mark, used by the cron), `{action: "rebalance"}` and `{action: "reset"}`; the cron token may only `tick`.
 - When changing strategy logic, always keep the no-lookahead invariant: signals at t must never see prices after t.
 
 ## Verified Data Sources (do not "fix" these — they were researched)
@@ -92,6 +116,10 @@ Risk layer: **regime conditioning** (book de-grosses ×0.6 in RISK-OFF, ×1.1 in
 - **Yahoo Finance**: direct v8 chart API with browser User-Agent (the `yahoo-finance2` package is installed but fetchers call the API directly). Server-side only (CORS). `BRL=X`, `EURBRL=X`, `DX-Y.NYB`, `CL=F`, `BZ=F`, `GC=F`, `TIO=F`, `ZS=F`, `HG=F`, `^GSPC`, `^BVSP`, `^VIX`, etc.
 - **News RSS**: Bloomberg `feeds.bloomberg.com/markets/news.rss` works; Reuters only via Google News RSS proxy (direct Reuters RSS dead since 2020; FT/Valor blocked).
 - **NTN-B**: no free public API (ANBIMA requires scraping) — manual entry only.
+
+## Deploy & Cron (current state)
+
+Currently deployed on **Vercel** (Next app + API routes) with **Neon Postgres** for the paper book and auth; `DEPLOY.md` has the full setup. Because serverless functions can't run a loop, a **Cloudflare Worker** (`deploy/cloudflare-worker/`) provides the periodic tick: every minute (`crons = ["* * * * *"]`) it calls `GET /api/market` and `POST /api/sim {action:'tick'}` with `Authorization: Bearer ${CRON_SECRET}`, and optionally fires a daily `POST /retrain` on `news-nlp` (gated by `RETRAIN_HOUR_UTC`, default 06:00 UTC). The two Python services (`services/model-engine`, `services/news-nlp`) deploy separately and are wired in through `ATLAS_BACKEND_URL`/`NEWS_NLP_URL`. (A planned migration to a self-hosted Docker Compose stack with an internal scheduler is tracked in `documents/core/Projeto.md` — not yet in place.)
 
 ## App Shell (ATLAS v2 — current UI)
 
