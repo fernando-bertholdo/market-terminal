@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+data
+.env*
+npm-debug.log
+documents
+.planning
+.agents
+.claude
