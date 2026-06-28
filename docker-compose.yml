@@ -25,5 +25,16 @@ services:
       - news-models:/models
     restart: unless-stopped
 
+  scheduler:
+    build: .
+    command: node scripts/scheduler.mjs
+    env_file: .env
+    environment:
+      TERMINAL_URL: http://web:3000
+      NEWS_NLP_URL: http://news-nlp:8000
+    depends_on:
+      - web
+    restart: unless-stopped
+
 volumes:
   news-models:
