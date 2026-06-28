@@ -1,0 +1,29 @@
+services:
+  web:
+    build: .
+    env_file: .env
+    environment:
+      ATLAS_BACKEND_URL: http://model-engine:8010
+      MODEL_ENGINE_URL: http://model-engine:8010
+      NEWS_NLP_URL: http://news-nlp:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - model-engine
+      - news-nlp
+    restart: unless-stopped
+
+  model-engine:
+    build: ./services/model-engine
+    restart: unless-stopped
+
+  news-nlp:
+    build: ./services/news-nlp
+    environment:
+      PORT: "8000"
+    volumes:
+      - news-models:/models
+    restart: unless-stopped
+
+volumes:
+  news-models:
