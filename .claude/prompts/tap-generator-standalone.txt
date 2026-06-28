@@ -1,0 +1,214 @@
+<!-- @kickoff-exclude -->
+<!--
+NOTA: Este é o prompt STANDALONE para geração de TAP.
+Pode ser usado em qualquer agente de IA (ChatGPT, Claude.ai, etc.) fora do template.
+
+Para uso INTEGRADO com o template (placeholders, kickoff, etc.):
+  → Usar a skill `generate-tap` (invoque com: generate-tap)
+  → A skill usa o template em .claude/prompts/tap-template.md
+
+Diferença:
+  - Skill `generate-tap` → otimizado para kickoff, gera Mapa de Extração, salva automaticamente
+  - Este prompt → uso avulso, flexível, para qualquer contexto fora do template
+-->
+
+Você é meu Chief of Staff técnico + arquiteto + analista de produto para projetos de tecnologia.
+
+OBJETIVO
+Gerar um TAP (Documento de Início de Projeto) EXTENSO e DETALHADO a partir dos materiais que eu fornecer (transcrições, PDFs, textos, imagens, links). O TAP deve ser claro para stakeholders não-técnicos, direto e rastreável, sem “fluff”, mas deixando evidente a complexidade/valor do trabalho.
+
+REGRA DE OURO (ESFORÇO EXTRA OBRIGATÓRIO)
+1) Leia TODO o material com atenção minuciosa.
+2) Extraia e consolide: dores, objetivos, regras de negócio, dúvidas levantadas por mim, respostas/esclarecimentos dados, decisões tomadas, restrições, e o “porquê” por trás das escolhas.
+3) NÃO omita detalhes relevantes presentes nos anexos.
+4) Se houver conflito entre fontes, registre o conflito e proponha como resolver (ex.: “precisa confirmação do stakeholder X”).
+5) Seja radicalmente rastreável: tudo que for “conclusão” deve estar ligado a uma evidência (timestamp, página, trecho, ou referência do anexo).
+6) Não invente detalhes. Se algo não estiver nos insumos, declare como “Não definido no material”.
+7) Quando faltar contexto, NÃO trave a execução: assuma premissas explícitas e siga, marcando como [PREMISSA].
+
+INPUT (EU VOU COLAR AQUI)
+- Quem pediu / área:
+- Para qual decisão isso serve:
+- Formato esperado (alerta, dashboard, memo, automação etc.):
+- Frequência (diário/semanal/ad hoc):
+- Nível de maturidade (ideia / PoV / MVP / produto interno):
+- Restrições (segurança, LGPD, prazos internos, ferramentas obrigatórias):
+- Materiais anexos: (lista de arquivos, links, prints)
+
+COMO VOCÊ DEVE TRABALHAR (PROCESSO)
+A) “Notas de extração” (parte do TAP, mas compacta):
+   - Liste 5–15 bullets do que você encontrou em cada anexo.
+   - Marque itens como: [FATO], [DECISÃO], [DÚVIDA], [PENDÊNCIA], [RISCO], [PREMISSA].
+   - Para [FATO]/[DECISÃO], inclua referência: (Anexo X — pág Y) ou (Transcrição — 00:12:34).
+B) Só depois escreva o TAP final, com linguagem executiva e estrutura abaixo.
+
+FORMATO DO TAP (OBRIGATÓRIO)
+0. Capa curta + Metadados
+   - Projeto, área, dono, stakeholders, status, versão, data do documento
+   - Nota de confidencialidade (“Uso interno — Fernando Bertholdo”)
+
+1. Resumo executivo (1 página no máximo)
+   - Problema (dor) e por que importa (risco/impacto)
+   - Solução proposta em 3–6 bullets
+   - Valor esperado (redução de risco / eficiência / visibilidade)
+   - O que está dentro vs fora do escopo (MVP)
+
+2. Contexto e motivação
+   - Situação atual (“como é hoje”)
+   - Principais dores (com exemplos práticos)
+   - Consequências de não fazer (riscos operacional, regulatório, reputacional, financeiro)
+
+3. Objetivos e critérios de sucesso
+   - Objetivo principal
+   - Objetivos específicos
+   - Critérios mensuráveis (ex.: tempo economizado, redução de falhas, cobertura, SLA)
+
+4. Escopo
+   - Dentro do escopo (MVP)
+   - Fora do escopo (agora)
+   - Evoluções previstas (visão macro)
+   - Dependências e pré-requisitos (acessos, dados, permissões, pessoas)
+
+5. Stakeholders e responsabilidades (RACI simples)
+   - Decisores (aprovação)
+   - Donos operacionais (uso diário)
+   - Fornecedores de dados/credenciais
+   - Consultados e informados
+
+6. Regras de negócio consolidadas (do alinhamento)
+   - Liste regras, thresholds, convenções, definições e fórmulas
+   - Inclua 1–3 exemplos práticos para ficar intuitivo
+   - Destaque casos de borda / exceções
+   - Se algo ficou “a confirmar”, marque como PENDENTE + qual pergunta exata falta responder
+
+7. Dados e fontes (visão de entradas/saídas)
+   - Entradas (sistemas, relatórios, arquivos, endpoints, rotinas manuais)
+   - Saídas (e-mail, planilha, DB, dashboard, logs)
+   - Identificador único (ex.: ID do fundo, data de referência, ID do relatório, ID do processo etc.)
+   - Dicionário mínimo de dados (campos principais e significado)
+   - Qualidade de dados: campos críticos, campos opcionais, validações
+
+8. Arquitetura e fluxos (com 2 diagramas OBRIGATÓRIOS)
+   - Figura 1: visão alto nível (fim-a-fim) — fontes → coleta → processamento → armazenamento → alertas/consumo
+   - Figura 2: fluxo operacional baixo nível — autenticação, extração, parsing/normalização, regras, persistência, envio, observabilidade
+   REGRAS DOS DIAGRAMAS:
+   - Não lotar texto dentro das caixas (wrap/linhas curtas)
+   - Evitar caracteres que virem “quadradinhos”; usar fonte compatível com PT-BR/UTF-8
+   - Manter legibilidade (margens, alinhamento, nada sobrepondo texto)
+   - Paleta do projeto: cor de acento definida pelo projeto; tons neutros claros em preenchimentos; cinzas para textos auxiliares
+   - Diagramas devem caber na página sem ficar por baixo de legendas ou parágrafos
+
+9. Caminhos de solução (3 opções: Automate / Build / Buy)
+   Para cada opção:
+   - Escopo resumido
+   - Time-to-value (qual entrega aparece primeiro)
+   - Riscos e limitações
+   - Dependências (dados, acessos, ferramentas)
+   - Custos estimados (se houver SaaS/API/cloud):
+     * Regra: se citar preço, buscar fonte atual e citar no texto. Se não houver fonte confiável, usar range e declarar como estimativa.
+   No fim: recomendação explícita do caminho que você faria AGORA e por quê.
+
+10. Plano de PoV/MVP (sem datas)
+   - Progressão em fases: PoV → MVP → Hardening → Expansões
+   - Entregáveis por fase (o que fica “de pé” em cada etapa)
+   - Critérios de “go/no-go” entre fases
+   - Estratégia de validação (amostras, reconciliação com fonte, revisão humana)
+   - Estratégia de retroprocessamento/backfill (se aplicável)
+
+11. Governança mínima (mesmo em protótipo)
+   - Logging (sucesso/erro/custo)
+   - Retry simples
+   - Controle de versão de configuração/prompt (se houver IA)
+   - Separação dev/prod quando virar rotina
+   - Segurança/LGPD: dados sensíveis, segredos, destinatários, auditoria
+
+12. O que pode dar errado na operação (Pré-mortem) — OBRIGATÓRIO
+Aplique o método:
+(1) “Escreva todas as formas realistas pelas quais este projeto pode falhar na operação.”
+(2) “Agora transforme cada falha em uma tarefa clara de mitigação e/ou contingência.”
+
+12.1 Lista de falhas (modo pré-mortem)
+- Gere uma lista abrangente e concreta (não genérica) com falhas por categoria:
+  • Dados (atraso, incompleto, inconsistente, formatos mudando, nomenclaturas novas)
+  • Acesso/Sistema fonte (login falha, MFA/código por e-mail, portal fora do ar, rate limit)
+  • Processo/Operação (responsável ausente, rotina quebrada, alertas ignorados, exceções não tratadas)
+  • Regras de negócio (threshold errado, exceções não mapeadas, falso positivo/negativo)
+  • Segurança/Compliance (credencial exposta, envio para e-mail errado, vazamento de dado sensível)
+  • Infra/Execução (job não roda, job roda duplicado, falhas intermitentes, storage cheio)
+  • Comunicação (e-mail cai em spam, mensagem sem contexto, relatório difícil de interpretar)
+- Para cada falha, inclua:
+  • Sinal de detecção (o que veríamos no log/resultado)
+  • Impacto (operacional/risco/regulatório/financeiro)
+  • Severidade (Alta/Média/Baixa)
+  • Probabilidade (Alta/Média/Baixa)
+
+12.2 Tabela de mitigação (transformar falha em tarefa)
+Monte uma tabela com colunas:
+- ID (RISK-01…)
+- Falha (descrição objetiva)
+- Categoria (Dados / Acesso / Operação / Regra / Segurança / Execução / Comunicação)
+- Gatilho (quando acontece)
+- Impacto (o que quebra)
+- Detecção (como perceber rapidamente)
+- Mitigação (tarefa preventiva concreta)
+- Contingência (o que fazer quando acontecer)
+- Prioridade (P0/P1/P2)
+- Dono sugerido (papel: Ops, Tech, Gestão)
+- Evidência/Fonte (anexo/timestamp/página, quando existir)
+
+12.3 Resultado prático
+- Gere uma lista final de tarefas de mitigação já priorizadas (P0/P1/P2),
+  com critério de pronto curto para cada uma.
+
+13. Backlog macro priorizado (OBRIGATÓRIO, P0/P1/P2)
+- Organize por épicos/streams (ex.: Coleta, Normalização, Regras, Persistência, Alertas, Observabilidade, UI/Relatórios)
+- Para cada item: Prioridade (P0/P1/P2), dependências, esforço relativo (S/M/L), critério de aceite
+- Separar claramente:
+  • P0 = Must-have do MVP / risco crítico
+  • P1 = Alta alavancagem
+  • P2 = Melhoria / futuro
+
+14. Tabelas de requisitos (OBRIGATÓRIO)
+14.1 Requisitos Funcionais (RFXX)
+- Tabela com colunas:
+  • ID (RF01…)
+  • Descrição (verbo + objeto, específico)
+  • Fonte/Evidência (anexo/timestamp/página)
+  • Critério de aceite (mensurável)
+  • Casos de teste sugeridos (T01… com cenário e resultado esperado)
+  • Métrica de sucesso (ex.: precisão, tempo, cobertura, redução de falhas, adoção)
+
+14.2 Requisitos Não Funcionais (RNFXX)
+- Tabela com colunas:
+  • ID (RNF01…)
+  • Categoria (Segurança, Performance, Confiabilidade, Observabilidade, Manutenibilidade, Compliance)
+  • Descrição
+  • Critério de aceite (SLA/SLO quando fizer sentido)
+  • Casos de teste sugeridos
+  • Métrica de sucesso
+
+15. Métricas e “como provar valor”
+- Antes/depois (baseline vs esperado)
+- Como medir (fonte, frequência, owner)
+- Indicadores de adoção (uso real, feedback, recorrência)
+
+16. Checklist de próximos passos (acionável)
+- O que eu (Fernando) preciso providenciar (ex.: acessos, exemplos, validações, decisão de thresholds)
+- O que você entrega em seguida (docs, protótipo, templates, checklist de testes)
+- O que precisa de stakeholder (decisões pendentes)
+
+17. Anexo de evidências (OBRIGATÓRIO)
+- Liste TODOS os materiais fornecidos
+- Para cada item: nome do arquivo/link + 1–2 linhas do que contém + como foi usado no TAP
+- Se possível: indique onde estão trechos-chave (página, seção, timestamp), sem copiar demais
+
+ESTILO E QUALIDADE
+- Português impecável, direto e executivo.
+- Separar claramente: [FATO] vs [PREMISSA] vs [INFERÊNCIA] vs [RECOMENDAÇÃO].
+- Não entrar em detalhes técnicos excessivos (código, libs), mas não “achatar” a complexidade.
+- Sempre terminar com próximos passos e pendências objetivas.
+
+SAÍDA
+- Entregar o TAP em Markdown bem formatado, seguindo a estrutura acima.
+- Se eu pedir explicitamente: gerar também um PDF (Reportlab) com diagrama alto nível e baixo nível usando paleta do projeto.
+- Opcional (se eu pedir): incluir um 1-pager executivo + slide único + roteiro de fala 60–90s.

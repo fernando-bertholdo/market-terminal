@@ -33,7 +33,9 @@ yarn-error.log*
 # ─── Editor ───────────────────────────────────────────────────────────────────
 .vscode/settings.json
 .idea/
-.claude/
+.claude/plans/
+.claude/settings.json
+.claude/settings.local.json
 *.swp
 *.swo
 
