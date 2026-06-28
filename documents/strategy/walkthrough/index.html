@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tech-product-template · Walkthrough do Processo de Planejamento</title>
+  <meta name="description" content="Como o tech-product-template estrutura projetos tech end-to-end — do kickoff à release, orquestrado pelo enhanced-planning e gates de qualidade." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+
+  <!-- Background ornaments (decorativo, fixos) -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--top" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--bottom" aria-hidden="true"></div>
+
+  <!-- Navegação fixa de progresso -->
+  <nav class="nav-rail" aria-label="Navegação de seções">
+    <a href="#hero" class="nav-dot" data-target="hero" aria-label="Ir para Hero"><span>01</span></a>
+    <a href="#problema" class="nav-dot" data-target="problema" aria-label="Ir para Problema"><span>02</span></a>
+    <a href="#lifecycle" class="nav-dot" data-target="lifecycle" aria-label="Ir para Lifecycle"><span>03</span></a>
+    <a href="#loop" class="nav-dot" data-target="loop" aria-label="Ir para Loop"><span>04</span></a>
+    <a href="#flows" class="nav-dot" data-target="flows" aria-label="Ir para Fluxos Vivos"><span>05</span></a>
+    <a href="#guardrails" class="nav-dot" data-target="guardrails" aria-label="Ir para Guardrails"><span>06</span></a>
+    <a href="#multisession" class="nav-dot" data-target="multisession" aria-label="Ir para Multi-sessão"><span>07</span></a>
+    <a href="#artifacts" class="nav-dot" data-target="artifacts" aria-label="Ir para Artifact Map"><span>08</span></a>
+    <a href="#plugplay" class="nav-dot" data-target="plugplay" aria-label="Ir para Plug & Play"><span>09</span></a>
+    <a href="#cta" class="nav-dot" data-target="cta" aria-label="Ir para CTA"><span>10</span></a>
+  </nav>
+
+  <!-- ================================================================
+       SECTION 1 — HERO
+       ================================================================ -->
+  <section id="hero" class="section section--hero" data-section="hero">
+    <div class="container">
+      <div class="hero-content reveal">
+        <span class="eyebrow">tech-product-template · v2.7</span>
+        <h1 class="hero-title">
+          Do <span class="gradient-text">Kickoff</span> à <span class="gradient-text">Release</span>
+        </h1>
+        <p class="hero-subtitle">
+          Como o <strong>tech-product-template</strong> orquestra projetos tech end-to-end —
+          com o motor <code>enhanced-planning</code> no coração de cada milestone,
+          gates de qualidade automatizados e continuidade multi-sessão.
+        </p>
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="meta-num">27</span>
+            <span class="meta-label">Skills orquestradas</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">13</span>
+            <span class="meta-label">Guardrails estruturais</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">8</span>
+            <span class="meta-label">Etapas do loop</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">5</span>
+            <span class="meta-label">Passos plug&amp;play</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>role para começar</span>
+      <div class="scroll-cue__arrow"></div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 2 — O PROBLEMA
+       ================================================================ -->
+  <section id="problema" class="section section--problema" data-section="problema">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">01 · O Problema</span>
+        <h2 class="section-title">Por que projetos tech derrapam silenciosamente</h2>
+        <p class="section-lede">
+          Três dores que aparecem em quase todo projeto sem estrutura — e que comprometem prazos,
+          custo e qualidade <em>antes</em> da primeira linha de código.
+        </p>
+      </header>
+
+      <div class="pain-grid">
+        <article class="pain-card reveal">
+          <div class="pain-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 8v4l3 2" stroke-linecap="round" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+          </div>
+          <h3 class="pain-card__title">Contexto perdido</h3>
+          <p class="pain-card__body">
+            Cada nova sessão recomeça do zero. Decisões viram folclore oral. Onboarding
+            de novos membros leva semanas até a primeira contribuição confiável.
+          </p>
+          <div class="pain-card__tag">Sintoma: "alguém lembra por que escolhemos X?"</div>
+        </article>
+
+        <article class="pain-card reveal" data-reveal-delay="100">
+          <div class="pain-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6h16M4 12h10M4 18h16" stroke-linecap="round" />
+              <circle cx="19" cy="12" r="2" fill="currentColor" />
+            </svg>
+          </div>
+          <h3 class="pain-card__title">Planning ad-hoc</h3>
+          <p class="pain-card__body">
+            Planos nascem em chats, viram tickets e desaparecem. Risco não é registrado,
+            critério de aceite é informal, decisões não têm lock — cada PR reabre debates.
+          </p>
+          <div class="pain-card__tag">Sintoma: "achei que tínhamos decidido isso"</div>
+        </article>
+
+        <article class="pain-card reveal" data-reveal-delay="200">
+          <div class="pain-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 12l4 4 14-14" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 18l4 4" stroke-linecap="round" opacity="0.5" />
+            </svg>
+          </div>
+          <h3 class="pain-card__title">Drift entre componentes</h3>
+          <p class="pain-card__body">
+            Docs, código e roadmap divergem com o tempo. Isonomia documental quebra.
+            Equipe vai vivendo de heurística, não de fonte de verdade.
+          </p>
+          <div class="pain-card__tag">Sintoma: "o doc diz uma coisa, o código outra"</div>
+        </article>
+      </div>
+
+      <div class="pain-resolution reveal" data-reveal-delay="300">
+        <span class="resolution-arrow" aria-hidden="true">↓</span>
+        <p>
+          O template resolve isso com um <strong>processo declarado</strong>,
+          <strong>skills automatizadas</strong> e <strong>gates obrigatórios</strong>
+          — não com mais documentação para ler.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 3 — LIFECYCLE / VISÃO 30K PÉS
+       ================================================================ -->
+  <section id="lifecycle" class="section section--lifecycle" data-section="lifecycle">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">02 · Visão End-to-End</span>
+        <h2 class="section-title">A jornada do produto, em uma página</h2>
+        <p class="section-lede">
+          Do kickoff inicial à entrega contínua, cada fase tem skill responsável,
+          artefato produzido e gate de qualidade. O ciclo se repete por milestone.
+        </p>
+      </header>
+
+      <div class="timeline-wrap reveal">
+        <ol class="timeline">
+          <li class="timeline__step">
+            <div class="timeline__node" data-step="1">
+              <span class="timeline__dot"></span>
+              <span class="timeline__num">1</span>
+            </div>
+            <div class="timeline__card">
+              <h4>Kickoff</h4>
+              <p>Substituição de placeholders, definição de stakeholders, escopo macro.</p>
+              <div class="timeline__skills">
+                <span class="skill-chip">kickoff-prompt</span>
+                <span class="skill-chip">validate-kickoff</span>
+              </div>
+              <div class="timeline__output">→ <code>documents/core/Projeto.md</code></div>
+            </div>
+          </li>
+
+          <li class="timeline__step">
+            <div class="timeline__node" data-step="2">
+              <span class="timeline__dot"></span>
+              <span class="timeline__num">2</span>
+            </div>
+            <div class="timeline__card">
+              <h4>Design Sprint</h4>
+              <p>Exploração estratégica: visão, restrições, métricas, riscos. Tier 1 obrigatório.</p>
+              <div class="timeline__skills">
+                <span class="skill-chip">design-sprint</span>
+              </div>
+              <div class="timeline__output">→ <code>documents/strategy/*</code></div>
+            </div>
+          </li>
+
+          <li class="timeline__step">
+            <div class="timeline__node" data-step="3">
+              <span class="timeline__dot"></span>
+              <span class="timeline__num">3</span>
+            </div>
+            <div class="timeline__card">
+              <h4>TAP</h4>
+              <p>Termo de Abertura gerado a partir de materiais brutos (PDFs, transcrições).</p>
+              <div class="timeline__skills">
+                <span class="skill-chip">generate-tap</span>
+              </div>
+              <div class="timeline__output">→ <code>documents/archive/TAP.md</code></div>
+            </div>
+          </li>
+
+          <li class="timeline__step">
+            <div class="timeline__node" data-step="4">
+              <span class="timeline__dot"></span>
+              <span class="timeline__num">4</span>
+            </div>
+            <div class="timeline__card">
+              <h4>Roadmap &amp; TODO</h4>
+              <p>Fases, milestones, DoR/DoD declarados. Single source of truth.</p>
+              <div class="timeline__skills">
+                <span class="skill-chip">update-docs</span>
+              </div>
+              <div class="timeline__output">→ <code>documents/core/Roadmap.md</code></div>
+            </div>
+          </li>
+
+          <li class="timeline__step timeline__step--highlight">
+            <div class="timeline__node" data-step="5">
+              <span class="timeline__dot"></span>
+              <span class="timeline__num">5</span>
+              <span class="timeline__badge">o motor</span>
+            </div>
+            <div class="timeline__card">
+              <h4>Milestone Loop ⟳</h4>
+              <p>Ciclo iterativo: init → DoR → planning → execução → DoD → reconcile → archive.</p>
+              <div class="timeline__skills">
+                <span class="skill-chip skill-chip--accent">enhanced-planning</span>
+                <span class="skill-chip">+7 skills</span>
+              </div>
+              <div class="timeline__output">→ <code>.planning/&lt;initiative&gt;/</code></div>
+            </div>
+          </li>
+
+          <li class="timeline__step">
+            <div class="timeline__node" data-step="6">
+              <span class="timeline__dot"></span>
+              <span class="timeline__num">6</span>
+            </div>
+            <div class="timeline__card">
+              <h4>Release</h4>
+              <p>Entregas validadas, reconciliação documental, archive da initiative.</p>
+              <div class="timeline__skills">
+                <span class="skill-chip">reconcile-initiative</span>
+                <span class="skill-chip">archive-initiative</span>
+              </div>
+              <div class="timeline__output">→ <code>.planning/_archive/</code></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="lifecycle-note reveal">
+        <p>
+          As fases <strong>1–4</strong> acontecem uma vez (kickoff do projeto). O <strong>milestone loop</strong>
+          (5) se repete tantas vezes quanto necessário até a <strong>release</strong> (6).
+          É no loop que mora o <code>enhanced-planning</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 4 — O LOOP DE PLANEJAMENTO
+       ================================================================ -->
+  <section id="loop" class="section section--loop" data-section="loop">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">03 · O Coração</span>
+        <h2 class="section-title">O loop do <span class="gradient-text">enhanced-planning</span></h2>
+        <p class="section-lede">
+          Cada milestone (ou detour) passa por este ciclo. Skills se encadeiam, gates bloqueiam
+          progresso sem evidência, e o trabalho permanece reproduzível entre sessões.
+        </p>
+      </header>
+
+      <div class="loop-layout">
+        <div class="loop-diagram reveal zoomable" data-zoom-title="Loop do enhanced-planning" role="button" tabindex="0" aria-label="Expandir diagrama do loop">
+          <div class="mermaid">
+flowchart TB
+    A([1 · init-milestone]):::stepInit --> B{2 · validate-dor}
+    B -->|DoR PASS| C([3 · enhanced-planning]):::stepHero
+    B -->|DoR FAIL| Z[/volta para dependências/]:::stepBlock
+    C --> D([4 · writing-plans]):::step
+    D --> E([5 · execução dos slices]):::step
+    E --> F{6 · validate-dod}
+    F -->|DoD PASS| G([7 · reconcile-initiative]):::step
+    F -->|DoD FAIL| E
+    G --> H([8 · archive-initiative]):::step
+    H -.->|próxima initiative| A
+
+    classDef step fill:#1a2238,stroke:#475569,color:#e5e7eb,stroke-width:1.5px
+    classDef stepInit fill:#1e293b,stroke:#60a5fa,color:#e5e7eb,stroke-width:2px
+    classDef stepHero fill:#3b1d6b,stroke:#a78bfa,color:#fff,stroke-width:2.5px
+    classDef stepBlock fill:#3f1d1d,stroke:#f87171,color:#fecaca,stroke-width:1.5px
+          </div>
+        </div>
+
+        <aside class="loop-narrative reveal" data-reveal-delay="200">
+          <ol class="loop-steps">
+            <li>
+              <strong>init-milestone</strong>
+              <span>Cria a infraestrutura: <code>.planning/&lt;initiative&gt;/</code> com CONTEXT.md, handoff/, plans/.</span>
+            </li>
+            <li>
+              <strong>validate-dor</strong> <em class="loop-gate">gate</em>
+              <span>Bloqueia se Definition of Ready não estiver 100% completo. Sem DoR, não começa.</span>
+            </li>
+            <li class="loop-steps__hero">
+              <strong>enhanced-planning</strong>
+              <span>Injeta os <strong>13 guardrails estruturais</strong> no plano antes de uma linha sequer ser escrita.</span>
+            </li>
+            <li>
+              <strong>writing-plans</strong>
+              <span>Preenche o plano usando os guardrails como esqueleto obrigatório.</span>
+            </li>
+            <li>
+              <strong>execução dos slices</strong>
+              <span>Implementação em chunks ≤100 linhas, com commits atômicos e checkpoints humanos.</span>
+            </li>
+            <li>
+              <strong>validate-dod</strong> <em class="loop-gate">gate</em>
+              <span>Roda <code>verify:</code> steps, gera relatório PASS/FAIL. Não passa sem evidência.</span>
+            </li>
+            <li>
+              <strong>reconcile-initiative</strong>
+              <span>Reconcilia decisões e learnings em Projeto.md, Roadmap.md, TODO.md.</span>
+            </li>
+            <li>
+              <strong>archive-initiative</strong>
+              <span>Move para <code>_archive/</code> com INDEX.md. Próxima initiative herda contexto limpo.</span>
+            </li>
+          </ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 4.5 — OS FLUXOS VIVOS (sequence diagrams)
+       ================================================================ -->
+  <section id="flows" class="section section--flows" data-section="flows">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">04 · Os Fluxos Vivos</span>
+        <h2 class="section-title">Quem fala com quem, em que ordem</h2>
+        <p class="section-lede">
+          Os diagramas anteriores mostraram <em>estados</em>. Aqui você vê <strong>atores</strong>
+          e <strong>tempo</strong>. Quatro fluxos que constituem o coração operacional do template
+          — alterne entre eles para comparar.
+        </p>
+      </header>
+
+      <div class="flows-tabs reveal">
+        <div class="flows-tablist" role="tablist" aria-label="Fluxos do template">
+          <button class="flows-tab is-active" data-flow="handoff" role="tab" aria-selected="true">
+            <span class="flows-tab__num">01</span>
+            <span class="flows-tab__label">Handoff multi-sessão</span>
+            <span class="flows-tab__hint">User ↔ Claude S1 ↔ S2</span>
+          </button>
+          <button class="flows-tab" data-flow="team" role="tab" aria-selected="false">
+            <span class="flows-tab__num">02</span>
+            <span class="flows-tab__label">Agent team</span>
+            <span class="flows-tab__hint">Lead + teammates paralelos</span>
+          </button>
+          <button class="flows-tab" data-flow="consult" role="tab" aria-selected="false">
+            <span class="flows-tab__num">03</span>
+            <span class="flows-tab__label">Onboarding consultoria</span>
+            <span class="flows-tab__hint">Consultor + cliente + repo</span>
+          </button>
+          <button class="flows-tab" data-flow="pr" role="tab" aria-selected="false">
+            <span class="flows-tab__num">04</span>
+            <span class="flows-tab__label">PR lifecycle</span>
+            <span class="flows-tab__hint">DoR → impl → DoD</span>
+          </button>
+        </div>
+
+        <div class="flows-panels">
+          <!-- Panel 1: Handoff multi-sessão -->
+          <div class="flows-panel is-active" data-panel="handoff" role="tabpanel">
+            <div class="flows-panel__diagram zoomable" data-zoom-title="Handoff multi-sessão" role="button" tabindex="0" aria-label="Expandir diagrama de handoff">
+              <div class="mermaid">
+sequenceDiagram
+    actor U as Usuário
+    participant S1 as Claude · Sessão 1
+    participant CTX as CONTEXT.md
+    participant FC as fresh-context
+    participant S2 as Claude · Sessão 2
+
+    U->>S1: inicia milestone
+    activate S1
+    S1->>CTX: cria estado vivo
+    S1->>S1: implementa slices
+    S1->>CTX: atualiza progresso
+    Note over S1: ~150k tokens · limite próximo
+    S1->>FC: invoca fresh-context
+    FC->>CTX: lê estado atual
+    FC->>CTX: congela snapshot em handoff/
+    deactivate S1
+
+    Note right of U: sessão encerra
+
+    U->>S2: nova sessão (zero contexto)
+    activate S2
+    S2->>CTX: lê estado + handoff
+    S2-->>U: prompt de retomada gerado
+    S2->>S2: continua trabalho sem perda
+    deactivate S2
+              </div>
+            </div>
+            <aside class="flows-panel__aside">
+              <h4>Por que importa</h4>
+              <p>A janela de contexto da LLM é finita. Sem protocolo de handoff, cada sessão recomeça do zero — decisões viram folclore oral.</p>
+              <ul>
+                <li>O <code>CONTEXT.md</code> é o <strong>registro vivo</strong> do milestone (decisões, próximo passo, blockers).</li>
+                <li><code>fresh-context</code> dispara automaticamente acima de ~150k tokens.</li>
+                <li>Snapshot em <code>handoff/</code> permite auditar a evolução.</li>
+              </ul>
+              <div class="flows-skills">
+                <span class="skill-chip">fresh-context</span>
+                <span class="skill-chip">generate-session-prompt</span>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Panel 2: Agent team -->
+          <div class="flows-panel" data-panel="team" role="tabpanel">
+            <div class="flows-panel__diagram zoomable" data-zoom-title="Agent team orchestration" role="button" tabindex="0" aria-label="Expandir diagrama de agent team">
+              <div class="mermaid">
+sequenceDiagram
+    actor U as Usuário
+    participant L as Lead (Opus)
+    participant R1 as Researcher A (Haiku)
+    participant R2 as Researcher B (Haiku)
+    participant I as Implementer (Sonnet)
+    participant T as Tester (Sonnet)
+
+    U->>L: milestone com 3+ tasks
+    activate L
+    L->>L: decompõe escopo
+
+    par pesquisa paralela
+        L->>R1: analisa codebase
+        R1-->>L: findings A
+    and
+        L->>R2: identifica riscos
+        R2-->>L: findings B
+    end
+
+    L->>L: sintetiza plano
+
+    par implementação paralela
+        L->>I: módulos X, Y
+        I-->>L: PR-ready
+    and
+        L->>T: suite de testes
+        T-->>L: tudo verde
+    end
+
+    L->>L: pre-commit-check
+    L->>L: organize-commits
+    L-->>U: trabalho consolidado
+    deactivate L
+              </div>
+            </div>
+            <aside class="flows-panel__aside">
+              <h4>Por que importa</h4>
+              <p>Tarefas com 3+ subtarefas independentes ganham 2-3× em paralelismo. Lead delega; teammates executam; Lead consolida.</p>
+              <ul>
+                <li><strong>Só o Lead commita</strong> — teammates não tocam git, docs core ou TODO.md.</li>
+                <li>Haiku para pesquisa, Sonnet para implementação, Opus para coordenação.</li>
+                <li>Delegate Mode (Shift+Tab) restringe Lead a coordenar — evita que vire mais um implementador.</li>
+              </ul>
+              <div class="flows-skills">
+                <span class="skill-chip">agent-team</span>
+                <span class="skill-chip">pre-commit-check</span>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Panel 3: Onboarding consultoria -->
+          <div class="flows-panel" data-panel="consult" role="tabpanel">
+            <div class="flows-panel__diagram zoomable" data-zoom-title="Onboarding consultoria → cliente" role="button" tabindex="0" aria-label="Expandir diagrama de onboarding">
+              <div class="mermaid">
+sequenceDiagram
+    actor C as Consultor
+    actor Cl as Cliente
+    participant R as Repo (template)
+    participant K as kickoff-prompt
+    participant V as validate-kickoff
+    participant DS as design-sprint
+    participant TAP as generate-tap
+    participant EP as enhanced-planning
+
+    C->>R: git clone template
+    Note over R: estrutura completa<br/>já vem montada
+
+    Cl->>C: TAP, materiais, escopo
+    C->>K: roda kickoff-prompt
+    K->>R: substitui placeholders
+
+    C->>V: validate-kickoff
+    V-->>C: gaps detectados ou PASS
+
+    par exploração estratégica
+        C->>DS: design-sprint
+        DS->>R: documents/strategy/*
+    and
+        C->>TAP: generate-tap
+        TAP->>R: documents/archive/TAP.md
+    end
+
+    C->>R: define Roadmap.md (M1.1...)
+    C->>EP: enhanced-planning M1.1
+    EP-->>C: plano com 13 guardrails
+
+    Note over C,Cl: cliente entra no loop
+              </div>
+            </div>
+            <aside class="flows-panel__aside">
+              <h4>Por que importa</h4>
+              <p>Do clone ao primeiro plano validado: ~3 dias. O cliente recebe não só o repo, mas o processo declarado.</p>
+              <ul>
+                <li><code>kickoff-prompt</code> substitui placeholders em todos os arquivos automaticamente.</li>
+                <li><code>validate-kickoff</code> é gate bloqueador — não avança sem 100%.</li>
+                <li>Strategy + TAP rodam em paralelo (independentes) — economiza dia.</li>
+              </ul>
+              <div class="flows-skills">
+                <span class="skill-chip">kickoff-prompt</span>
+                <span class="skill-chip">validate-kickoff</span>
+                <span class="skill-chip">design-sprint</span>
+                <span class="skill-chip">generate-tap</span>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Panel 4: PR lifecycle -->
+          <div class="flows-panel" data-panel="pr" role="tabpanel">
+            <div class="flows-panel__diagram zoomable" data-zoom-title="PR lifecycle · DoR → impl → DoD" role="button" tabindex="0" aria-label="Expandir diagrama de PR lifecycle">
+              <div class="mermaid">
+sequenceDiagram
+    actor U as Usuário
+    participant VR as validate-dor
+    participant EP as enhanced-planning
+    participant CTX as CONTEXT.md
+    participant VD as validate-dod
+    participant OC as organize-commits
+    participant REC as reconcile-initiative
+
+    U->>VR: validate-dor M1.X
+
+    alt DoR PASS
+        VR-->>U: ✓ pré-requisitos ok
+        U->>EP: enhanced-planning M1.X
+        EP-->>U: 13 guardrails ativos
+        Note over U: checkpoint humano
+
+        loop por slice (≤100 linhas)
+            U->>U: implementa + commit atômico
+            U->>CTX: atualiza progresso
+        end
+
+        U->>VD: validate-dod M1.X
+        VD-->>U: verification report PASS
+
+        U->>OC: organize-commits
+        OC-->>U: commits consolidados
+
+        U->>REC: reconcile-initiative
+        REC->>CTX: reflete decisões em docs core
+    else DoR FAIL
+        VR-->>U: ✗ volta para dependências
+    end
+              </div>
+            </div>
+            <aside class="flows-panel__aside">
+              <h4>Por que importa</h4>
+              <p>Gates de qualidade dos dois lados: nada começa sem DoR, nada termina sem DoD. Cada slice é independente e bisect-friendly.</p>
+              <ul>
+                <li><strong>DoR bloqueia</strong> — dependências não satisfeitas viram tarefas, não código.</li>
+                <li><strong>Loop por slice</strong> — máximo 100 linhas por commit, CONTEXT.md atualizado a cada um.</li>
+                <li><strong>DoD valida com evidência</strong> — não é checkbox, é <code>verify:</code> step com saída.</li>
+              </ul>
+              <div class="flows-skills">
+                <span class="skill-chip">validate-dor</span>
+                <span class="skill-chip">validate-dod</span>
+                <span class="skill-chip">organize-commits</span>
+                <span class="skill-chip">reconcile-initiative</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <div class="flows-note reveal" data-reveal-delay="200">
+        <p>
+          <strong>Comparativo:</strong> Handoff é tempo <em>entre</em> sessões.
+          Agent team é paralelismo <em>dentro</em> de uma sessão.
+          Onboarding mostra <em>como</em> a consultoria adota o template.
+          PR lifecycle mostra <em>o que</em> acontece em cada milestone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 5 — 13 GUARDRAILS
+       ================================================================ -->
+  <section id="guardrails" class="section section--guardrails" data-section="guardrails">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">05 · Anatomia do Motor</span>
+        <h2 class="section-title">Os 13 guardrails que tornam um plano <em>completo</em></h2>
+        <p class="section-lede">
+          O <code>enhanced-planning</code> não escreve o plano — ele <strong>garante</strong> que nenhuma
+          seção crítica falte. Cada guardrail responde a uma falha recorrente em planos ad-hoc.
+        </p>
+      </header>
+
+      <div class="guard-grid">
+        <article class="guard-card reveal">
+          <span class="guard-num">01</span>
+          <h4>Contexto</h4>
+          <p>Problema + resultado esperado declarados antes de qualquer implementação.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="40">
+          <span class="guard-num">02</span>
+          <h4>Implementação por PRs</h4>
+          <p>Slices, arquivos tocados e critérios de aceite mapeados por PR.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="80">
+          <span class="guard-num">03</span>
+          <h4>Checkpoints humanos</h4>
+          <p>Mínimo 6 pontos de confirmação: design, mid-point, final, +1 por PR.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="120">
+          <span class="guard-num">04</span>
+          <h4>Guardrails nomeados G-*</h4>
+          <p>Selecionados do catálogo, com verificação por slice.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="160">
+          <span class="guard-num">05</span>
+          <h4>Risk registry</h4>
+          <p>Severidade, mitigação, owner e status para cada risco identificado.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="200">
+          <span class="guard-num">06</span>
+          <h4>Tabela de progresso</h4>
+          <p>Vazia, pronta para preencher. Estado público do milestone em tempo real.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="240">
+          <span class="guard-num">07</span>
+          <h4>Isonomia documental</h4>
+          <p>Tabela de verificação cruzada entre código, docs e planos.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="280">
+          <span class="guard-num">08</span>
+          <h4>Revisão Codex</h4>
+          <p>Por PR + meta-avaliação via <code>/codex:rescue --effort xhigh</code>.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="320">
+          <span class="guard-num">09</span>
+          <h4>Decision locks</h4>
+          <p>Decisões trancadas com tracking. Não reabre sem evidência nova.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="360">
+          <span class="guard-num">10</span>
+          <h4>Conclusão de PR</h4>
+          <p>Checkboxes obrigatórios + atualização de CONTEXT.md por PR.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="400">
+          <span class="guard-num">11</span>
+          <h4>Protocolo multi-sessão</h4>
+          <p>4 regras de continuidade. CONTEXT.md atualizado a cada pause point.</p>
+        </article>
+        <article class="guard-card reveal" data-reveal-delay="440">
+          <span class="guard-num">12</span>
+          <h4>Sequência de commits</h4>
+          <p>Tabela ordenada com PR + tipo + scope. Bisect-friendly por construção.</p>
+        </article>
+        <article class="guard-card reveal guard-card--final" data-reveal-delay="480">
+          <span class="guard-num">13</span>
+          <h4>Verificação final</h4>
+          <p>10+ itens obrigatórios. Inclui CONTEXT.md, isonomia, evidências.</p>
+        </article>
+      </div>
+
+      <div class="guard-validation reveal" data-reveal-delay="540">
+        <div class="guard-validation__icon" aria-hidden="true">✓</div>
+        <p>
+          Antes de o plano ser aceito, <code>enhanced-planning</code> executa <strong>10 checks</strong>
+          de completude. Se algo falta, o plano <em>volta para o board</em> — não vira código.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 6 — CONTINUIDADE MULTI-SESSÃO
+       ================================================================ -->
+  <section id="multisession" class="section section--multisession" data-section="multisession">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">06 · Continuidade</span>
+        <h2 class="section-title">O trabalho sobrevive ao fim da sessão</h2>
+        <p class="section-lede">
+          Cada milestone tem um <code>CONTEXT.md</code> vivo. Quando uma sessão chega ao
+          limite de tokens ou termina o expediente, o estado é congelado e a próxima retoma sem perda.
+        </p>
+      </header>
+
+      <div class="multi-grid">
+        <div class="multi-flow reveal">
+          <div class="multi-step">
+            <div class="multi-step__icon" data-icon="session">⌘</div>
+            <div class="multi-step__body">
+              <h4>Sessão ativa</h4>
+              <p>Trabalho acontece. <code>CONTEXT.md</code> da initiative é atualizado continuamente — estado, decisões, próximo passo.</p>
+            </div>
+          </div>
+
+          <div class="multi-arrow" aria-hidden="true">
+            <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+              <path d="M0 10 L95 10 M85 4 L95 10 L85 16" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+          </div>
+
+          <div class="multi-step">
+            <div class="multi-step__icon" data-icon="freeze">❄</div>
+            <div class="multi-step__body">
+              <h4>Pause point</h4>
+              <p><code>fresh-context</code> congela um snapshot em <code>handoff/&lt;id&gt;-CONTEXT.md</code> quando a sessão excede ~150k tokens.</p>
+            </div>
+          </div>
+
+          <div class="multi-arrow" aria-hidden="true">
+            <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+              <path d="M0 10 L95 10 M85 4 L95 10 L85 16" stroke="currentColor" stroke-width="1.5" fill="none" />
+            </svg>
+          </div>
+
+          <div class="multi-step">
+            <div class="multi-step__icon" data-icon="resume">↻</div>
+            <div class="multi-step__body">
+              <h4>Nova sessão</h4>
+              <p><code>generate-session-prompt</code> monta o prompt de retomada a partir do CONTEXT vivo + último handoff. Zero contexto perdido.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="multi-aside reveal" data-reveal-delay="200">
+          <h4>Por que importa</h4>
+          <ul>
+            <li><strong>Janela de contexto da LLM é finita.</strong> Trabalho longo precisa de handoff explícito.</li>
+            <li><strong>Trocas de agente são reais.</strong> Codex → Claude → outro humano. Todos precisam do mesmo briefing.</li>
+            <li><strong>Decisões perdidas custam caro.</strong> O CONTEXT.md é o registro vivo do "porquê".</li>
+          </ul>
+          <div class="multi-aside__file">
+            <span class="file-path">.planning/&lt;initiative&gt;/CONTEXT.md</span>
+            <span class="file-meta">living document · atualizado a cada checkpoint</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 7 — ARTIFACT MAP
+       ================================================================ -->
+  <section id="artifacts" class="section section--artifacts" data-section="artifacts">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">07 · Mapa do Território</span>
+        <h2 class="section-title">Onde cada coisa vive</h2>
+        <p class="section-lede">
+          O template tem três grandes territórios — <em>regras</em>, <em>fonte de verdade</em> e <em>trabalho</em>.
+          Cada artefato tem casa, lifecycle e owner. Sem ambiguidade.
+        </p>
+      </header>
+
+      <div class="artifact-map reveal">
+        <div class="artifact-col">
+          <header class="artifact-col__head" data-color="rules">
+            <span class="artifact-col__icon">⚙</span>
+            <h4>Regras &amp; Skills</h4>
+            <p>O "como" do projeto. Não muda com features.</p>
+          </header>
+          <ul class="artifact-list">
+            <li><code>.claude/CLAUDE.md</code><span>regras sempre-ativas</span></li>
+            <li><code>.claude/rules/</code><span>regras path-targeted</span></li>
+            <li><code>.claude/skills/</code><span>workflows automatizados</span></li>
+            <li><code>.claude/hooks/</code><span>quality gates automáticos</span></li>
+          </ul>
+        </div>
+
+        <div class="artifact-col artifact-col--center">
+          <header class="artifact-col__head" data-color="truth">
+            <span class="artifact-col__icon">★</span>
+            <h4>Fonte de Verdade</h4>
+            <p>Decisões de negócio e arquitetura. <em>Projeto.md prevalece.</em></p>
+          </header>
+          <ul class="artifact-list">
+            <li><code>documents/core/Projeto.md</code><span>living doc · single source of truth</span></li>
+            <li><code>documents/core/Roadmap.md</code><span>fases, milestones, DoR/DoD</span></li>
+            <li><code>documents/core/TODO.md</code><span>tarefas granulares</span></li>
+            <li><code>documents/strategy/</code><span>visão, métricas, riscos (Tier 1)</span></li>
+            <li><code>documents/technical/</code><span>arquitetura, integrações</span></li>
+            <li><code>documents/archive/</code><span>TAP, transcrições, histórico</span></li>
+          </ul>
+        </div>
+
+        <div class="artifact-col">
+          <header class="artifact-col__head" data-color="work">
+            <span class="artifact-col__icon">⟳</span>
+            <h4>Trabalho em Andamento</h4>
+            <p>Initiatives ativas. Lifecycle: ativo → concluído → arquivado.</p>
+          </header>
+          <ul class="artifact-list">
+            <li><code>.planning/&lt;initiative&gt;/</code><span>CONTEXT.md + plans + handoff</span></li>
+            <li><code>.planning/patches/</code><span>correções ≤2 sessões</span></li>
+            <li><code>.planning/scratch/</code><span>context dumps efêmeros</span></li>
+            <li><code>.planning/audit-reports/</code><span>reconciliation + drift</span></li>
+            <li><code>.planning/_archive/</code><span>initiatives concluídas + INDEX.md</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="artifact-rules reveal" data-reveal-delay="200">
+        <h4>Regras de ouro</h4>
+        <div class="artifact-rules__grid">
+          <div>
+            <span class="rule-num">1</span>
+            <p><strong>Projeto.md prevalece.</strong> Conflito entre docs? Vale o que está em <code>core/</code>.</p>
+          </div>
+          <div>
+            <span class="rule-num">2</span>
+            <p><strong>Planos não são doc.</strong> Vivem em <code>.planning/</code> e morrem no archive. Código + commits são a verdade pós-implementação.</p>
+          </div>
+          <div>
+            <span class="rule-num">3</span>
+            <p><strong>Toda decisão deve refletir em Projeto.md.</strong> Strategy/technical são suplementares, sempre com backlink.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 8 — PLUG & PLAY
+       ================================================================ -->
+  <section id="plugplay" class="section section--plugplay" data-section="plugplay">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">08 · Para a Consultoria</span>
+        <h2 class="section-title">Plug &amp; Play em 5 passos</h2>
+        <p class="section-lede">
+          Adotar o template em um cliente novo. Da clonagem do repo ao primeiro milestone
+          rodando no loop completo — tipicamente em <strong>menos de uma semana</strong>.
+        </p>
+      </header>
+
+      <ol class="play-steps">
+        <li class="play-step reveal">
+          <div class="play-step__num">01</div>
+          <div class="play-step__content">
+            <h4>Clone do template</h4>
+            <p>Fork ou clone direto. O template já vem com <code>.claude/</code>, <code>.codex/</code>, <code>.agents/</code> sincronizados e estrutura de docs completa.</p>
+            <pre class="code-block"><code>git clone &lt;tech-product-template&gt; meu-cliente
+cd meu-cliente</code></pre>
+          </div>
+        </li>
+
+        <li class="play-step reveal" data-reveal-delay="100">
+          <div class="play-step__num">02</div>
+          <div class="play-step__content">
+            <h4>Kickoff guiado</h4>
+            <p>Roda o <code>kickoff-prompt</code> com o cliente. Substitui placeholders (<code>Market Terminal</code>, stakeholders, stack) em todos os arquivos automaticamente.</p>
+            <pre class="code-block"><code>/kickoff-prompt</code></pre>
+          </div>
+        </li>
+
+        <li class="play-step reveal" data-reveal-delay="200">
+          <div class="play-step__num">03</div>
+          <div class="play-step__content">
+            <h4>Validação do kickoff</h4>
+            <p><code>validate-kickoff</code> detecta placeholders esquecidos e inconsistências entre arquivos. Gate bloqueador — não avança sem 100%.</p>
+            <pre class="code-block"><code>/validate-kickoff</code></pre>
+          </div>
+        </li>
+
+        <li class="play-step reveal" data-reveal-delay="300">
+          <div class="play-step__num">04</div>
+          <div class="play-step__content">
+            <h4>Estratégia &amp; TAP</h4>
+            <p>Se cliente tem materiais brutos, <code>generate-tap</code> os transforma em TAP estruturado. Em paralelo, <code>design-sprint</code> destila visão, métricas e riscos para <code>documents/strategy/</code>.</p>
+            <pre class="code-block"><code>/generate-tap
+/design-sprint</code></pre>
+          </div>
+        </li>
+
+        <li class="play-step play-step--final reveal" data-reveal-delay="400">
+          <div class="play-step__num">05</div>
+          <div class="play-step__content">
+            <h4>Primeiro milestone no loop</h4>
+            <p>Define Roadmap.md, escolhe primeiro milestone, entra no loop completo. A partir daqui, é o <code>enhanced-planning</code> dirigindo.</p>
+            <pre class="code-block"><code>/init-milestone M1.1
+/validate-dor M1.1
+/enhanced-planning M1.1
+# → plano com 13 guardrails pronto</code></pre>
+          </div>
+        </li>
+      </ol>
+
+      <div class="play-outcome reveal" data-reveal-delay="500">
+        <div class="play-outcome__metric">
+          <span class="play-outcome__value">~3 dias</span>
+          <span class="play-outcome__label">do clone ao primeiro plano validado</span>
+        </div>
+        <div class="play-outcome__metric">
+          <span class="play-outcome__value">0</span>
+          <span class="play-outcome__label">decisões arquiteturais ad-hoc</span>
+        </div>
+        <div class="play-outcome__metric">
+          <span class="play-outcome__value">100%</span>
+          <span class="play-outcome__label">milestones com DoR/DoD declarados</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 9 — CTA
+       ================================================================ -->
+  <section id="cta" class="section section--cta" data-section="cta">
+    <div class="container">
+      <div class="cta-card reveal">
+        <span class="eyebrow">Próximo passo</span>
+        <h2 class="cta-title">Pronto para um <span class="gradient-text">projeto sem drift</span>?</h2>
+        <p class="cta-body">
+          Use o <strong>tech-product-template</strong> como base do próximo cliente.
+          O processo está declarado, as skills estão prontas, os gates impedem regressão.
+          Sua consultoria entrega resultado, não improviso.
+        </p>
+
+        <div class="cta-actions">
+          <a class="btn btn--primary" href="../../core/Projeto.md">
+            <span>Ler Projeto.md</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn--ghost" href="../../core/Roadmap.md">
+            <span>Ver Roadmap</span>
+          </a>
+          <a class="btn btn--ghost" href="../../../.planning/README.md">
+            <span>Explorar Planning</span>
+          </a>
+        </div>
+
+        <footer class="cta-foot">
+          <span>tech-product-template · walkthrough v1</span>
+          <span>·</span>
+          <span>arquivo único, sem build, abre em qualquer browser</span>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       MODAL · Lightbox para diagramas
+       Usado por main.js: clica num .zoomable → clona SVG aqui
+       ================================================================ -->
+  <dialog id="zoomModal" class="zoom-modal" aria-labelledby="zoomModalTitle">
+    <header class="zoom-modal__header">
+      <h3 id="zoomModalTitle" class="zoom-modal__title">Diagrama</h3>
+      <button type="button" class="zoom-modal__close" aria-label="Fechar modal">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M6 18L18 6" />
+        </svg>
+      </button>
+    </header>
+    <div class="zoom-modal__body" id="zoomModalBody" aria-live="polite"></div>
+    <footer class="zoom-modal__hint">
+      <span><kbd>Esc</kbd> ou clique fora para fechar</span>
+      <span class="zoom-modal__sep">·</span>
+      <span>scroll dentro do painel se o diagrama for maior</span>
+    </footer>
+  </dialog>
+
+  <!-- Bibliotecas externas -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>

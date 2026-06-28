@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tech-product-template · Atlas de Fluxos & Confiabilidade</title>
+  <meta name="description" content="Mapa compreensivo dos ciclos de desenvolvimento padronizados e automatizados do tech-product-template — gates, automação e rastreabilidade para projetos de alta complexidade e longevidade." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+
+  <!-- Background ornaments -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--top" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--bottom" aria-hidden="true"></div>
+
+  <!-- Navegação fixa de progresso -->
+  <nav class="nav-rail" aria-label="Navegação de seções">
+    <a href="#hero" class="nav-dot" data-target="hero" aria-label="Tese"><span>01</span></a>
+    <a href="#map" class="nav-dot" data-target="map" aria-label="Mapa de Sistema"><span>02</span></a>
+    <a href="#atlas" class="nav-dot" data-target="atlas" aria-label="Atlas de Fluxos"><span>03</span></a>
+    <a href="#scorecard" class="nav-dot" data-target="scorecard" aria-label="Scorecard"><span>04</span></a>
+    <a href="#longevity" class="nav-dot" data-target="longevity" aria-label="Longevidade"><span>05</span></a>
+  </nav>
+
+  <!-- ================================================================
+       SECTION 1 — HERO / TESE
+       ================================================================ -->
+  <section id="hero" class="section section--hero" data-section="hero">
+    <div class="container">
+      <div class="hero-content reveal">
+        <span class="eyebrow">Atlas de Fluxos &amp; Confiabilidade · v2.7</span>
+        <h1 class="hero-title">
+          Todo ciclo de desenvolvimento,<br />
+          <span class="gradient-text">padronizado e auditável</span>
+        </h1>
+        <p class="hero-subtitle">
+          O <strong>tech-product-template</strong> não é uma coleção de scripts — é um sistema de
+          <strong>8 fluxos interligados</strong> onde o progresso só avança com evidência.
+          Gates que bloqueiam, hooks que rodam sozinhos, rastreabilidade que sobrevive a anos.
+          Projetado para <strong>alta complexidade e longevidade</strong>, em qualquer domínio.
+        </p>
+
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="meta-num">8</span>
+            <span class="meta-label">Fluxos macro</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">24</span>
+            <span class="meta-label">Skills orquestradas</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">7</span>
+            <span class="meta-label">Gates bloqueadores</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">3</span>
+            <span class="meta-label">Hooks automáticos</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-num">3</span>
+            <span class="meta-label">Camadas isônomas</span>
+          </div>
+        </div>
+
+        <div class="hero-pillars">
+          <span class="pillar"><span class="pillar-dot pillar-dot--gate"></span> Gating: recusa avançar sem prova</span>
+          <span class="pillar"><span class="pillar-dot pillar-dot--auto"></span> Automação: hooks como rede de segurança</span>
+          <span class="pillar"><span class="pillar-dot pillar-dot--trace"></span> Rastreabilidade: nada se perde entre sessões</span>
+        </div>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true">
+        <span>explore o sistema</span>
+        <div class="scroll-cue__arrow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 2 — MAPA DE SISTEMA
+       ================================================================ -->
+  <section id="map" class="section section--map" data-section="map">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">01 · Visão de Sistema</span>
+        <h2 class="section-title">Os 8 fluxos em uma única imagem</h2>
+        <p class="section-lede">
+          Um ciclo central de entrega (Bootstrap → Planning → Desenvolvimento → Conclusão) cercado
+          por <strong>fluxos transversais</strong> sempre disponíveis: continuidade, orquestração,
+          governança e sincronização. Clique para ampliar.
+        </p>
+      </header>
+
+      <div class="map-frame reveal zoomable" data-zoom-title="Mapa de Sistema — 8 fluxos do template" role="button" tabindex="0" aria-label="Ampliar mapa de sistema">
+        <div class="mermaid">
+flowchart TB
+    subgraph CYCLE[" "]
+      direction LR
+      F1([1 · Bootstrap]):::boot --> F2([2 · Planning]):::plan
+      F2 -->|DoR| F3([3 · Desenvolvimento]):::dev
+      F3 -->|DoD| F4([4 · Conclusão]):::done
+      F4 -.->|próxima initiative| F2
+    end
+
+    F5{{5 · Continuidade<br/>multi-sessão}}:::trans
+    F6{{6 · Orquestração<br/>multi-agente}}:::trans
+    F7{{7 · Governança<br/>contínua}}:::trans
+    F8{{8 · Sincronização<br/>entre repos}}:::trans
+
+    F5 -.->|handoff / resume| F3
+    F6 -.->|paralelismo| F3
+    F7 -.->|audits| F3
+    F7 -.->|audits| F4
+    F8 -.->|isonomia 3 camadas| CYCLE
+
+    classDef boot fill:#13294a,stroke:#3b82f6,color:#dbeafe,stroke-width:2px
+    classDef plan fill:#1e1b4b,stroke:#818cf8,color:#e0e7ff,stroke-width:2px
+    classDef dev fill:#3b1d6b,stroke:#a78bfa,color:#f3e8ff,stroke-width:2.5px
+    classDef done fill:#14342b,stroke:#34d399,color:#d1fae5,stroke-width:2px
+    classDef trans fill:#1a2238,stroke:#64748b,color:#cbd5e1,stroke-width:1.5px
+        </div>
+      </div>
+
+      <div class="map-legend reveal" data-reveal-delay="150">
+        <div class="legend-item"><span class="legend-swatch legend-swatch--cycle"></span> Ciclo de entrega (sequencial, com gates DoR/DoD)</div>
+        <div class="legend-item"><span class="legend-swatch legend-swatch--trans"></span> Fluxos transversais (sempre disponíveis, não-lineares)</div>
+        <div class="legend-item"><span class="legend-line"></span> Linha tracejada = ativação sob demanda</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 3 — ATLAS (sidebar + painéis)
+       ================================================================ -->
+  <section id="atlas" class="section section--atlas" data-section="atlas">
+    <div class="container container--wide">
+      <header class="section-head reveal">
+        <span class="section-tag">02 · Atlas de Fluxos</span>
+        <h2 class="section-title">Cada fluxo, em detalhe</h2>
+        <p class="section-lede">
+          Para cada fluxo: o que o dispara, a sequência de skills, os gates que bloqueiam,
+          os artefatos produzidos e — o mais importante — <strong>o que ele garante</strong>.
+        </p>
+      </header>
+
+      <div class="atlas reveal">
+        <!-- Sidebar -->
+        <aside class="atlas-nav" role="tablist" aria-label="Fluxos do template">
+          <button class="atlas-tab is-active" data-flow="bootstrap" role="tab" aria-selected="true">
+            <span class="atlas-tab__idx">01</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Kickoff &amp; Bootstrap</span>
+              <span class="atlas-tab__hint">clone → projeto vivo</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="planning" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">02</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Planning de Initiative</span>
+              <span class="atlas-tab__hint">DoR · guardrails</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="dev" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">03</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Desenvolvimento &amp; Commit</span>
+              <span class="atlas-tab__hint">pre-commit · hooks</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="completion" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">04</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Conclusão &amp; Reconciliação</span>
+              <span class="atlas-tab__hint">DoD · archive</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="continuity" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">05</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Continuidade Multi-sessão</span>
+              <span class="atlas-tab__hint">handoff · resume</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="orchestration" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">06</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Orquestração Multi-agente</span>
+              <span class="atlas-tab__hint">research · sprint · pipeline</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="governance" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">07</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Governança Contínua</span>
+              <span class="atlas-tab__hint">audits · drift</span>
+            </span>
+          </button>
+          <button class="atlas-tab" data-flow="sync" role="tab" aria-selected="false">
+            <span class="atlas-tab__idx">08</span>
+            <span class="atlas-tab__body">
+              <span class="atlas-tab__name">Sincronização entre Repos</span>
+              <span class="atlas-tab__hint">mirror · downstream</span>
+            </span>
+          </button>
+        </aside>
+
+        <!-- Painéis -->
+        <div class="atlas-panels">
+
+          <!-- PANEL 1: Bootstrap -->
+          <article class="atlas-panel is-active" data-panel="bootstrap" role="tabpanel">
+            <header class="panel-head">
+              <h3>Kickoff &amp; Bootstrap</h3>
+              <p class="panel-purpose">Transforma um clone do template num projeto vivo, com placeholders resolvidos e estratégia destilada.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Início de um projeto novo a partir do template</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Kickoff & Bootstrap" role="button" tabindex="0" aria-label="Ampliar diagrama de bootstrap">
+              <div class="mermaid">
+flowchart LR
+    A([git clone]):::s --> B([kickoff-prompt]):::s
+    B --> C{validate-kickoff}:::gate
+    C -->|placeholders OK| D([design-sprint]):::s
+    C -->|pendências| B
+    D --> E([generate-tap]):::s
+    E --> F([Roadmap.md + TODO.md]):::out
+    classDef s fill:#13294a,stroke:#3b82f6,color:#dbeafe,stroke-width:1.5px
+    classDef gate fill:#3f2d12,stroke:#f59e0b,color:#fde68a,stroke-width:2px
+    classDef out fill:#14342b,stroke:#34d399,color:#d1fae5,stroke-width:1.5px
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills do fluxo</h4>
+                <ul class="skill-list">
+                  <li><code>kickoff-prompt</code><span>Substitui placeholders <code>{{...}}</code> em todos os arquivos</span></li>
+                  <li><code>validate-kickoff</code><span class="skill-gate">gate</span><span>Discovery dinâmico de placeholders não resolvidos</span></li>
+                  <li><code>design-sprint</code><span>Destila visão, restrições, métricas, riscos (Tier 1)</span></li>
+                  <li><code>generate-tap</code><span>Gera Termo de Abertura a partir de materiais brutos</span></li>
+                </ul>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li><code>documents/core/Projeto.md</code></li>
+                  <li><code>documents/strategy/*</code></li>
+                  <li><code>documents/archive/TAP.md</code></li>
+                  <li><code>documents/core/Roadmap.md</code></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> nenhum projeto começa com placeholder esquecido ou contexto implícito.
+                O <code>validate-kickoff</code> é gate — bloqueia até 100% resolvido. Estratégia fica versionada antes da 1ª linha de código.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 2: Planning -->
+          <article class="atlas-panel" data-panel="planning" role="tabpanel">
+            <header class="panel-head">
+              <h3>Planning de Initiative</h3>
+              <p class="panel-purpose">Prepara cada milestone ou detour com pré-requisitos validados e guardrails estruturais antes de qualquer código.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Início de milestone (ou detour transversal)</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Planning de Initiative" role="button" tabindex="0" aria-label="Ampliar diagrama de planning">
+              <div class="mermaid">
+flowchart LR
+    A([init-milestone<br/>ou init-detour]):::s --> B{validate-dor}:::gate
+    B -->|DoR PASS| C([enhanced-planning]):::hero
+    B -->|DoR FAIL| Z[/resolver<br/>dependências/]:::block
+    C --> D([writing-plans]):::s
+    D --> E([plano + 13 guardrails]):::out
+    classDef s fill:#1e1b4b,stroke:#818cf8,color:#e0e7ff,stroke-width:1.5px
+    classDef hero fill:#3b1d6b,stroke:#a78bfa,color:#fff,stroke-width:2.5px
+    classDef gate fill:#3f2d12,stroke:#f59e0b,color:#fde68a,stroke-width:2px
+    classDef block fill:#3f1d1d,stroke:#f87171,color:#fecaca,stroke-width:1.5px
+    classDef out fill:#14342b,stroke:#34d399,color:#d1fae5,stroke-width:1.5px
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills do fluxo</h4>
+                <ul class="skill-list">
+                  <li><code>init-milestone</code><span>Cria <code>.planning/milestones/MX.X/</code> (CONTEXT, handoff, plans)</span></li>
+                  <li><code>init-detour</code><span>Idem para trabalho transversal emergente</span></li>
+                  <li><code>validate-dor</code><span class="skill-gate">gate</span><span>Bloqueia início se Definition of Ready &lt; 100%</span></li>
+                  <li><code>enhanced-planning</code><span>Injeta 13 guardrails estruturais no plano</span></li>
+                </ul>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li><code>.planning/&lt;initiative&gt;/CONTEXT.md</code></li>
+                  <li><code>.planning/&lt;initiative&gt;/plans/</code></li>
+                  <li><code>verification/MX.X-dor-report.md</code></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> trabalho não começa sem dependências satisfeitas (DoR bloqueia).
+                Todo plano nasce com checkpoints humanos, risk registry, decision locks e protocolo multi-sessão — sem ad-hoc.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 3: Dev -->
+          <article class="atlas-panel" data-panel="dev" role="tabpanel">
+            <header class="panel-head">
+              <h3>Desenvolvimento &amp; Commit</h3>
+              <p class="panel-purpose">O loop diário de código, com gates de qualidade manuais e hooks automáticos que impedem regressão silenciosa.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Implementação de slices do plano (≤100 linhas cada)</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Desenvolvimento & Commit" role="button" tabindex="0" aria-label="Ampliar diagrama de desenvolvimento">
+              <div class="mermaid">
+flowchart LR
+    A([implementa slice]):::s --> B{pre-commit-check}:::gate
+    B -->|PASS| C([organize-commits]):::s
+    B -->|FAIL| A
+    C --> D([commit atômico]):::out
+    D --> E{{hook:<br/>check-task-completed}}:::hook
+    E -->|testes + secrets| F([task aceita]):::out
+    D --> G{{hook:<br/>check-scripts-cruft}}:::hook
+    classDef s fill:#3b1d6b,stroke:#a78bfa,color:#f3e8ff,stroke-width:1.5px
+    classDef gate fill:#3f2d12,stroke:#f59e0b,color:#fde68a,stroke-width:2px
+    classDef hook fill:#0f3a3a,stroke:#22d3ee,color:#cffafe,stroke-width:1.5px
+    classDef out fill:#14342b,stroke:#34d399,color:#d1fae5,stroke-width:1.5px
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills &amp; hooks</h4>
+                <ul class="skill-list">
+                  <li><code>pre-commit-check</code><span class="skill-gate">gate</span><span>Code quality + testes + security + git status</span></li>
+                  <li><code>validate-testing</code><span>Cobertura vs metas (core &gt;90%, geral &gt;80%)</span></li>
+                  <li><code>organize-commits</code><span>Commits atômicos Conventional, ≤100 linhas</span></li>
+                  <li><code>check-task-completed</code><span class="skill-hook">hook</span><span>Roda testes + escaneia secrets ao concluir task</span></li>
+                  <li><code>check-scripts-cruft</code><span class="skill-hook">hook</span><span>Bloqueia commit com <code>__pycache__</code>/<code>.DS_Store</code></span></li>
+                </ul>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li>Commits atômicos (rastreados em TODO.md)</li>
+                  <li>Código formatado (ruff) + testes</li>
+                  <li><code>verify:</code> steps executáveis</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> três barreiras antes de o código persistir — <code>pre-commit-check</code> (manual),
+                test gate e secrets scan (hook automático), cruft blocker (hook). Commit atômico permite bisect e revert cirúrgico anos depois.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 4: Completion -->
+          <article class="atlas-panel" data-panel="completion" role="tabpanel">
+            <header class="panel-head">
+              <h3>Conclusão &amp; Reconciliação</h3>
+              <p class="panel-purpose">Fecha a initiative com validação por evidência, propaga aprendizados para os docs core e arquiva com contexto preservado.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Todas as tasks do milestone concluídas</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Conclusão & Reconciliação" role="button" tabindex="0" aria-label="Ampliar diagrama de conclusão">
+              <div class="mermaid">
+flowchart LR
+    A{validate-dod}:::gate -->|DoD PASS| B([update-docs]):::s
+    A -->|DoD FAIL| Z[/voltar aos slices/]:::block
+    B --> C([reconcile-initiative]):::s
+    C --> D{reconcile report}:::gate
+    D -->|gerado| E([archive-initiative]):::s
+    E --> F([_archive/ + INDEX.md]):::out
+    classDef s fill:#14342b,stroke:#34d399,color:#d1fae5,stroke-width:1.5px
+    classDef gate fill:#3f2d12,stroke:#f59e0b,color:#fde68a,stroke-width:2px
+    classDef block fill:#3f1d1d,stroke:#f87171,color:#fecaca,stroke-width:1.5px
+    classDef out fill:#0f3a3a,stroke:#22d3ee,color:#cffafe,stroke-width:1.5px
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills do fluxo</h4>
+                <ul class="skill-list">
+                  <li><code>validate-dod</code><span class="skill-gate">gate</span><span>Executa <code>verify:</code> steps, gera report PASS/FAIL</span></li>
+                  <li><code>update-docs</code><span>Reflete decisões em Projeto.md / Roadmap.md</span></li>
+                  <li><code>reconcile-initiative</code><span class="skill-gate">gate</span><span>Propaga learnings; obrigatório antes do archive</span></li>
+                  <li><code>archive-initiative</code><span>Move para <code>_archive/</code> com INDEX.md</span></li>
+                </ul>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li><code>verification/MX.X-dod-report.md</code></li>
+                  <li><code>audit-reports/reconcile-*.md</code></li>
+                  <li><code>.planning/_archive/&lt;initiative&gt;/</code></li>
+                  <li>Changelog em Projeto.md</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> nada é "concluído" sem DoD verificado por execução real.
+                <code>reconcile-initiative</code> é gate antes do archive — aprendizados <em>precisam</em> chegar aos docs core antes de a initiative sair de cena.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 5: Continuity -->
+          <article class="atlas-panel" data-panel="continuity" role="tabpanel">
+            <header class="panel-head">
+              <h3>Continuidade Multi-sessão</h3>
+              <p class="panel-purpose">Garante que trabalho de meses sobreviva ao limite de contexto da LLM e a trocas de sessão, agente ou pessoa.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Sessão &gt; ~150k tokens · fim de expediente · handoff</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Continuidade Multi-sessão" role="button" tabindex="0" aria-label="Ampliar diagrama de continuidade">
+              <div class="mermaid">
+sequenceDiagram
+    actor U as Operador
+    participant S1 as Sessão N
+    participant CTX as CONTEXT.md
+    participant FC as fresh-context
+    participant S2 as Sessão N+1
+    U->>S1: trabalha na initiative
+    activate S1
+    S1->>CTX: atualiza estado vivo
+    Note over S1: ~150k tokens
+    S1->>FC: invoca fresh-context
+    FC->>CTX: congela handoff/ snapshot
+    deactivate S1
+    U->>S2: nova sessão
+    activate S2
+    S2->>CTX: lê estado + handoff
+    S2-->>U: generate-session-prompt
+    S2->>S2: retoma sem perda
+    deactivate S2
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills do fluxo</h4>
+                <ul class="skill-list">
+                  <li><code>fresh-context</code><span>Congela snapshot self-contained em <code>handoff/</code></span></li>
+                  <li><code>generate-session-prompt</code><span>Prompt de retomada (brief / standard / detailed)</span></li>
+                </ul>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li><code>.planning/&lt;initiative&gt;/CONTEXT.md</code> (vivo)</li>
+                  <li><code>handoff/&lt;id&gt;-CONTEXT.md</code> (snapshot)</li>
+                  <li>Prompt de retomada</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> longevidade real. O <code>CONTEXT.md</code> é o registro vivo do "porquê";
+                o handoff permite que outra sessão, outro agente (Codex → Claude) ou outra pessoa retome em minutos, não dias.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 6: Orchestration -->
+          <article class="atlas-panel" data-panel="orchestration" role="tabpanel">
+            <header class="panel-head">
+              <h3>Orquestração Multi-agente</h3>
+              <p class="panel-purpose">Escala tarefas de alta complexidade com paralelismo seguro — teammates executam, só o Lead toca git e docs core.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Milestone com 3+ subtarefas independentes</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Orquestração Multi-agente" role="button" tabindex="0" aria-label="Ampliar diagrama de orquestração">
+              <div class="mermaid">
+sequenceDiagram
+    actor U as Operador
+    participant L as Lead (Opus)
+    participant R as Researchers (Haiku)
+    participant I as Implementers (Sonnet)
+    U->>L: agent-team [research·sprint·pipeline]
+    activate L
+    L->>L: validate-dor + fresh-context
+    par paralelo seguro
+        L->>R: pesquisa (read-only)
+        R-->>L: findings
+    and
+        L->>I: implementa (arquivos disjuntos)
+        I-->>L: PR-ready
+    end
+    L->>L: pre-commit-check + organize-commits
+    L->>L: validate-dod (Lead-only)
+    L-->>U: trabalho consolidado
+    deactivate L
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skill &amp; hook</h4>
+                <ul class="skill-list">
+                  <li><code>agent-team</code><span>3 níveis: research (Haiku) · sprint (Sonnet) · pipeline (mix)</span></li>
+                  <li><code>check-teammate-idle</code><span class="skill-hook">hook</span><span>Detecta &gt;5 arquivos não commitados em teammate</span></li>
+                </ul>
+                <div class="panel-note">
+                  <strong>Segregação de segurança:</strong> teammates nunca commitam, nunca editam TODO.md / Roadmap.md / Projeto.md / .planning/README.md.
+                </div>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li>Código em arquivos designados (zero overlap)</li>
+                  <li>Relatório de review consolidado</li>
+                  <li>Commits atômicos (pelo Lead)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> complexidade tratada por paralelismo sem caos. As regras de segregação
+                (Lead-only para git/docs core) impedem que N agentes corrompam o estado compartilhado.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 7: Governance -->
+          <article class="atlas-panel" data-panel="governance" role="tabpanel">
+            <header class="panel-head">
+              <h3>Governança Contínua</h3>
+              <p class="panel-purpose">Auditorias periódicas que detectam drift entre código, docs, rules e scripts antes que vire dívida estrutural.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Fim de fase · antes de release · periódico (2-3 semanas)</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Governança Contínua" role="button" tabindex="0" aria-label="Ampliar diagrama de governança">
+              <div class="mermaid">
+flowchart TB
+    P[fim de fase / periódico]:::trig
+    P --> A([audit-rules]):::s
+    P --> B([audit-architecture]):::s
+    P --> C([validate-docs-links]):::s
+    P --> D([audit-scripts]):::s
+    P --> E([audit-roadmap-refs]):::s
+    A & B & C & D & E --> R([relatórios de drift]):::out
+    R --> F{ação corretiva}:::gate
+    classDef trig fill:#1a2238,stroke:#64748b,color:#cbd5e1,stroke-width:1.5px
+    classDef s fill:#2d2456,stroke:#a78bfa,color:#ede9fe,stroke-width:1.5px
+    classDef gate fill:#3f2d12,stroke:#f59e0b,color:#fde68a,stroke-width:2px
+    classDef out fill:#0f3a3a,stroke:#22d3ee,color:#cffafe,stroke-width:1.5px
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills do fluxo</h4>
+                <ul class="skill-list">
+                  <li><code>audit-rules</code><span>Qualidade/integridade das rules (quick/full)</span></li>
+                  <li><code>audit-architecture</code><span>Redundância e drift entre docs</span></li>
+                  <li><code>validate-docs-links</code><span>Links e backlinks (meta: 0 quebrados no DoD)</span></li>
+                  <li><code>audit-scripts</code><span>Drift, órfãos, cruft, stale na taxonomia de scripts</span></li>
+                  <li><code>audit-roadmap-refs</code><span>Coerência entre Roadmap e TODO</span></li>
+                </ul>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li><code>.planning/audit-reports/*</code></li>
+                  <li>Findings priorizados (crítico/atenção/info)</li>
+                  <li><code>scripts/INDEX.md</code> reconciliado</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> que a documentação não vire ficção. Em projetos longos, o drift entre
+                "o que o doc diz" e "o que o código faz" é o assassino silencioso — estas auditorias o tornam visível e acionável.
+              </div>
+            </div>
+          </article>
+
+          <!-- PANEL 8: Sync -->
+          <article class="atlas-panel" data-panel="sync" role="tabpanel">
+            <header class="panel-head">
+              <h3>Sincronização entre Repos</h3>
+              <p class="panel-purpose">Mantém melhorias fluindo entre o template e os projetos derivados, com rastreabilidade bidirecional via Sync-ID.</p>
+              <div class="panel-trigger"><span class="trigger-label">Trigger</span> Melhoria de processo em qualquer repo do ecossistema</div>
+            </header>
+
+            <div class="panel-diagram zoomable" data-zoom-title="Fluxo · Sincronização entre Repos" role="button" tabindex="0" aria-label="Ampliar diagrama de sincronização">
+              <div class="mermaid">
+flowchart LR
+    subgraph DERIV[Projeto derivado]
+      D1[melhoria de processo]:::s
+    end
+    subgraph TPL[Template upstream]
+      T1[rule / skill neutralizada]:::s
+    end
+    D1 -->|mirror-upstream| T1
+    T1 -->|sync-downstream| D2[outros projetos]:::s
+    T1 -.->|Sync-ID| CL[Changelog Local]:::out
+    D1 -.->|Sync-ID| CL
+    classDef s fill:#13294a,stroke:#3b82f6,color:#dbeafe,stroke-width:1.5px
+    classDef out fill:#0f3a3a,stroke:#22d3ee,color:#cffafe,stroke-width:1.5px
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <div class="panel-col">
+                <h4 class="panel-col__title">Skills do fluxo</h4>
+                <ul class="skill-list">
+                  <li><code>mirror-upstream</code><span>Backport projeto → template, neutralizando contexto</span></li>
+                  <li><code>sync-downstream</code><span>Forward-port template → projetos, traduzindo placeholders</span></li>
+                </ul>
+                <div class="panel-note">
+                  <strong>Isonomia 3 camadas:</strong> mesmas rules/skills em <code>.claude/</code>, <code>.codex/</code>, <code>.agents/</code> — sincronizadas via Changelog Local + Sync-ID.
+                </div>
+              </div>
+              <div class="panel-col">
+                <h4 class="panel-col__title">Artefatos</h4>
+                <ul class="artifact-list">
+                  <li>Changelog Local (Data · Commit · Sync-ID)</li>
+                  <li>Rules/skills propagadas</li>
+                  <li>Rastreabilidade bidirecional</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="panel-guarantee">
+              <span class="guarantee-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Garante:</strong> um aprendizado num projeto vira melhoria em todos. O Sync-ID dá rastreabilidade
+                bidirecional — você sempre sabe de onde veio uma mudança e para onde foi propagada.
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 4 — SCORECARD DE CONFIABILIDADE
+       ================================================================ -->
+  <section id="scorecard" class="section section--scorecard" data-section="scorecard">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">03 · Scorecard de Confiabilidade</span>
+        <h2 class="section-title">A prova da cobertura</h2>
+        <p class="section-lede">
+          Cada dimensão de qualidade cruzada com os quatro mecanismos de confiabilidade.
+          Quanto mais cheia a célula, mais forte a garantia — e onde é fraca, o template é honesto sobre isso.
+        </p>
+      </header>
+
+      <div class="score-cards reveal">
+        <div class="score-card">
+          <span class="score-card__num">7</span>
+          <span class="score-card__label">Gates bloqueadores</span>
+          <span class="score-card__detail">recusam avançar sem evidência</span>
+        </div>
+        <div class="score-card">
+          <span class="score-card__num">3</span>
+          <span class="score-card__label">Hooks automáticos</span>
+          <span class="score-card__detail">rede de segurança sem ação humana</span>
+        </div>
+        <div class="score-card">
+          <span class="score-card__num">7</span>
+          <span class="score-card__label">Rules path-targeted</span>
+          <span class="score-card__detail">carregam só no contexto certo</span>
+        </div>
+        <div class="score-card">
+          <span class="score-card__num">100%</span>
+          <span class="score-card__label">Verificação por evidência</span>
+          <span class="score-card__detail"><code>verify:</code> steps executáveis no DoD</span>
+        </div>
+      </div>
+
+      <div class="heatmap reveal" data-reveal-delay="150">
+        <table class="heatmap-table">
+          <thead>
+            <tr>
+              <th class="heatmap-corner">Dimensão</th>
+              <th>Automação<span>hook</span></th>
+              <th>Gating<span>bloqueia</span></th>
+              <th>Rastreabilidade<span>auditável</span></th>
+              <th>Continuidade<span>sobrevive</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Qualidade de código</th>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">pre-commit + hook</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">pre-commit-check</span></td>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">commits atômicos</span></td>
+              <td data-level="1"><span class="cell-bar"></span><span class="cell-note">—</span></td>
+            </tr>
+            <tr>
+              <th>Testes</th>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">hook TaskCompleted</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">test gate</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">verify: steps</span></td>
+              <td data-level="1"><span class="cell-bar"></span><span class="cell-note">—</span></td>
+            </tr>
+            <tr>
+              <th>Segurança</th>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">secrets scan</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">hook bloqueia</span></td>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">rule path-targeted</span></td>
+              <td data-level="1"><span class="cell-bar"></span><span class="cell-note">—</span></td>
+            </tr>
+            <tr>
+              <th>Planning / escopo</th>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">skills</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">DoR + DoD</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">verification reports</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">CONTEXT.md + handoff</span></td>
+            </tr>
+            <tr>
+              <th>Documentação</th>
+              <td data-level="1"><span class="cell-bar"></span><span class="cell-note">manual</span></td>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">links no DoD</span></td>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">audit-architecture</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">SSOT Projeto.md</span></td>
+            </tr>
+            <tr>
+              <th>Scripts / tooling</th>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">cruft hook</span></td>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">INDEX gate</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">INDEX.md vivo</span></td>
+              <td data-level="2"><span class="cell-bar"></span><span class="cell-note">taxonomia fechada</span></td>
+            </tr>
+            <tr>
+              <th>Multi-repo / ecossistema</th>
+              <td data-level="1"><span class="cell-bar"></span><span class="cell-note">skills manuais</span></td>
+              <td data-level="1"><span class="cell-bar"></span><span class="cell-note">—</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">Sync-ID bidirecional</span></td>
+              <td data-level="3"><span class="cell-bar"></span><span class="cell-note">Changelog Local</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="heatmap-legend">
+          <span><span class="hl-swatch" data-level="3"></span> Forte (automático/gate)</span>
+          <span><span class="hl-swatch" data-level="2"></span> Presente (skill/estrutura)</span>
+          <span><span class="hl-swatch" data-level="1"></span> Fraco/manual (honesto)</span>
+        </div>
+      </div>
+
+      <div class="scorecard-honesty reveal" data-reveal-delay="250">
+        <p>
+          <strong>Por que mostrar as células fracas?</strong> Porque confiabilidade real inclui saber onde o sistema
+          <em>não</em> protege automaticamente. Sincronização entre repos e documentação dependem mais de disciplina humana —
+          e o template deixa isso explícito em vez de fingir cobertura total.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SECTION 5 — LONGEVIDADE & MULTI-DOMÍNIO
+       ================================================================ -->
+  <section id="longevity" class="section section--longevity" data-section="longevity">
+    <div class="container">
+      <header class="section-head reveal">
+        <span class="section-tag">04 · Longevidade &amp; Multi-domínio</span>
+        <h2 class="section-title">Por que aguenta anos, em qualquer domínio</h2>
+        <p class="section-lede">
+          Alta complexidade e longevidade exigem mais que gates pontuais. Quatro propriedades estruturais
+          fazem o template resistir ao tempo e atravessar domínios sem reescrita.
+        </p>
+      </header>
+
+      <div class="longevity-grid">
+        <article class="long-card reveal">
+          <div class="long-card__icon" data-c="ssot" aria-hidden="true">★</div>
+          <h3>Single Source of Truth</h3>
+          <p>
+            <code>documents/core/Projeto.md</code> é a fonte única. Technical e strategy são suplementares,
+            sempre com backlink. Em conflito, <strong>Projeto.md prevalece</strong> — não há ambiguidade sobre o que é verdade.
+          </p>
+        </article>
+
+        <article class="long-card reveal" data-reveal-delay="100">
+          <div class="long-card__icon" data-c="domain" aria-hidden="true">◍</div>
+          <h3>Domain-agnostic por construção</h3>
+          <p>
+            Rules <strong>path-targeted</strong> carregam só quando o arquivo relevante é tocado. Placeholders
+            neutralizáveis e detecção stack-aware (Python, Node, Go, Rust) deixam o mesmo processo servir fintech, saúde, dados ou web.
+          </p>
+        </article>
+
+        <article class="long-card reveal" data-reveal-delay="200">
+          <div class="long-card__icon" data-c="trace" aria-hidden="true">⎌</div>
+          <h3>Rastreabilidade fim-a-fim</h3>
+          <p>
+            Decisão → Roadmap → TODO (<code>verify:</code>) → CONTEXT.md → commit atômico → verification report → reconcile → archive.
+            Cada elo é auditável anos depois. <strong>Sync-ID</strong> rastreia mudanças entre repos.
+          </p>
+        </article>
+
+        <article class="long-card reveal" data-reveal-delay="300">
+          <div class="long-card__icon" data-c="layers" aria-hidden="true">⧉</div>
+          <h3>Isonomia de 3 camadas</h3>
+          <p>
+            <code>.claude/</code>, <code>.codex/</code>, <code>.agents/</code> mantêm as mesmas rules e skills.
+            O projeto não fica refém de uma ferramenta — Claude Code, Codex, Aider, Gemini CLI leem o mesmo processo.
+          </p>
+        </article>
+      </div>
+
+      <div class="longevity-chain reveal" data-reveal-delay="150">
+        <h4>A cadeia de rastreabilidade, ponta a ponta</h4>
+        <div class="chain">
+          <span class="chain-node">Decisão</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node">Roadmap</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node">TODO <code>verify:</code></span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node">CONTEXT.md</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node">commit atômico</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node">DoD report</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node">reconcile</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-node chain-node--end">_archive/</span>
+        </div>
+      </div>
+
+      <footer class="atlas-foot reveal">
+        <div class="atlas-foot__links">
+          <a class="btn btn--primary" href="../walkthrough/index.html">
+            <span>Ver o Walkthrough narrativo</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn--ghost" href="../../core/Projeto.md"><span>Projeto.md</span></a>
+          <a class="btn btn--ghost" href="../../../.planning/README.md"><span>.planning/</span></a>
+        </div>
+        <p class="atlas-foot__note">
+          tech-product-template · atlas de fluxos v1 · 8 fluxos · 24 skills · 7 gates · 3 hooks · 7 rules · 3 camadas
+        </p>
+      </footer>
+    </div>
+  </section>
+
+  <!-- MODAL · Lightbox para diagramas -->
+  <dialog id="zoomModal" class="zoom-modal" aria-labelledby="zoomModalTitle">
+    <header class="zoom-modal__header">
+      <h3 id="zoomModalTitle" class="zoom-modal__title">Diagrama</h3>
+      <button type="button" class="zoom-modal__close" aria-label="Fechar modal">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M6 18L18 6" />
+        </svg>
+      </button>
+    </header>
+    <div class="zoom-modal__body" id="zoomModalBody" aria-live="polite"></div>
+    <footer class="zoom-modal__hint">
+      <span><kbd>Esc</kbd> ou clique fora para fechar</span>
+      <span class="zoom-modal__sep">·</span>
+      <span>scroll dentro do painel se o diagrama for maior</span>
+    </footer>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>
