@@ -25,3 +25,15 @@ Branch: `ciclo-1-fundacao`
 **Revisão independente:** dispensada para o PR-0 (documentação, sem código a revisar).
 
 **Próximo passo:** PR-1 · Containerização (next.config standalone, Dockerfile do web, docker-compose). Requer `npm install` (node_modules ausente neste clone). Build/deploy ocorre no Windows.
+
+### 2026-06-28 — PR-1 · Containerização + PR-2 · Scheduler (parte de código)
+
+**Entregue (código, validado localmente no Mac):**
+- `next.config.js`: `output: 'standalone'` + `outputFileTracingRoot: __dirname` (corrige o aninhamento do `server.js` quando o projeto está sob `~/Documents`).
+- `Dockerfile` multi-stage (Next standalone) + `.dockerignore`.
+- `docker-compose.yml`: serviços `web` (3000), `model-engine` (8010), `news-nlp` (8000, volume `news-models`) e `scheduler` (tick interno); `restart: unless-stopped`.
+- `scripts/scheduler.mjs`: replica o Cloudflare Worker (GET `/api/market` + POST `/api/sim {tick}` com `Bearer CRON_SECRET`; retrain diário opcional).
+
+**Validação local:** `npm run type-check` ✓, `npm run build` ✓ (`server.js` na raiz do standalone), `npm run lint` ✓, `node --check scheduler.mjs` ✓. Docker ausente no Mac — `docker compose` e smokes validados na fase Windows.
+
+**Pendente (fase Windows):** provisionar Neon próprio + `.env`, `docker compose up`, smoke do contrato (G-CONTRACT), `"persistence":"postgres"`, tick avançando o book sem browser. Depois PR-3 (Tailscale Funnel + uptime + cutover).
