@@ -67,3 +67,18 @@ Branch: `ciclo-1-fundacao`
 **Caveat aberto (decisão do usuário):** o caminho **direto via Tailscale MagicDNS** (o que dispositivos do usuário COM Tailscale usam) dá timeout — sintoma de rede WSL2-NAT (ping/UDP passa, handshake TLS não). O Funnel público funciona por trafegar pelo túnel ingress↔node. Fix robusto candidato: servir o Funnel do **host Windows** (Tailscale nativo, sem NAT do WSL2), que exigiria renomear o node para manter a URL. Pendente de decisão.
 
 **Próximo passo:** decidir o fix do acesso direto; depois reescrever `DEPLOY.md` com o setup real (WSL2 Docker Engine, disco D, keep-alive, Tailscale no WSL2) e o teste de reboot (PR-3).
+
+### 2026-07-19 — Funnel migrado para o host Windows (acesso direto corrigido)
+
+**Problema:** o Funnel no node WSL2 servia o público (via ingress) mas o caminho **direto via Tailscale MagicDNS** — usado pelos dispositivos do usuário COM Tailscale — dava timeout (rede WSL2-NAT: ping/UDP passa, handshake TLS não). Do Mac do usuário, "nada carregava".
+
+**Fix (aprovado):** mover só a camada de rede para o Tailscale **nativo do Windows**, mantendo os containers no WSL2 (Docker Linux exige kernel Linux; autonomia remota preservada via SSH→Windows→`wsl`):
+- Funnel ativado no node Windows → `localhost:3000` (que o WSL2 encaminha ao container).
+- WSL2: funnel desligado, node renomeado `market-terminal` → `market-terminal-wsl` para liberar o nome.
+- Windows: node renomeado `desktop-0mv2ie1-1` → `market-terminal`; cert provisionado; funnel limpo só nesse nome.
+
+**Resultado:** `https://market-terminal.tailb4f665.ts.net` responde HTTP 200 **direto (MagicDNS, ~25-50ms) e público (ingress, ~1s)**. Verificação visual do Mac pela URL real: login → dashboard com dados ao vivo. Único acerto pontual: flush de DNS no Mac do usuário (cache do IP antigo do WSL2; `sudo dscacheutil -flushcache`), one-time e só no dispositivo que acessou o nome antigo antes do rename.
+
+**Arquitetura final de rede:** Windows Tailscale (Funnel, sempre on) → `localhost:3000` → WSL2 Docker (mantido quente pelo keep-alive `WSL-KeepAlive-MT`). O keep-alive continua necessário — aquece a distro/container, não a rede.
+
+**Pendente:** reescrever `DEPLOY.md` com esse desenho final; teste de reboot (PR-3).
