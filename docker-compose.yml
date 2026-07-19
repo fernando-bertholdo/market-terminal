@@ -3,6 +3,7 @@ services:
     build: .
     env_file: .env
     environment:
+      HOSTNAME: "0.0.0.0"
       ATLAS_BACKEND_URL: http://model-engine:8010
       MODEL_ENGINE_URL: http://model-engine:8010
       NEWS_NLP_URL: http://news-nlp:8000
