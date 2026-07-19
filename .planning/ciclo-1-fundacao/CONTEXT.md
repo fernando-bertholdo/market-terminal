@@ -37,3 +37,15 @@ Branch: `ciclo-1-fundacao`
 **Validação local:** `npm run type-check` ✓, `npm run build` ✓ (`server.js` na raiz do standalone), `npm run lint` ✓, `node --check scheduler.mjs` ✓. Docker ausente no Mac — `docker compose` e smokes validados na fase Windows.
 
 **Pendente (fase Windows):** provisionar Neon próprio + `.env`, `docker compose up`, smoke do contrato (G-CONTRACT), `"persistence":"postgres"`, tick avançando o book sem browser. Depois PR-3 (Tailscale Funnel + uptime + cutover).
+
+### 2026-07-19 — Fase Windows: canal SSH estabelecido, ambiente diagnosticado
+
+**Canal de controle:** SSH Mac→Windows via Tailscale funcionando (chave dedicada `~/.ssh/market_terminal_win` no Mac). Windows: host `desktop-0mv2ie1` (Tailscale `100.83.237.24`), usuário `anderr` (perfil em `C:\Users\feber`). OpenSSH Server rodando/automático; firewall liberado para a 22 em qualquer perfil.
+
+**Ambiente Windows diagnosticado:**
+- Windows 10 22H2 (build 19045).
+- Instalados: Tailscale (drive `G:`), OpenSSH Server, GitHub Desktop (git embutido em `...\GitHubDesktop\app-3.6.3\resources\app\git\cmd\git.exe`).
+- Ausentes: Docker, WSL, winget, git standalone.
+- Virtualização: habilitada no firmware (`VirtualizationFirmwareEnabled=True`, `HypervisorPresent=False`) → WSL2/Docker viáveis, sem bloqueador de BIOS.
+
+**Decisão pendente (usuário):** runtime de containers — WSL2 + Docker Engine (recomendado, headless via SSH) vs Docker Desktop (GUI-bound). Ambos exigem ~1 reboot. Nada instalado ainda (aguardando confirmação para não disparar reboot sem o usuário).
