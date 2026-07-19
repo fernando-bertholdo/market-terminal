@@ -82,3 +82,17 @@ Branch: `ciclo-1-fundacao`
 **Arquitetura final de rede:** Windows Tailscale (Funnel, sempre on) → `localhost:3000` → WSL2 Docker (mantido quente pelo keep-alive `WSL-KeepAlive-MT`). O keep-alive continua necessário — aquece a distro/container, não a rede.
 
 **Pendente:** reescrever `DEPLOY.md` com esse desenho final; teste de reboot (PR-3).
+
+### 2026-07-19 — Saúde do stack, book fresco e login do João (multi-credencial)
+
+**Bug do model-engine corrigido:** o container estava em loop de restart — o `Dockerfile` não copiava `earnings.py` (que `app.py` importa), quebrando em `ModuleNotFoundError`. O app seguia via fallback TypeScript, mascarando a falha (dashboard verde não prova o Python servindo). Adicionado ao COPY (commit `a7ee37e`); rebuild → `model-engine Up`, contrato BFF→Python confirmado (`{"status":"ok","backend":"python","capabilities":[...]}`).
+
+**Decisão do usuário (quant data):** seguir com book **fresco** (sem importar o do João). Inspeção do Neon confirmou que o único "quant data" persistido é o paper book (`sim_state`: 3 posições, cash/equity ~1M, tape `intradayEquity`); o modelo é **código** (27 decisões computadas live), sem dataset/treino. Isolamento de dados por usuário fica para o SP2.
+
+**Login do João (multi-credencial):** o auth resolvia sempre a credencial fixa `primary` (single-login). Refatorado (`src/lib/auth.ts`, commit `d755282`): login **por username** (`loadCredentialByUsername`), `createSession(credentialId)`, `changeCredentials` no usuário logado, e `provisionCredential`. Schema já suportava N credenciais (username UNIQUE). Provisionada a credencial `joao` direto no Neon a partir do Mac (o `@neondatabase/serverless` é bundlado no standalone, não resolvível em `/app`). Book **compartilhado** (mesma interface/dados). Verificado: `joao` 200, `fernando` 200, senha errada 401; visualmente `joao` no dashboard com o username correto no Account. Isolamento por usuário = SP2.
+
+**DEPLOY.md** reescrito para o desenho final (commit `3772024`).
+
+**Dívida técnica:** os repos divergiram — Mac (fonte, com os commits) vs Windows (deploy, working-tree editado via `scp` + rebuild). Reconciliar depois (fazer o Windows rastrear `origin`).
+
+**Pendente:** teste de reboot (PR-3, precisa do usuário à frente do PC) + decisão de boot headless (onlogon vs onstart/auto-login — tradeoff de segurança).
