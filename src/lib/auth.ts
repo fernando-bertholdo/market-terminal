@@ -10,6 +10,10 @@ import type { NextRequest, NextResponse } from 'next/server';
 
 const pbkdf2 = promisify(pbkdf2Callback);
 export const AUTH_COOKIE = 'atlas_session';
+// Credencial "semente" criada a partir de APP_USERNAME/APP_PASSWORD no primeiro
+// login. Logins adicionais (ex.: convidados) vivem em outras linhas de
+// auth_credentials e são resolvidos por username — o login não é mais preso a
+// esta id fixa.
 const CREDENTIAL_ID = 'primary';
 const PBKDF2_ITERATIONS = 210_000;
 const SESSION_DAYS = 30;
@@ -97,6 +101,17 @@ async function loadCredential(): Promise<CredentialRow | null> {
   return rows[0] as CredentialRow | undefined ?? null;
 }
 
+async function loadCredentialByUsername(username: string): Promise<CredentialRow | null> {
+  await ensureSchema();
+  const sql = postgres()!;
+  const rows = await sql`
+    SELECT id, username, password_hash, salt, iterations
+    FROM auth_credentials
+    WHERE username = ${username}
+  `;
+  return rows[0] as CredentialRow | undefined ?? null;
+}
+
 async function bootstrapCredential(username: string, password: string): Promise<CredentialRow | null> {
   const envUsername = process.env.APP_USERNAME ?? '';
   const envPassword = process.env.APP_PASSWORD ?? '';
@@ -113,30 +128,54 @@ async function bootstrapCredential(username: string, password: string): Promise<
   return loadCredential();
 }
 
+/**
+ * Cria (idempotente) uma credencial de login adicional que compartilha a mesma
+ * interface e o mesmo book global. Usada para provisionar acessos nomeados
+ * (ex.: o João) enquanto o produto ainda é single-tenant; o isolamento de dados
+ * por usuário virá no design multi-tenant (SP2).
+ */
+export async function provisionCredential(
+  id: string,
+  username: string,
+  password: string
+): Promise<CredentialRow | null> {
+  await ensureSchema();
+  const record = await passwordRecord(password);
+  const sql = postgres()!;
+  await sql`
+    INSERT INTO auth_credentials (id, username, password_hash, salt, iterations)
+    VALUES (${id}, ${username}, ${record.hash}, ${record.salt}, ${record.iterations})
+    ON CONFLICT (id) DO NOTHING
+  `;
+  return loadCredentialByUsername(username);
+}
+
 async function verifyPassword(credential: CredentialRow, password: string): Promise<boolean> {
   const candidate = await derivePassword(password, credential.salt, credential.iterations);
   return constantTimeHexEqual(candidate, credential.password_hash);
 }
 
-async function createSession(): Promise<{ token: string; expiresAt: Date }> {
+async function createSession(credentialId: string): Promise<{ token: string; expiresAt: Date }> {
   const sql = postgres()!;
   const token = randomBytes(32).toString('base64url');
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
   await sql`DELETE FROM auth_sessions WHERE expires_at <= now()`;
   await sql`
     INSERT INTO auth_sessions (token_hash, credential_id, expires_at)
-    VALUES (${tokenHash(token)}, ${CREDENTIAL_ID}, ${expiresAt.toISOString()})
+    VALUES (${tokenHash(token)}, ${credentialId}, ${expiresAt.toISOString()})
   `;
   return { token, expiresAt };
 }
 
 export async function login(username: string, password: string) {
-  let credential = await loadCredential();
+  // Resolve por username: qualquer credencial provisionada pode logar. Se ainda
+  // não existir e casar com APP_USERNAME/APP_PASSWORD, cria a semente 'primary'.
+  let credential = await loadCredentialByUsername(username);
   if (!credential) credential = await bootstrapCredential(username, password);
   if (!credential || credential.username !== username || !(await verifyPassword(credential, password))) {
     return null;
   }
-  return createSession();
+  return createSession(credential.id);
 }
 
 export async function authenticatedUser(request: NextRequest): Promise<string | null> {
@@ -162,7 +201,9 @@ export async function changeCredentials(
 ) {
   const currentUser = await authenticatedUser(request);
   if (!currentUser) return { error: 'Session expired', status: 401 } as const;
-  const credential = await loadCredential();
+  // Altera a credencial do usuário logado (não mais uma fixa) — cada login
+  // gerencia a própria senha/nome sem afetar os demais.
+  const credential = await loadCredentialByUsername(currentUser);
   if (!credential || !(await verifyPassword(credential, currentPassword))) {
     return { error: 'Current password is incorrect', status: 403 } as const;
   }
@@ -183,10 +224,10 @@ export async function changeCredentials(
         salt = ${record.salt},
         iterations = ${record.iterations},
         updated_at = now()
-    WHERE id = ${CREDENTIAL_ID}
+    WHERE id = ${credential.id}
   `;
-  await sql`DELETE FROM auth_sessions WHERE credential_id = ${CREDENTIAL_ID}`;
-  return { session: await createSession(), username: normalizedUsername } as const;
+  await sql`DELETE FROM auth_sessions WHERE credential_id = ${credential.id}`;
+  return { session: await createSession(credential.id), username: normalizedUsername } as const;
 }
 
 export async function logout(request: NextRequest): Promise<void> {
@@ -218,4 +259,3 @@ export function clearSessionCookie(response: NextResponse): void {
     expires: new Date(0),
   });
 }
-
