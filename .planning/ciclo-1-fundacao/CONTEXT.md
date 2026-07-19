@@ -49,3 +49,21 @@ Branch: `ciclo-1-fundacao`
 - Virtualização: habilitada no firmware (`VirtualizationFirmwareEnabled=True`, `HypervisorPresent=False`) → WSL2/Docker viáveis, sem bloqueador de BIOS.
 
 **Decisão pendente (usuário):** runtime de containers — WSL2 + Docker Engine (recomendado, headless via SSH) vs Docker Desktop (GUI-bound). Ambos exigem ~1 reboot. Nada instalado ainda (aguardando confirmação para não disparar reboot sem o usuário).
+
+### 2026-07-19 — Fase Windows: stack no ar, verificação visual e caveat de acesso
+
+**Runtime provisionado:** WSL2 (Ubuntu, disco D) + **Docker Engine nativo** (não Docker Desktop — evita o `docker-credential-desktop` que falha em SSH headless: "A specified logon session does not exist"). Docker e imagens no disco D conforme pedido.
+
+**Stack no ar:** `docker compose up -d --build` com os 4 serviços (web 3000, model-engine 8010, news-nlp 8000, scheduler). `.env` próprio no Windows (`G:/tech_projects/market-terminal/.env`) com Neon próprio.
+
+**Smokes (G-CONTRACT):** `/api/market` retorna campos reais via BFF→model-engine; `/api/sim` reporta `"persistence":"postgres"`; scheduler avança o book sem browser. O web bindava no id do container (env `HOSTNAME`) e recusava conexões externas — fixado com `HOSTNAME=0.0.0.0` (commit `ee69fe1`).
+
+**Acesso público:** Tailscale + Funnel rodando **dentro do WSL2** (não no host). Exigiu habilitar HTTPS certs e autorizar o node no Funnel. URL pública `https://market-terminal.tailb4f665.ts.net` responde **HTTP 200 para qualquer um sem Tailscale** (verificado forçando o IP do ingress `199.38.181.54`).
+
+**Uptime:** o WSL2 congela a distro ociosa (o Funnel cai). Resolvido com **keep-alive ativo** (curl a cada 5s no localhost:3000) via Task Scheduler (`WSL-KeepAlive-MT`, `/sc onlogon`) — o keep-alive passivo (`tail -f /dev/null`) não impedia o freeze.
+
+**Verificação visual (Chrome DevTools MCP):** login (`fernando`) → dashboard Overview renderizando dados ao vivo (USD/BRL 5.1108, SELIC 14.15%, curva DI Jan/27–Jan/30, movers, 8 manchetes reais classificadas, 4 data sources verdes). Feita via túnel SSH `-L 8899:localhost:3000` (o caminho direto Tailscale não serve o navegador). Registrado como instrução permanente (memória `always-visual-verification`). Quirks pré-existentes do app (não do deploy): card US 10Y sem valor; DI Jul/26 `—` (domingo/contrato expirado).
+
+**Caveat aberto (decisão do usuário):** o caminho **direto via Tailscale MagicDNS** (o que dispositivos do usuário COM Tailscale usam) dá timeout — sintoma de rede WSL2-NAT (ping/UDP passa, handshake TLS não). O Funnel público funciona por trafegar pelo túnel ingress↔node. Fix robusto candidato: servir o Funnel do **host Windows** (Tailscale nativo, sem NAT do WSL2), que exigiria renomear o node para manter a URL. Pendente de decisão.
+
+**Próximo passo:** decidir o fix do acesso direto; depois reescrever `DEPLOY.md` com o setup real (WSL2 Docker Engine, disco D, keep-alive, Tailscale no WSL2) e o teste de reboot (PR-3).
