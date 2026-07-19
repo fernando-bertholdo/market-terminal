@@ -96,3 +96,16 @@ Branch: `ciclo-1-fundacao`
 **Dívida técnica:** os repos divergiram — Mac (fonte, com os commits) vs Windows (deploy, working-tree editado via `scp` + rebuild). Reconciliar depois (fazer o Windows rastrear `origin`).
 
 **Pendente:** teste de reboot (PR-3, precisa do usuário à frente do PC) + decisão de boot headless (onlogon vs onstart/auto-login — tradeoff de segurança).
+
+### 2026-07-19 — PR-3: teste de reboot PASSOU (auto-heal com login)
+
+Reboot real do Windows validado. Recuperação automática confirmada:
+- OpenSSH + Tailscale (serviços) subiram no boot, **antes** do login; node Windows reconectou sozinho.
+- WSL Ubuntu subiu no login do usuário (tarefa `onlogon`); `systemd` + `docker.service` enabled + `restart:unless-stopped` trouxeram os 4 containers ("Up About a minute") sem intervenção.
+- `model-engine` voltou saudável (fix do `earnings.py` na imagem, sem loop).
+- Funnel do Windows persistiu (reload automático) → URL pública **HTTP 200 em 57ms**.
+- `persistence:postgres` (book intacto no Neon); **a sessão do usuário sobreviveu** (Neon); dashboard renderiza com dados ao vivo. Boot levou ~6min (mais lento que o normal).
+
+**Nível validado:** auto-heal **COM login**. Headless (sem login) ainda depende de decisão de segurança: o WSL é registrado **por-usuário**, então uma tarefa `onstart` como SYSTEM não enxerga a distro `Ubuntu` — a tarefa de boot precisaria rodar como o usuário (senha guardada) ou usar auto-login.
+
+**Ciclo 1 — estado:** stack self-hosted no ar, URL pública estável (`market-terminal.tailb4f665.ts.net`), acesso direto+público OK, `model-engine` saudável, login multi-credencial (`fernando`+`joao`), reboot self-heal validado. **Pendências:** decisão de boot headless; reconciliar repos Mac/Windows; merge de `ciclo-1-fundacao`.
