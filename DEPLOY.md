@@ -49,7 +49,7 @@ The repo lives at e.g. `G:\tech_projects\market-terminal` (reachable from WSL as
 ```bash
 git clone https://github.com/fernando-bertholdo/market-terminal.git
 cd market-terminal
-git checkout ciclo-1-fundacao   # until merged to main
+# main already carries the self-hosted foundation (Ciclo 1)
 ```
 
 ## 2. Neon Postgres
