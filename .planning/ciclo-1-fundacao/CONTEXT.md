@@ -108,4 +108,8 @@ Reboot real do Windows validado. Recuperação automática confirmada:
 
 **Nível validado:** auto-heal **COM login**. Headless (sem login) ainda depende de decisão de segurança: o WSL é registrado **por-usuário**, então uma tarefa `onstart` como SYSTEM não enxerga a distro `Ubuntu` — a tarefa de boot precisaria rodar como o usuário (senha guardada) ou usar auto-login.
 
-**Ciclo 1 — estado:** stack self-hosted no ar, URL pública estável (`market-terminal.tailb4f665.ts.net`), acesso direto+público OK, `model-engine` saudável, login multi-credencial (`fernando`+`joao`), reboot self-heal validado. **Pendências:** decisão de boot headless; reconciliar repos Mac/Windows; merge de `ciclo-1-fundacao`.
+**Ciclo 1 — estado:** stack self-hosted no ar, URL pública estável (`market-terminal.tailb4f665.ts.net`), acesso direto+público OK, `model-engine` saudável, login multi-credencial (`fernando`+`joao`), reboot self-heal validado.
+
+**Decisão de boot headless:** ficou em `onlogon` (opção C — self-heal quando o usuário loga). Auto-login via Sysinternals Autologon foi tentado mas travou: conta local `anderr`, senha antiga (08/07/2022) que o usuário não usa (loga por PIN); trocar a senha resetaria o PIN, então adiado. `Autologon64.exe` deixado em `C:\Users\feber` para uso futuro. Auto-login / "servidor Always On" fica a cargo do usuário depois.
+
+**Pendências (arrumação/futuro):** reconciliar repos Mac↔Windows (o deploy recebeu fixes via `scp`, o Windows precisa passar a rastrear `origin`); merge de `ciclo-1-fundacao` → `main`; SP2 (design multi-tenant + ranking).
