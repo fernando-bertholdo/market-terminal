@@ -17,7 +17,7 @@ Vamos iniciar o **Ciclo 2 — SP2 · Multi-tenancy core** do Market Terminal. O 
 
 ### Estado atual (fim do Ciclo 1)
 
-- **Deploy:** self-hosted no Windows (WSL2 + Docker Engine; Tailscale **Funnel no host Windows** → `localhost:3000` → container `web`). URL: `https://market-terminal.tailb4f665.ts.net`. Os 4 serviços (web, model-engine, news-nlp, scheduler) sobem sozinhos após reboot (validado no PR-3); keep-alive `WSL-KeepAlive-MT` mantém a distro WSL2 quente. Boot headless em `onlogon` (auto-login adiado — o usuário resolve depois).
+- **Deploy:** self-hosted no Windows (WSL2 + Docker Engine; Tailscale **Funnel no host Windows** → `localhost:3000` → container `web`). URL: `https://homelab.tailb4f665.ts.net` (o nó foi renomeado de `market-terminal` para `homelab` em 26/07/2026 — ver `.planning/patches/rename-node-homelab/plan.md`; a URL antiga está morta). Os 4 serviços (web, model-engine, news-nlp, scheduler) sobem sozinhos após reboot (validado no PR-3); keep-alive `WSL-KeepAlive-MT` mantém a distro WSL2 quente. Boot headless em `onlogon` (auto-login adiado — o usuário resolve depois).
 - **Auth:** multi-credencial já feita. Dois logins: `fernando` (id `primary`) e `joao` — **mas ambos compartilham o mesmo book global**. A sessão hoje é um `SELECT` no Postgres dentro do `middleware.ts` (Edge Runtime, driver Neon).
 - **Persistência:** Neon Postgres (`auth_credentials`, `auth_sessions`, `sim_state`). `sim_state` é **UMA linha JSONB** (`STATE_ID='paper-book'`) — o ponto central a migrar.
 - **Book:** fresco (decidido não importar o do João); o dele pode ser arquivado via `pg_dump` (só tabela `sim_state`) se quiser um benchmark — nunca fundir no book vivo.
