@@ -129,18 +129,44 @@ This serves `https://<node>.<tailnet>.ts.net` → Windows `localhost:3000` →
 (WSL2 localhost forwarding) → the `web` container. Reachable from any browser with
 no client install; the app's own login still gates access.
 
-To choose the hostname in the URL, rename the node — the Funnel URL follows the node
-name:
+### Naming: the URL *is* the node name
+
+Tailscale collapses machine name, MagicDNS name and Funnel URL into a single field —
+editing one edits all three. Funnel supports neither custom domains nor Tailscale
+Services (`tailscale funnel` has no `--service` flag; Services are tailnet-internal
+only), so there is no way to decouple them from inside Tailscale.
+
+Consequence: **name the host after what it is, not after the workload it runs.** This
+host is `homelab` (serving `https://homelab.<tailnet>.ts.net`) because it is a
+personal machine that happens to run this app among other things. Naming it after one
+project makes the machine's identity false the moment it hosts a second one, and puts
+that project's name on every device list where the machine appears.
+
+To rename, **clear the Funnel first** — the serve config is keyed by the full DNS
+name, so renaming with Funnel on strands a config bound to a name that no longer
+exists (tailscale/tailscale#7086):
 
 ```powershell
-tailscale set --hostname=market-terminal
-tailscale cert market-terminal.<tailnet>.ts.net   # force cert provisioning
+tailscale funnel reset                       # clear config bound to the OLD name
+tailscale set --hostname=<new-name>          # persists in client prefs; survives reboot
+tailscale cert <new-name>.<tailnet>.ts.net   # force cert provisioning
+tailscale funnel --bg --yes 3000             # re-arm on the new name
 ```
+
+Verify with `tailscale serve status --json`: the only key should be the new name. Note
+`tailscale cert` writes the cert and private key into the current directory as a side
+effect — run it from a temp dir and delete both files afterwards; the daemon keeps its
+own copy in its cert store.
 
 The first HTTPS request to a new name provisions the cert (a cold first hit may be
 slow or fail; retry). If a device reached the app under a **previous** node name,
 flush its DNS after the rename — otherwise it keeps the stale IP cached
 (macOS: `sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder`).
+
+Renaming changes the origin, so the `atlas_session` cookie does not carry over —
+every user signs in once more. Nothing else moves: the tailnet IP is stable across a
+rename (SSH keeps working), and the containers only ever talk over the internal Docker
+network (`TERMINAL_URL: http://web:3000`).
 
 ## 7. Uptime
 
