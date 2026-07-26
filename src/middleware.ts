@@ -66,6 +66,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  // `icon.svg` is the App Router file convention (src/app/icon.svg): Next emits a
+  // `<link rel="icon" href="/icon.svg">` on every page, so the browser requests it
+  // before any session exists. Without the exemption the auth gate answers with a
+  // 307 to /login and the tab renders no icon at all.
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.svg).*)'],
 };
 
