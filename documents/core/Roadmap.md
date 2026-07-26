@@ -153,7 +153,7 @@ Provar a hipótese técnica central da migração: rodar a **aplicação inteira
 ### Arquitetura-alvo
 
 ```
-        Tailscale Funnel → https://market-terminal.<tailnet>.ts.net
+        Tailscale Funnel → https://homelab.<tailnet>.ts.net
                 │
    ┌────────────┴── Windows + Docker Desktop (inicia no boot) ───────────┐
    │  docker-compose (restart: unless-stopped)                           │
