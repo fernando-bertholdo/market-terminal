@@ -63,7 +63,7 @@ tailscale funnel --bg --yes 3000
 - [x] Verificação visual: tela de login renderiza pela URL nova, com certificado válido e sem aviso do navegador
 - [x] SSH inalterado (`anderr@100.83.237.24` — o IP da tailnet é estável no rename)
 - [x] Docs atualizados
-- [ ] Verificação visual autenticada (dashboard com dados ao vivo) — **pendente do usuário**, requer login
+- [x] Verificação visual autenticada (dashboard com dados ao vivo) — confirmada pelo usuário em 26/07/2026: "está absolutamente tudo funcionando no novo link"
 - [ ] Admin console: desmarcar "Auto-generate from OS hostname" — **reforço opcional**, o hostname já está nas prefs do cliente
 - [ ] João notificado da URL nova
 
