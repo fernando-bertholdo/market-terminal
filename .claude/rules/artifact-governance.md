@@ -1,3 +1,17 @@
+---
+paths:
+  - "data/**/*"
+  - "output/**/*"
+  - "reports/**/*"
+  - "src/cli.py"
+  - "src/storage/**/*"
+  - "src/reports/**/*"
+  - "scripts/**/*"
+  - ".gitignore"
+  - ".planning/**/*"
+  - "documents/reports/**/*"
+---
+
 # Artifact Governance
 
 Use esta regra quando a tarefa tocar em criacao, leitura, migracao, naming ou defaults de artefatos em:

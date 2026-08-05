@@ -1,3 +1,8 @@
+---
+paths:
+  - ".claude/rules/**/*"
+---
+
 # Regras do Projeto (Claude)
 
 Este diretorio contem regras path-targeted e politicas de execucao para sessoes Claude Code:
@@ -17,6 +22,7 @@ As regras complementam `CLAUDE.md` e devem permanecer semanticamente alinhadas a
 
 | Data | Commit | Sync-ID | Arquivo | Descricao |
 |------|--------|---------|---------|-----------|
+| 2026-08-05 | `PENDING` | `SYNC-20260803-001` | todas as rules + `README.md` | Frontmatter `paths:` em todas as rules — path-targeting real (antes carregavam sempre); sync downstream do tech-product-template `47ef5a3` |
 | 2026-05-23 | `bd3bb0f` | `SYNC-20260523-001` | `scripts-governance.md`, `README.md` | Adiciona rule path-targeted para governança de scripts/ (taxonomia fechada, lifecycle, anti-patterns); propagado para lass (`0ac7015`) e monitor-fundos (`5f455c4`) |
 | 2026-03-10 | `PENDING` | `SYNC-20260310-001` | `artifact-governance.md`, `README.md` | Adiciona regra de governanca de artefatos (modelo 3-camadas portavel) |
 | 2026-03-30 | `1accbb6` | SYNC-20260330-001/002 | `ui-excellence-standards.md`, `README.md` | Adiciona regra path-targeted para UI; propagado para lass (f069711) e monitor-fundos (ae63986) |

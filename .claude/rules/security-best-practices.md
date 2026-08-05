@@ -1,3 +1,10 @@
+---
+paths:
+  - "src/**/*"
+  - "**/*.py"
+  - ".env*"
+---
+
 # Security Best Practices
 
 ## Metadata

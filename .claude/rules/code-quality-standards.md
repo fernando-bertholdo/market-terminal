@@ -1,3 +1,9 @@
+---
+paths:
+  - "src/**/*"
+  - "**/*.py"
+---
+
 # Code Quality Standards (Template)
 
 ## Metadata

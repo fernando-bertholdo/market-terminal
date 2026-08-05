@@ -1,3 +1,10 @@
+---
+paths:
+  - "tests/**/*"
+  - "**/test_*.py"
+  - "**/*_test.py"
+---
+
 # Testing Requirements
 
 ## Metadata
