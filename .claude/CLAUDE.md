@@ -5,7 +5,7 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 > **Arquitetura Single Source of Truth:**
 > - Regras operacionais → Este arquivo
 > - Contexto de negócio e arquitetura → @documents/core/Projeto.md
-> - Detalhes técnicos → @rules/*.md (path-targeted)
+> - Detalhes técnicos → `rules/*.md` (path-targeted via frontmatter `paths:`)
 > - Workflows → @skills/*/SKILL.md
 
 ---
@@ -45,7 +45,8 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 **Ao completar uma fase:**
 - **Invocar skill `validate-docs-links check`** para validar links
 - **Invocar skill `audit-rules full`** para auditar regras
-- **Invocar skill `audit-architecture`** para verificar redundâncias
+- **Invocar skill `audit-architecture`** para verificar redundâncias (inclui revisão de seeds)
+- **Revisar a seção Seeds** do `.planning/README.md` — consumir, promover ou deletar; nenhum seed atravessa a fase sem decisão (§1.7)
 - **Invocar skill `archive-initiative --phase <fase>`** para arquivar initiatives concluídas
 
 ### Regra de Ouro
@@ -69,6 +70,40 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 ### Anti-pattern Crítico
 
 Script criado sem entrada no `scripts/INDEX.md` deve ser **reprovado em review** — INDEX desatualizado quebra a Regra de Ouro de scripts-governance.
+
+---
+
+## 1.7 Registro Contínuo de Descobertas (Nenhuma Pendência Órfã)
+
+### Regra de Ouro
+
+**"Todo 'vale confirmar', 'investigar depois', 'na retomada', requisito ou decisão que emergir num turno DEVE ganhar endereço de registro no MESMO turno."**
+
+Compromissos que vivem só na prosa da conversa evaporam. Registro faz parte da resposta, não é tarefa posterior. Esta regra cobre o buraco entre trabalho formal (gates de DoR/DoD/commit) e **descoberta conversacional** — exploração, diagnóstico e design que acontecem fora de initiative formal.
+
+### Destinos
+
+| O que emergiu | Destino |
+|---|---|
+| Decisão/requisito de initiative formal existente | `CONTEXT.md` da initiative (milestone ou detour) |
+| Requisito de initiative AINDA NÃO formalizada | Seed: `.planning/scratch/seed-<slug>.md` + linha na seção Seeds do `.planning/README.md` |
+| Decisão consolidada de negócio/arquitetura | `update-docs` → `documents/core/Projeto.md` |
+| Fato operacional de ambiente/infra durável | Runbook/doc operacional em `documents/` |
+
+**Harness-agnóstico:** memória nativa do harness (ex.: auto-memory do Claude Code), quando existir, é **cache pessoal do agente** — acelera recall, mas nunca é registro canônico. Nenhuma skill ou regra pode depender de conteúdo que só exista na memória de um harness.
+
+**Lifecycle dos seeds:** duráveis até decisão, com exatamente 3 saídas — **consumido** (`init-detour`/`init-milestone` step 2.5, fonte primária do CONTEXT.md), **promovido/mesclado** em initiative existente, ou **deletado** com justificativa. Revisão obrigatória no fechamento de fase e na `audit-architecture` (check 6); nenhum seed atravessa uma fase sem decisão.
+
+### Contrato de Resposta
+
+Turnos que produziram descobertas terminam com um bloco curto (antes da linha de status final):
+
+```
+📌 Registros deste turno:
+- <item> → <destino>
+```
+
+Turnos triviais (respostas diretas, sem descobertas) ficam isentos.
 
 ---
 
@@ -150,14 +185,6 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 - Tasks têm dependência sequencial forte
 - Milestone requer decisões arquiteturais incrementais
 
-### Níveis de Orquestração
-
-| Nível | Padrão | Teammates | Quando |
-|-------|--------|-----------|--------|
-| **1. Research** | Pesquisa paralela antes de implementar | 2-3 (Haiku) | Validar abordagem, identificar riscos |
-| **2. Sprint** | Tasks independentes em paralelo | 2-3 (Sonnet) | Milestone com tasks em arquivos diferentes |
-| **3. Pipeline** | Fases sequenciais com paralelismo interno | 3-4 (mix) | Sprint completo com research→impl→test→review |
-
 ### Regras de Segurança para Teammates
 
 **CRÍTICO — Teammates NÃO podem:**
@@ -184,42 +211,9 @@ Ativar com **Shift+Tab** após criar equipe. Restringe o Lead a:
 
 **Usar quando:** Sprint com 3+ teammates para evitar que o Lead implemente ao invés de coordenar.
 
-### Composição de Equipe por Nível
+### Níveis, Composição e Spawn Prompts
 
-**Nível 1 — Research:**
-```
-Lead (Opus/Sonnet): coordena, sintetiza findings
-├── Researcher A (Haiku): analisa codebase existente
-├── Researcher B (Haiku): pesquisa abordagens/padrões
-└── Researcher C (Haiku): identifica riscos e edge cases
-```
-
-**Nível 2 — Sprint:**
-```
-Lead (Opus/Sonnet, delegate mode): distribui tasks, valida, commita
-├── Implementer (Sonnet): implementa módulos designados
-├── Tester (Sonnet): escreve testes para módulos prontos
-└── Reviewer (Haiku): review de código + segurança
-```
-
-**Nível 3 — Pipeline:**
-```
-Lead (Opus, delegate mode): orquestra fases, gates, commits
-├── Fase 1 (parallel research - Haiku)
-├── Fase 2 (parallel implementation - Sonnet)
-├── Fase 3 (Lead: pre-commit-check + organize-commits)
-└── Fase 4 (Lead: update-docs + validate-dod)
-```
-
-### Spawn Prompts — Contexto para Teammates
-
-Ao spawnar teammate, incluir no prompt:
-1. **Milestone e scope** (extrair de Roadmap.md)
-2. **Arquivos designados** (para evitar conflitos)
-3. **Restrições** (não commitar, não editar docs core)
-4. **Deliverable esperado** (o que reportar ao terminar)
-
-> **Referência completa:** Invocar skill `agent-team` para templates de spawn e composição.
+> **Referência completa:** Invocar skill `agent-team` para os 3 níveis de orquestração (Research/Sprint/Pipeline), composição de equipe por nível e templates de spawn prompt (single source — não duplicar aqui).
 
 ### Quality Gates Automáticos
 
@@ -261,7 +255,7 @@ Hooks configurados em `.claude/settings.json`:
 - [ ] .env.example documentado
 - [ ] Error handling não expõe credenciais
 
-> **Detalhes técnicos:** @rules/security-best-practices.md
+> **Detalhes técnicos:** `rules/security-best-practices.md` (carrega ao editar src/, *.py, .env*)
 
 ---
 
@@ -368,10 +362,10 @@ Para regras de negócio, arquitetura e decisões técnicas:
 
 ### Detalhes Técnicos (Path-Targeted)
 
-Os seguintes arquivos são carregados automaticamente conforme contexto:
-- @rules/code-quality-standards.md → Quando editando src/**/*
-- @rules/security-best-practices.md → Quando editando src/**/*
-- @rules/testing-requirements.md → Quando editando tests/**/*
+Os seguintes arquivos são carregados automaticamente conforme contexto (via frontmatter `paths:` de cada rule — sem `@` aqui, que forçaria import ansioso):
+- `rules/code-quality-standards.md` → Quando editando src/**/*
+- `rules/security-best-practices.md` → Quando editando src/**/*
+- `rules/testing-requirements.md` → Quando editando tests/**/*
 
 ### Timeline e Gestão
 
@@ -397,9 +391,22 @@ Os seguintes arquivos são carregados automaticamente conforme contexto:
 
 ---
 
-**Versão:** 2.8.0
-**Última atualização:** 2026-06-28
+**Versão:** 2.12.0
+**Última atualização:** 2026-08-05
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.12.0:**
+- Rules path-targeted de fato: frontmatter `paths:` adicionado às rules de `.claude/rules/` (sem frontmatter, carregavam em TODA sessão — ~12k tokens residentes)
+- Seções 1 (header), 5 e 9: referências a rules sem `@` — o prefixo `@` é import ansioso e anulava o path-targeting
+- Seção 3: níveis de orquestração, composição por nível e spawn prompts vivem na skill `agent-team` (single source)
+- Sync downstream do tech-product-template `239d146` (SYNC-20260803-003)
+
+**Changelog v2.11.0:**
+- Seção 1.7: nova seção "Registro Contínuo de Descobertas (Nenhuma Pendência Órfã)" — registro no mesmo turno, tabela de destinos, contrato do bloco "📌 Registros deste turno" (numeração 1.6 reservada)
+- Convenção de seeds pré-initiative em `.planning/scratch/seed-<slug>.md` + lifecycle de 3 saídas (consumir/promover/deletar)
+- Princípio harness-agnóstico: memória nativa do harness é cache pessoal, nunca registro canônico
+- Gap consciente: v2.9/v2.10 do template (design flow / Claude Design) NÃO aplicados nesta leva
+- Sync downstream do tech-product-template `ec3b7a9` (SYNC-20260803-002)
 
 **Changelog v2.8.0:**
 - Seção 1.5: Nova seção "Manutenção de `scripts/`" referenciando rule scripts-governance.md e skill audit-scripts
