@@ -48,7 +48,11 @@ services:
     volumes:
       - news-models:/models
     restart: unless-stopped
-    # start_period generoso: o serviço carrega modelos do volume antes de servir.
+    # O check prova apenas que o uvicorn atende — não que os modelos estejam
+    # carregados. O /health responde 200 desde o primeiro instante: o warmup roda
+    # em thread daemon (e só com WARMUP=true, que este compose não define) e o
+    # pipeline carrega modelo sob demanda na primeira classificação. Condicionar
+    # o healthcheck a `models_loaded` deixaria o container unhealthy para sempre.
     healthcheck:
       test:
         - CMD
@@ -58,7 +62,7 @@ services:
       interval: 30s
       timeout: 6s
       retries: 3
-      start_period: 120s
+      start_period: 30s
 
   scheduler:
     build: .
