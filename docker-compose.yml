@@ -13,10 +13,33 @@ services:
       - model-engine
       - news-nlp
     restart: unless-stopped
+    # A imagem não tem curl nem wget; usa o node que já está nela.
+    # Aceita qualquer status < 500: o app responde 307 em toda rota (redirect
+    # global), e o que se quer provar é que há alguém atendendo, não a rota.
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
 
   model-engine:
     build: ./services/model-engine
     restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8010/health',timeout=4).status==200 else 1)"
+      interval: 30s
+      timeout: 6s
+      retries: 3
+      start_period: 30s
 
   news-nlp:
     build: ./services/news-nlp
@@ -25,6 +48,17 @@ services:
     volumes:
       - news-models:/models
     restart: unless-stopped
+    # start_period generoso: o serviço carrega modelos do volume antes de servir.
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=4).status==200 else 1)"
+      interval: 30s
+      timeout: 6s
+      retries: 3
+      start_period: 120s
 
   scheduler:
     build: .
@@ -36,6 +70,9 @@ services:
     depends_on:
       - web
     restart: unless-stopped
+    # Sem healthcheck de propósito: o scheduler é um processo de fundo, não um
+    # servidor, e não expõe superfície de saúde. Um teste que sempre passa seria
+    # pior que nenhum — reportaria "healthy" para um processo travado.
 
 volumes:
   news-models:
