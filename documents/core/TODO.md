@@ -309,7 +309,36 @@ Fase 4 (Exp):  ░░░░░░░░░░░░░   0%  (SP3 · SP4 · SP5)
 
 ### Bloqueios Ativos
 
-**Nenhum bloqueio ativo no momento.**
+**1. Arquitetura do agente always-on — decisão aguardando o Fernando (TECH-31 · P1).**
+
+Quatro opções na mesa desde 23/07/2026: sessão de terminal aberta; disparo por
+relógio de um agente headless no host Windows; routine na nuvem como núcleo;
+híbrido (headless local + routine externa de watchdog de uptime). A sessão de
+julho recomendou o híbrido. **Nada foi decidido.**
+
+O que trava atrás disso: as skills `/briefing`, `/recap` e `/watchdog`, e o
+esboço de `.planning/patches/agente-headless/`.
+
+Insumo levantado em 20/08/2026, que não existia em julho e pode encolher a
+decisão — **apurado, não concluído**:
+
+- O daemon do orquestrador de tarefas roda como processo persistente no WSL do
+  desktop (`homelab-wsl`). O processo em execução hoje subiu em 19/08 17:30, não
+  é um uptime contínuo desde a instalação.
+- Já existem três automações agendadas ativas no workspace, criadas pelo
+  Fernando. Duas cobrem funções que a P1 pretendia construir do zero: um
+  briefing diário do portfólio (desde 17/08) e uma ronda diária de
+  infraestrutura que checa o homelab por SSH em modo somente-leitura (desde
+  18/08). Falta o `/recap`.
+- Há runtimes online em **duas máquinas** (o MacBook e o `homelab-wsl`). O
+  agendamento é externo às duas, mas a execução precisa de um runtime vivo — o
+  que aproxima o arranjo atual do híbrido sem que a escolha tenha sido feita, e
+  deixa em aberto o caso de as duas máquinas caírem juntas.
+
+> ⚠️ Este registro **não satisfaz** o critério "a decisão de P1 está registrada"
+> da TECH-31. Ele registra a pendência e o insumo; a decisão continua com o
+> Fernando. O comando de verificação daquele critério (`grep headless|watchdog`)
+> passa a casar com este texto — casar não é decidir.
 
 ### Dependências
 
