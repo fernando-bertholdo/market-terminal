@@ -61,3 +61,13 @@ services/model-engine/.venv/
 
 # Local Codex session exports
 2026-*-this-session-is-being-continued-from-a-previous-c.txt
+
+# Artefatos de runtime de agente — nascem não-rastreados a cada run do daemon;
+# ficam fora do versionamento para o pré-voo de working tree limpa nunca bloquear.
+# `/CLAUDE.md` e `/AGENTS.md` NÃO entram aqui: os dois são rastreados neste repo,
+# e gitignore não alcança arquivo no índice — esse caso se resolve com verify
+# escopado por pathspec, não com padrão de ignore.
+.multica/
+.agent_context/
+.claude/skills/multica-*/
+.agents/skills/multica-*/

@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# Security Best Practice
+# Security Best Practices
 
 ## Metadata
 

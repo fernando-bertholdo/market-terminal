@@ -10,6 +10,7 @@ paths:
   - ".gitignore"
   - ".planning/**/*"
   - "documents/reports/**/*"
+  - "documents/design/**/*"
 ---
 
 # Artifact Governance
@@ -26,6 +27,7 @@ Use esta regra quando a tarefa tocar em criacao, leitura, migracao, naming ou de
 - `.gitignore`
 - `.planning/**/*`
 - `documents/reports/**/*`
+- `documents/design/**/*`
 
 ## Regra de Ouro
 
