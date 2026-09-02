@@ -133,7 +133,7 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
 
 #### Ajuste de Roadmap / Documentação (qualquer nível)
 
-**Abertura:** `Vamos continuar os ajustes de roadmap e documentação do Monitor de Fundos Lass.`
+**Abertura:** `Vamos continuar os ajustes de roadmap e documentação de [PROJETO].`
 **Referências obrigatórias:** Roadmap.md, TODO.md, Projeto.md, .planning/README.md
 **Contexto:** O que motivou os ajustes, quais milestones são afetados, decisões a registrar
 **Skills:** update-docs, validate-docs-links, audit-architecture
@@ -147,7 +147,7 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
 
 #### Trabalho Avulso / Sem Milestone (qualquer nível)
 
-**Abertura:** `Vamos trabalhar em [DESCRIÇÃO] no projeto Monitor de Fundos Lass.`
+**Abertura:** `Vamos trabalhar em [DESCRIÇÃO] no projeto [PROJETO].`
 **Referências:** .planning/scratch/<slug>-CONTEXT.md (se existir), arquivos relevantes
 **Contexto:** Motivação, escopo, relação com roadmap (se houver)
 
@@ -156,7 +156,7 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
 #### Brief (200-500 tokens)
 
 ```markdown
-Vamos continuar o desenvolvimento do Monitor de Fundos Lass
+Vamos continuar o desenvolvimento de [PROJETO]
 na [TIPO: milestone|detour|ajuste] [ID] ([NOME]).
 
 **Referências principais:**
@@ -181,7 +181,7 @@ na [TIPO: milestone|detour|ajuste] [ID] ([NOME]).
 #### Standard (800-1500 tokens — default)
 
 ```markdown
-Vamos continuar o desenvolvimento do Monitor de Fundos Lass
+Vamos continuar o desenvolvimento de [PROJETO]
 na [TIPO] [ID] ([NOME]). [1 frase de contexto situacional]
 
 **Referências principais:**
@@ -213,7 +213,7 @@ na [TIPO] [ID] ([NOME]). [1 frase de contexto situacional]
 #### Detailed (1500-3000+ tokens)
 
 ```markdown
-Vamos continuar o desenvolvimento do Monitor de Fundos Lass
+Vamos continuar o desenvolvimento de [PROJETO]
 com foco em [DESCRIÇÃO DO FOCO]. [2-3 frases de contexto situacional]
 
 **Referências principais:**
