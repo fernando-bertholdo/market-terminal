@@ -6,7 +6,6 @@ Regras técnicas carregadas automaticamente baseadas no contexto do arquivo send
 
 | Regra | Paths | Descrição |
 |-------|-------|-----------|
-| 2026-09-02 | `PENDING` | `SYNC-20260830-001` | `security-best-practices.md`, `code-quality-standards.md` | Propagação do tech-product-template: corrige o título truncado "Security Best Practice" e o link `../AGENTS.md` (alvo inexistente `.agents/AGENTS.md`) para `../../AGENTS.md`; ambos eram resíduo da replicação `badaa31` |
 | `code-quality-standards.md` | `src/**/*` | Padrões de código (Python baseline, adaptável) |
 | `security-best-practices.md` | `src/**/*`, `.env*` | Segurança e secrets |
 | `testing-requirements.md` | `tests/**/*` | Requisitos de testes |
@@ -36,6 +35,7 @@ Isso garante que as práticas corretas sejam aplicadas ao contexto certo.
 
 | Data | Commit | Sync-ID | Arquivo | Descrição |
 |------|--------|---------|---------|-----------|
+| 2026-09-02 | `PENDING` | `SYNC-20260830-001` | `security-best-practices.md`, `code-quality-standards.md` | Propagação do tech-product-template: corrige o título truncado "Security Best Practice" e o link `../AGENTS.md` (alvo inexistente `.agents/AGENTS.md`) para `../../AGENTS.md`; ambos eram resíduo da replicação `badaa31` |
 | 2026-05-23 | `bd3bb0f` | `SYNC-20260523-001` | `scripts-governance.md`, `README.md` | Adiciona rule path-targeted para governança de scripts/ (replicação flat de .claude/); propagado para lass (`0ac7015`) e monitor-fundos (`5f455c4`) |
 | 2026-03-05 | `badaa31` | — | (criação inicial - 5 regras) | Espelhado de lass-project-template |
 | 2026-03-30 | `5b9eae4` | SYNC-20260330-003/004/005 | `ui-excellence-standards.md`, `README.md` | Adiciona regra path-targeted para UI; propagado para lass (6a1e474) e monitor-fundos (94ff40d) |
