@@ -6,6 +6,7 @@ Regras técnicas carregadas automaticamente baseadas no contexto do arquivo send
 
 | Regra | Paths | Descrição |
 |-------|-------|-----------|
+| 2026-09-02 | `PENDING` | `SYNC-20260830-001` | `security-best-practices.md`, `code-quality-standards.md` | Propagação do tech-product-template: corrige o título truncado "Security Best Practice" e o link `../AGENTS.md` (alvo inexistente `.agents/AGENTS.md`) para `../../AGENTS.md`; ambos eram resíduo da replicação `badaa31` |
 | `code-quality-standards.md` | `src/**/*` | Padrões de código (Python baseline, adaptável) |
 | `security-best-practices.md` | `src/**/*`, `.env*` | Segurança e secrets |
 | `testing-requirements.md` | `tests/**/*` | Requisitos de testes |

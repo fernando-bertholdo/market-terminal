@@ -36,7 +36,7 @@ Para ativar o stack Python (tooling), use: `.agents/stacks/python/README.md`.
 - [Projeto.md](../../documents/core/Projeto.md) - Contexto e arquitetura
 - [testing-requirements.md](testing-requirements.md) - Requisitos de testes
 - [security-best-practices.md](security-best-practices.md) - Segurança
-- [.agents/AGENTS.md](../AGENTS.md) - Regras always-on do projeto
+- [AGENTS.md](../../AGENTS.md) - Regras always-on do projeto
 
 ---
 
