@@ -69,7 +69,7 @@ Usuário pediu "contexto completo" ou similar           → detailed
 
 **Antes de qualquer coleta**, verifique se o diretório `.planning/` existe na raiz do projeto atual:
 
-- **Existe `.planning/`** → use **MODE:opinionated-initiative** (vocabulário milestone/detour/ajuste/avulso, leitura de Roadmap/CONTEXT, templates específicos do framework)
+- **Existe `.planning/`** → use **MODE:opinionated-initiative** (vocabulário milestone/detour/patch/ajuste/avulso, leitura de Roadmap/TODO/CONTEXT, templates específicos do framework)
 - **Não existe `.planning/`** → use **MODE:generic** (vocabulário feature/bugfix/refactor/spike/misc, leitura de README/git/sessão, templates universais)
 
 A detecção determina **apenas** o procedimento de coleta de contexto e o conjunto de templates. Os princípios, níveis de detalhe, regras gerais e validação são idênticos nos dois modos.
@@ -93,9 +93,10 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
 
 ```bash
 1. Identificar tipo de trabalho
-   - Ler .planning/README.md para identificar tipo (milestone / detour)
+   - Ler .planning/README.md para identificar tipo (milestone / detour / patch)
    - Se milestone → localizar .planning/milestones/MX.X-nome/
    - Se detour → localizar .planning/detours/<nome>/
+   - Se patch → verificar .planning/patches/{slug}/plan.md
    - Se avulso (sem vínculo) → verificar .planning/scratch/
 
 2. Coletar estado atual
@@ -103,9 +104,10 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
      a. Milestone: .planning/milestones/MX.X-*/CONTEXT.md (glob)
      b. Detour: .planning/detours/<nome>/CONTEXT.md
      c. Fallback legado: _archive/<id>/CONTEXT.md
-     d. Se nada → prosseguir sem CONTEXT.md (usar Roadmap.md)
+     d. Se nada → prosseguir sem CONTEXT.md (usar Roadmap/TODO)
    - Ler CONTEXT.md resolvido (contexto vivo, se existir)
    - Ler Roadmap.md (milestone/fase atual, DoR/DoD)
+   - Ler TODO.md (tarefas pendentes e progresso)
    - Ler plans em .claude/plans/ (se existir)
    - Verificar últimos commits (git log --oneline -5)
    - Verificar git status (mudanças pendentes)
@@ -118,28 +120,28 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
 #### Milestone (qualquer nível)
 
 **Abertura:** `Vamos continuar a implementação do milestone [ID] ([NOME]).`
-**Referências obrigatórias:** Roadmap.md (DoR/DoD), CONTEXT.md da initiative
+**Referências obrigatórias:** Roadmap.md (DoR/DoD), TODO.md (seção do milestone), CONTEXT.md da initiative
 **Contexto:** Progresso quantitativo (X/Y tarefas, N% DoD), próxima tarefa, bloqueios
 **Skills:** validate-dor, validate-dod, pre-commit-check, validate-testing
 
 #### Detour (qualquer nível)
 
 **Abertura:** `Vamos continuar o detour [NOME] (relacionado a [MILESTONES]).`
-**Referências obrigatórias:** .planning/detours/<nome>/CONTEXT.md, Roadmap.md (seção Desvios)
+**Referências obrigatórias:** .planning/detours/<nome>/CONTEXT.md, Roadmap.md (seção Desvios), TODO.md
 **Contexto:** Fases do detour, entregas já concluídas, impacto em milestones futuros
 **Skills:** pre-commit-check, organize-commits, update-docs
 
 #### Ajuste de Roadmap / Documentação (qualquer nível)
 
 **Abertura:** `Vamos continuar os ajustes de roadmap e documentação de [PROJETO].`
-**Referências obrigatórias:** Roadmap.md, Projeto.md, .planning/README.md
+**Referências obrigatórias:** Roadmap.md, TODO.md, Projeto.md, .planning/README.md
 **Contexto:** O que motivou os ajustes, quais milestones são afetados, decisões a registrar
 **Skills:** update-docs, validate-docs-links, audit-architecture
 
 #### Troubleshooting (qualquer nível)
 
 **Abertura:** `Vamos resolver o issue [DESCRIÇÃO] no contexto de [INICIATIVA].`
-**Referências obrigatórias:** Arquivo com erro, log/evidência, CONTEXT.md da iniciativa
+**Referências obrigatórias:** Arquivo com erro, log/evidência, TODO.md
 **Contexto:** Sintoma, esperado, tentativas anteriores, impacto
 **Skills:** pre-commit-check, validate-testing
 
@@ -276,6 +278,7 @@ com foco em [DESCRIÇÃO DO FOCO]. [2-3 frases de contexto situacional]
 - `.planning/detours/<nome>/CONTEXT.md` — Contexto vivo de detour
 - `.planning/scratch/` — Context dumps avulsos (sem milestone)
 - `documents/core/Roadmap.md` — Milestones, desvios, DoR/DoD
+- `documents/core/TODO.md` — Tarefas granulares e progresso
 - `documents/core/Projeto.md` — Regras de negócio e decisões
 - `CLAUDE.md` — Regras operacionais
 
@@ -284,7 +287,7 @@ com foco em [DESCRIÇÃO DO FOCO]. [2-3 frases de contexto situacional]
 - `fresh-context` — Gerar CONTEXT.md para handoff (complementar: context file vs. prompt)
 - `validate-dor` — Validar DoR antes de iniciar milestone
 - `validate-dod` — Validar DoD antes de fechar milestone
-- `update-docs` — Atualizar documentação (Projeto/Roadmap)
+- `update-docs` — Atualizar documentação (Projeto/Roadmap/TODO)
 - `pre-commit-check` — Qualidade antes de commit
 <!-- MODE:opinionated-initiative end -->
 
@@ -620,7 +623,7 @@ generate-session-prompt
 ### Problema: Prompt muito genérico
 
 **Causa:** Tipo de trabalho não identificado, ou modo errado, ou contexto da sessão pobre
-**Solução:** Em modo opinionated, atualizar o CONTEXT.md da iniciativa antes; em modo genérico, garantir que a sessão tem decisões/análises explícitas
+**Solução:** Em modo opinionated, atualizar TODO.md/CONTEXT.md antes; em modo genérico, garantir que a sessão tem decisões/análises explícitas
 
 ### Problema: Prompt detalhado quando queria conciso
 
@@ -651,7 +654,7 @@ generate-session-prompt
 **Refactor para modo dual (opinionated + generic):**
 - Adicionada detecção automática de modo via presença de `.planning/` na raiz
 - Bloco `MODE:opinionated-initiative` preserva integralmente o comportamento v3.0.0
-  (vocabulário milestone/detour/patch/ajuste/avulso, leitura de Roadmap/CONTEXT)
+  (vocabulário milestone/detour/patch/ajuste/avulso, leitura de Roadmap/TODO/CONTEXT)
 - Novo bloco `MODE:generic` para projetos sem framework opinionado: vocabulário
   feature/bugfix/refactor/spike/misc, coleta via README + git log + git status +
   contexto da sessão
