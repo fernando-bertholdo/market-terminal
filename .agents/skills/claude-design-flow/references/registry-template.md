@@ -5,7 +5,7 @@ Criados na **primeira reconciliação** do projeto. Mantidos via `--reconcile` (
 ## Template: REGISTRY.md
 
 ```markdown
-# Design Registry — {{PROJECT_NAME}}
+# Design Registry — Market Terminal
 
 > Índice vivo do design do produto. Mantido pela skill `claude-design-flow` (`--reconcile`).
 > Autoridade: Projeto.md > DECISIONS.md > projeto Claude Design (artefatos).
@@ -50,7 +50,7 @@ Criados na **primeira reconciliação** do projeto. Mantidos via `--reconcile` (
 ## Template: DECISIONS.md
 
 ```markdown
-# Design Decisions — {{PROJECT_NAME}}
+# Design Decisions — Market Terminal
 
 > Registro ADR de decisões de design. Append-only (superseder com nova entrada, nunca editar).
 > Decisões de negócio ficam em Projeto.md — aqui entra o detalhe de design, com backlink.
