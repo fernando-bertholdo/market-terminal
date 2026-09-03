@@ -1,6 +1,6 @@
 ---
 name: generate-tap
-description: Gerar Termo de Abertura do Projeto (TAP) a partir de materiais em documents/archive/. Escaneia automaticamente PDFs, transcrições e specs, extrai informações com rastreabilidade radical, e gera documento dual-layer (executivo + estruturado) otimizado para alimentar o kickoff do template. Use antes do kickoff para transformar materiais brutos em fonte estruturada de placeholders.
+description: Gerar Termo de Abertura do Projeto (TAP) a partir de materiais em documents/archive/. Escaneia automaticamente PDFs, transcrições e specs, extrai informações com rastreabilidade radical, e gera documento dual-layer (executivo + estruturado) otimizado para alimentar o kickoff do projeto. Use antes do kickoff para transformar materiais brutos em fonte estruturada de placeholders.
 ---
 
 # Skill: generate-tap
@@ -53,19 +53,26 @@ Especifica materiais manualmente.
 
 ## Workflow
 
-### 1. Escanear `documents/archive/`
+### 1. Escanear fontes
 
 ```
-Para cada arquivo em documents/archive/ (excluindo README.md):
-  Classificar por tipo:
-    - PDF → Ler e extrair conteúdo
-    - TXT / MD → Ler como texto (transcrições, specs)
-    - Imagens (PNG/JPG) → Analisar visualmente (diagramas, screenshots)
-    - DOCX → Ler conteúdo textual
+a) Escanear documents/strategy/ (se existem strategy docs preenchidos):
+   - Ler cada documento Tier 1 e Tier 2
+   - Usar como fonte estruturada prioritaria (ja sintetizado)
 
-  Reportar ao usuário:
-    "Encontrei N materiais: [lista com tipo de cada um]"
+b) Escanear documents/archive/ (excluindo README.md):
+   Para cada arquivo:
+     Classificar por tipo:
+       - PDF → Ler e extrair conteudo
+       - TXT / MD → Ler como texto (transcricoes, specs)
+       - Imagens (PNG/JPG) → Analisar visualmente (diagramas, screenshots)
+       - DOCX → Ler conteudo textual
+
+c) Reportar ao usuario:
+   "Encontrei N strategy docs + M materiais brutos: [lista]"
 ```
+
+Se `documents/strategy/` contiver docs preenchidos (gerados por `design-sprint`), eles tem prioridade sobre materiais brutos para as mesmas informacoes.
 
 Se `documents/archive/` estiver vazio ou não existir, perguntar ao usuário onde estão os materiais.
 
@@ -177,12 +184,13 @@ Nunca misturar categorias:
 - Separar claramente fatos de opiniões
 - Tabelas para dados estruturados
 - Bullets para listas
-- Diagramas Mermaid para fluxos (paleta: laranja em acento, neutros claros em preenchimentos)
+- Diagramas Mermaid para fluxos (paleta do projeto: cor de acento definida pelo projeto, neutros claros em preenchimentos)
 
 ## Integração com Outras Skills
 
 | Skill | Relação |
 |-------|---------|
+| `design-sprint` | Strategy docs (`documents/strategy/`) alimentam o TAP como input estruturado |
 | `kickoff-prompt` (prompt) | TAP alimenta o kickoff; Mapa de Extração guia preenchimento direto |
 | `validate-kickoff` | Após kickoff, valida que placeholders do Mapa foram preenchidos |
 | `pre-commit-check` | TAP define `TEST_COMMAND` etc. no Apêndice A |

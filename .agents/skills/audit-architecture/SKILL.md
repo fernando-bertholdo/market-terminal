@@ -20,7 +20,7 @@ O projeto segue a arquitetura de "fonte única de verdade":
 
 | Tipo de Conteúdo | Fonte Única | Carregamento |
 |------------------|-------------|--------------|
-| Regras operacionais | `.agents/AGENTS.md` | Sempre |
+| Regras operacionais | `AGENTS.md` | Sempre |
 | Contexto de negócio | `documents/core/Projeto.md` | Sob demanda |
 | Detalhes técnicos | `.agents/rules/*.md` | Path-targeted |
 | Workflows | `.agents/skills/*/SKILL.md` | Quando trigga |
@@ -54,10 +54,10 @@ Checklist:
 
 ```
 Arquivos a comparar:
-1. .agents/AGENTS.md vs documents/core/Projeto.md
+1. AGENTS.md vs documents/core/Projeto.md
 2. .agents/rules/*.md vs .agents/skills/*/SKILL.md
 3. documents/core/Roadmap.md vs documents/core/TODO.md
-4. .agents/AGENTS.md vs .agents/rules/*.md
+4. AGENTS.md vs .agents/rules/*.md
 ```
 
 ### 4. Verificar Links e @imports
@@ -188,6 +188,6 @@ Checklist:
 
 ## Referências
 
-- `.agents/AGENTS.md` - Regras operacionais
+- `AGENTS.md` - Regras operacionais
 - `documents/core/Projeto.md` - Contexto de negócio
 - `.agents/rules/` - Detalhes técnicos

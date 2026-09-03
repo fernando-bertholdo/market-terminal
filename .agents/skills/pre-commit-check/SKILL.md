@@ -136,6 +136,36 @@ audit-rules quick
 validate-docs-links check
 ```
 
+### 6. Scripts Governance
+
+Se o commit toca `scripts/**`, validar:
+
+**Comandos:**
+
+```bash
+# Cruft check (mesmo do hook check-scripts-cruft.sh)
+git diff --cached --name-only | grep -E '^scripts/.*(__pycache__|\.DS_Store|\.pyc)$' && echo "❌ Cruft detectado" || echo "✅ Sem cruft"
+
+# Drift check: scripts novos no commit que não estão em INDEX
+# INDEX usa paths relativos a scripts/ (ex: `setup/init-from-template.sh`),
+# por isso stripamos o prefixo "scripts/" antes de comparar.
+git diff --cached --name-only --diff-filter=A | grep -E '^scripts/.+\.(sh|py)$' | while read f; do
+  rel="${f#scripts/}"
+  grep -q "\`$rel\`" scripts/INDEX.md || echo "⚠️  $f não está em scripts/INDEX.md"
+done
+```
+
+**Critérios de Aprovação:**
+
+| Validação | Meta | Bloqueador |
+|-----------|------|------------|
+| Cruft em scripts/** | 0 arquivos | ✅ Sim |
+| Scripts novos em INDEX | 100% | ✅ Sim |
+| Categoria correta | Glossário do README | ⚠️ Review |
+
+> **Referência:** rule [`.agents/rules/scripts-governance.md`](../../rules/scripts-governance.md) — Auto-loaded em edits de `scripts/**`.
+> **Auditoria completa:** invocar skill `audit-scripts`.
+
 ## Procedimento Completo
 
 ```bash
@@ -177,7 +207,8 @@ validate-docs-links check
       - Confirmar que são os corretos
 
    b. Planejar mensagem de commit
-      - Formato: type(scope): subject
+      - Formato: type(scope): assunto-em-pt-br
+      - `subject` e `body` sempre em português do Brasil
       - Referência: organize-commits
 
 5. Validações opcionais:
@@ -230,7 +261,7 @@ Use conventional commit:
 ✅ READY TO COMMIT
 
 Próximo passo:
-git commit -m "type(scope): subject"
+git commit -m "type(scope): assunto-em-pt-br"
 
 Ou organize commits complexos:
 organize-commits

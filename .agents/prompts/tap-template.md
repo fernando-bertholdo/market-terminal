@@ -2,7 +2,7 @@
 
 # TAP — Termo de Abertura do Projeto
 
-> Template otimizado para alimentar o kickoff do template.
+> Template otimizado para alimentar o kickoff do projeto.
 > Cada seção mapeia diretamente para grupos de placeholders `{{...}}`.
 > O Apêndice B (Mapa de Extração) lista explicitamente: Placeholder -> Seção -> Valor.
 
@@ -202,7 +202,7 @@ graph LR
     D --> E[Saída/Consumo]
 ```
 
-<!-- Substituir pelo diagrama real. Usar paleta: laranja em acento, neutros claros em preenchimentos -->
+<!-- Substituir pelo diagrama real. Usar paleta do projeto -->
 
 ### Figura 2: Fluxo Operacional Detalhado
 

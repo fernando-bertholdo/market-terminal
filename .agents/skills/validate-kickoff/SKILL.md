@@ -124,15 +124,15 @@ Escanear por blocos <!-- que contenham:
 
 | Placeholder | Arquivo(s) | Linha(s) |
 |-------------|-----------|----------|
-| {{PROJECT_NAME}} | .agents/AGENTS.md | 1, 3 |
+| {{PROJECT_NAME}} | .claude/CLAUDE.md | 1, 3 |
 | {{RESPONSIBLE_NAME}} | documents/core/Projeto.md | 20 |
 
 ### HIGH (comandos de stack)
 
 | Placeholder | Arquivo(s) | Linha(s) |
 |-------------|-----------|----------|
-| {{TEST_COMMAND}} | .agents/skills/pre-commit-check/SKILL.md | 97, 162 |
-| {{LINT_COMMAND}} | .agents/skills/pre-commit-check/SKILL.md | 50, 154 |
+| {{TEST_COMMAND}} | .claude/skills/pre-commit-check/SKILL.md | 97, 162 |
+| {{LINT_COMMAND}} | .claude/skills/pre-commit-check/SKILL.md | 50, 154 |
 
 ### MEDIUM (conteúdo de documentação)
 
@@ -150,7 +150,7 @@ Escanear por blocos <!-- que contenham:
 
 | Arquivo | Linha | Trecho |
 |---------|-------|--------|
-| .agents/AGENTS.md | 259 | <!-- Preencher com os scopes... |
+| .claude/CLAUDE.md | 259 | <!-- Preencher com os scopes... |
 
 ## Placeholders Runtime (Referência)
 
@@ -158,7 +158,7 @@ Estes placeholders foram corretamente ignorados (são templates dinâmicos):
 
 | Arquivo | Placeholders Runtime |
 |---------|---------------------|
-| .agents/skills/agent-team/SKILL.md | MILESTONE_ID, TASK_DESCRIPTION, FILE_1, ... |
+| .claude/skills/agent-team/SKILL.md | MILESTONE_ID, TASK_DESCRIPTION, FILE_1, ... |
 
 ## Próximos Passos
 
@@ -252,7 +252,7 @@ Claude:
 ### CRITICAL (2)
 | Placeholder | Arquivo(s) |
 |-------------|-----------|
-| {{COMMIT_SCOPES}} | .agents/AGENTS.md, .agents/AGENTS.md, README.md |
+| {{COMMIT_SCOPES}} | .claude/CLAUDE.md, AGENTS.md (raiz), README.md |
 | {{ORGANIZATION_NAME}} | README.md, documents/core/Projeto.md |
 
 ### HIGH (4)

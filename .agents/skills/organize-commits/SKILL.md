@@ -24,7 +24,7 @@ Commits atômicos permitem:
 1. **NUNCA** usar `git add .` ou `git add -A`
 2. **SEMPRE** stage arquivos individualmente por task
 3. **MÁXIMO** 100 linhas por commit (não 500)
-4. **FORMATO:** `{type}({milestone}-{task}): {description}`
+4. **FORMATO:** `{type}({milestone}-{task}): {descricao-em-pt-br}`
 5. **RASTREAR** hashes em TODO.md seção "Commits do Milestone"
 
 ### Exceções Permitidas
@@ -56,7 +56,7 @@ Commits atômicos permitem:
 3. Para CADA task, criar UM commit:
    - Stage apenas arquivos daquela task
    - NUNCA usar git add . ou git add -A
-   - Formato: {type}({milestone}-{task}): {description}
+   - Formato: {type}({milestone}-{task}): {descricao-em-pt-br}
    - Máximo 100 linhas (quebrar se maior)
 
 4. Executar commit atômico:
@@ -86,12 +86,14 @@ Commits atômicos permitem:
 ### Formato Padrão
 
 ```
-<type>(<scope>): <subject>
+<type>(<scope>): <assunto-em-pt-br>
 
-<body>
+<corpo-opcional-em-pt-br>
 
 <footer>
 ```
+
+`type` e `scope` permanecem nos tokens padrão de Conventional Commits. `subject`, `body` e qualquer texto descritivo complementar devem ser sempre em português do Brasil.
 
 ### Types Disponíveis
 
@@ -133,6 +135,8 @@ Definir scopes específicos do projeto em AGENTS.md. Exemplos comuns:
 - Imperativo ("adiciona" não "adicionado")
 - Sem ponto final
 - Descrever O QUE (não "porquê")
+- Sempre em português do Brasil (`pt-BR`)
+- Mesmo quando nomes técnicos estiverem em inglês, a frase do commit continua em `pt-BR`
 
 ### Body (Opcional, recomendado)
 
@@ -146,6 +150,7 @@ Definir scopes específicos do projeto em AGENTS.md. Exemplos comuns:
 - Linhas de 72 caracteres máximo
 - Bullet points com `-` ou `*`
 - Separe do subject com linha em branco
+- Escrever sempre em português do Brasil (`pt-BR`)
 
 ### Footer (Opcional)
 
@@ -377,7 +382,7 @@ git push origin main
 **Evolução para Atomic Commits:**
 - Regra hard-coded: NUNCA git add . ou git add -A
 - Limite reduzido: 100 linhas (era 500)
-- Formato: `{type}({milestone}-{task}): {description}`
+- Formato: `{type}({milestone}-{task}): {descricao-em-pt-br}`
 - Rastreamento de hashes em TODO.md
 - Exemplos atualizados com workflow atômico
 
