@@ -8,7 +8,7 @@
 # exit 0 contra o seu próprio derivado. O `verify:` da issue invoca este arquivo.
 #
 # Uso: bash scripts/validate/fecho-todo-patch.sh [--help]
-# Exit codes: 0 = as oito asserções passam; 1 = alguma falhou (a mensagem diz
+# Exit codes: 0 = as nove asserções passam; 1 = alguma falhou (a mensagem diz
 #             qual); 2 = erro de uso.
 # Ambiente: host Linux com GNU grep. As varreduras chamam `command grep`, que
 #           desvia de função de shell (`ugrep` com `--ignore-files`, que esconde
@@ -34,6 +34,9 @@ Propósito
   7. nenhum texto vivo cita o nome do tipo fora do allowlist
   8. nenhum texto define iniciativa pelo limiar de duração (a definição
      operacional do tipo revogado — trocar a palavra não aposenta o tipo)
+  9. nenhum texto cita o documento pelo **termo nu**, sem extensão, ao lado dos
+     outros documentos core — o vetor que escapa de toda varredura por
+     `TODO\.md`
 
 Allowlist
   Isenção é propriedade de LINHA, nunca de arquivo nem de diretório, e cada
@@ -42,7 +45,7 @@ Allowlist
 
 Argumentos
   --help, -h   mostra esta ajuda e sai
-  (nenhum)     roda as oito asserções
+  (nenhum)     roda as nove asserções
 
 Exit codes
   0   todas passam
@@ -165,6 +168,13 @@ test "$vivas" -eq 0 || falhou "asserção 7: $vivas citação(ões) viva(s) do t
 # Trocar a palavra não aposenta o tipo: o que o definia operacionalmente era o
 # limiar de sessões — `<=2 sessões` dispensando plano, `>2 sessões` promovendo a
 # detour. Enquanto o limiar viver, o tipo vive com outro nome.
+#
+# O padrão para em `sess` de propósito, e isso cobre os dois idiomas: `sessões`,
+# `sessoes`, `session` e `sessions` começam todos por ali. A lição é da linhagem
+# Lass, medida em 12/09/2026 no `lab-contratos` — `detour (>2 sessions, needs
+# evidence)`, instrução em inglês, sobrevivia a qualquer varredura por
+# `sess(ões|oes)`. Estreitar o padrão para uma lista de sufixos reintroduziria o
+# buraco pelo idioma seguinte.
 rc=0; limiar=$(command grep -RnIE '(<=|≤|>) ?2 sess' . \
   --include='*.md' --include='.gitattributes' --include='*.html' \
   --exclude-dir=.git --exclude-dir=_archive \
@@ -173,4 +183,31 @@ test "$rc" -le 1 || falhou 'asserção 8: a varredura não conseguiu olhar (exit
 vivas=$(printf '%s' "$limiar" | command grep -c . || true)
 test "$vivas" -eq 0 || falhou "asserção 8: $vivas linha(s) ainda definem iniciativa por limiar de duração"
 
-printf 'PASS · as 8 asserções do fecho passam\n'
+# --- 9. Ninguém cita o documento pelo termo nu ------------------------------
+# O vetor que escapa de toda varredura por `TODO\.md`: o termo **sem extensão**,
+# numa lista ao lado dos outros documentos core — `documents/core/ (TODO,
+# Roadmap, Projeto)`, `Roadmap/TODO`, `CONTEXT.md/Roadmap/TODO`. Medido em
+# 12/09/2026 na linhagem Lass: no `lab-contratos` uma ocorrência dessas
+# atravessou duas rodadas de revisão adversarial sem ser vista. Aqui ele existia
+# em três lugares — os dois `spawn-*.md` do `agent-team` e o handoff do Ciclo 2.
+#
+# O padrão exige o termo **em caixa alta** e **colado a um separador de lista**
+# com outro documento core: sem as duas condições ele acusaria a palavra
+# portuguesa "todo" e o placeholder `TODO PROJECT` da rule de scripts. `Project`
+# entra ao lado de `Projeto` pelo mesmo motivo da asserção 8 — instrução em
+# inglês é um vetor medido, não hipótese.
+#
+# O separador aceita `&amp;` além de `&` porque dois dos documentos de método
+# deste derivado são HTML, e ali o `&` vem escapado: `Roadmap &amp; TODO` era
+# uma das três ocorrências que esta fatia limpou. Sem a entidade no padrão, o
+# gate passaria por cima dela — medido nos dois sentidos em 12/09/2026.
+SEP=' *([,/]|&(amp;)?| e | and ) *'
+rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP(Roadmap|Projeto|Project)|(Roadmap|Projeto|Project|CONTEXT\.md)$SEP\bTODO\b|core/ *\(TODO" . \
+  --include='*.md' --include='.gitattributes' --include='*.html' \
+  --exclude-dir=.git --exclude-dir=_archive \
+  --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
+test "$rc" -le 1 || falhou 'asserção 9: a varredura não conseguiu olhar (exit 2)'
+vivas=$(printf '%s' "$nu" | command grep -c . || true)
+test "$vivas" -eq 0 || falhou "asserção 9: $vivas citação(ões) pelo termo nu, sem extensão"
+
+printf 'PASS · as 9 asserções do fecho passam\n'
