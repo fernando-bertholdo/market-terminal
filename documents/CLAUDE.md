@@ -14,7 +14,7 @@ Este diretório contém documentação do projeto. **Siga estas regras ao trabal
 
 ## Fluxo de uso
 - Use `documents/README.md` como índice.
-- Atualize `Roadmap.md` e `TODO.md` quando decisões ou status mudarem.
+- Atualize `Roadmap.md` quando decisões mudarem o plano — status e progresso não vivem aqui.
 
 ## Contexto e IA
 - Ao editar documentação extensa, prefira mudanças pequenas e claras.

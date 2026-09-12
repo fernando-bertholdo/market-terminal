@@ -230,7 +230,7 @@ flowchart LR
     C -->|placeholders OK| D([design-sprint]):::s
     C -->|pendências| B
     D --> E([generate-tap]):::s
-    E --> F([Roadmap.md + TODO.md]):::out
+    E --> F([Roadmap.md]):::out
     classDef s fill:#13294a,stroke:#3b82f6,color:#dbeafe,stroke-width:1.5px
     classDef gate fill:#3f2d12,stroke:#f59e0b,color:#fde68a,stroke-width:2px
     classDef out fill:#14342b,stroke:#34d399,color:#d1fae5,stroke-width:1.5px
@@ -359,7 +359,7 @@ flowchart LR
               <div class="panel-col">
                 <h4 class="panel-col__title">Artefatos</h4>
                 <ul class="artifact-list">
-                  <li>Commits atômicos (rastreados em TODO.md)</li>
+                  <li>Commits atômicos (rastreados no board de issues)</li>
                   <li>Código formatado (ruff) + testes</li>
                   <li><code>verify:</code> steps executáveis</li>
                 </ul>
@@ -528,7 +528,7 @@ sequenceDiagram
                   <li><code>check-teammate-idle</code><span class="skill-hook">hook</span><span>Detecta &gt;5 arquivos não commitados em teammate</span></li>
                 </ul>
                 <div class="panel-note">
-                  <strong>Segregação de segurança:</strong> teammates nunca commitam, nunca editam TODO.md / Roadmap.md / Projeto.md / .planning/README.md.
+                  <strong>Segregação de segurança:</strong> teammates nunca commitam, nunca editam Roadmap.md / Projeto.md / .planning/README.md.
                 </div>
               </div>
               <div class="panel-col">
@@ -584,7 +584,7 @@ flowchart TB
                   <li><code>audit-architecture</code><span>Redundância e drift entre docs</span></li>
                   <li><code>validate-docs-links</code><span>Links e backlinks (meta: 0 quebrados no DoD)</span></li>
                   <li><code>audit-scripts</code><span>Drift, órfãos, cruft, stale na taxonomia de scripts</span></li>
-                  <li><code>audit-roadmap-refs</code><span>Coerência entre Roadmap e TODO</span></li>
+                  <li><code>audit-roadmap-refs</code><span>Coerência entre o Roadmap e as skills</span></li>
                 </ul>
               </div>
               <div class="panel-col">
@@ -821,7 +821,7 @@ flowchart LR
           <div class="long-card__icon" data-c="trace" aria-hidden="true">⎌</div>
           <h3>Rastreabilidade fim-a-fim</h3>
           <p>
-            Decisão → Roadmap → TODO (<code>verify:</code>) → CONTEXT.md → commit atômico → verification report → reconcile → archive.
+            Decisão → Roadmap (<code>verify:</code> no DoD) → CONTEXT.md → commit atômico → verification report → reconcile → archive.
             Cada elo é auditável anos depois. <strong>Sync-ID</strong> rastreia mudanças entre repos.
           </p>
         </article>
@@ -842,8 +842,6 @@ flowchart LR
           <span class="chain-node">Decisão</span>
           <span class="chain-arrow">→</span>
           <span class="chain-node">Roadmap</span>
-          <span class="chain-arrow">→</span>
-          <span class="chain-node">TODO <code>verify:</code></span>
           <span class="chain-arrow">→</span>
           <span class="chain-node">CONTEXT.md</span>
           <span class="chain-arrow">→</span>

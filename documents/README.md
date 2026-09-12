@@ -8,8 +8,7 @@ documents/
 ├── AGENTS.md                    # Regras locais para docs
 ├── core/                        # Documentos principais
 │   ├── Projeto.md               # Fonte de verdade (living document)
-│   ├── Roadmap.md               # Fases, milestones, DoR/DoD
-│   └── TODO.md                  # Tracking granular de tarefas
+│   └── Roadmap.md               # Fases, milestones, DoR/DoD
 ├── archive/                     # Documentos de kick-off (historico)
 │   └── README.md                # Instrucoes para arquivos de kick-off
 ├── guides/                      # Guias reutilizáveis (playbooks)
@@ -32,7 +31,6 @@ documents/
 |-----------|-----------|------------------|
 | [Projeto.md](core/Projeto.md) | **Fonte de verdade** - Regras de negócio, arquitetura, decisões | Sempre que precisar de contexto |
 | [Roadmap.md](core/Roadmap.md) | Fases, milestones, DoR/DoD | Planejamento, validação de progresso |
-| [TODO.md](core/TODO.md) | Tracking granular, progresso diário | Durante desenvolvimento |
 
 ---
 
@@ -105,7 +103,7 @@ Documentos estrategicos gerados via `design-sprint` ou preenchimento manual.
 
 - Todo documento suplementar deve **linkar** para Projeto.md
 - Evite duplicação de conteúdo entre diretórios
-- Atualize `Roadmap.md` e `TODO.md` quando status mudar
+- Atualize `Roadmap.md` quando o plano mudar — nunca para registrar avanço
 
 ### Navegação
 

@@ -12,7 +12,6 @@
 ## Referências Principais
 
 - [Projeto.md](Projeto.md) - Fonte de verdade, regras de negócio, arquitetura
-- [TODO.md](TODO.md) - Tarefas granulares e progresso diário
 - [../../CLAUDE.md](../../CLAUDE.md) (Claude Code) e [../../AGENTS.md](../../AGENTS.md) (Codex) - Regras de desenvolvimento sempre ativas
 - [Design do Ciclo 1 (SP0+SP1)](../superpowers/specs/2026-06-28-market-terminal-selfhost-foundation-design.md) - Spec de design + ADRs D1–D8 + roadmap SP0–SP5
 - [Plano do Ciclo 1](../superpowers/plans/2026-06-28-ciclo1-selfhost-foundation.md) - PR-0 a PR-3, critérios de aceite e verificações
@@ -133,7 +132,7 @@ As decisões abaixo foram tomadas no design e estão **congeladas**; mudá-las e
 - [ ] `CLAUDE.md` e `AGENTS.md` refletem o estado real (auth completa, Neon, serviços Python, tick) — **sem** `sim-state.json` como persistência primária
 - [ ] `documents/core/Projeto.md` populado (visão + arquitetura real)
 - [x] `documents/core/Roadmap.md` criado (Fases 0–4 ↔ SP0–SP5)
-- [x] `documents/core/TODO.md` criado (backlog inicial)
+- [x] ~~`documents/core/TODO.md` criado (backlog inicial)~~ — critério **revogado em 2026-09-12** (TECH-220 · detour TECH-210): o arquivo foi aposentado, o rastreamento granular passou ao board e o estado do plano vive neste Roadmap. A linha fica riscada, e não apagada, porque o critério foi verdade na data do DoD
 - [ ] Spec e plano commitados; **nenhum secret no git** (`.env`/`.env.local` gitignored)
 
 ### Skills Aplicáveis
@@ -472,7 +471,7 @@ Atualize quando:
 **Manutenção:**
 - `update-docs system` - Atualizar docs técnicos após mudanças arquiteturais
 - `update-docs task [milestone-id]` - Atualizar Projeto.md (Changelog) e referenciar no Roadmap.md
-- `update-docs roadmap` - Reprioritizar Roadmap/TODO quando decisões mudarem o plano
+- `update-docs roadmap` - Reprioritizar o Roadmap quando decisões mudarem o plano
 - `audit-rules` - Auditar regras e documentação
 - `validate-docs-links` - Validar links em documentação
 
