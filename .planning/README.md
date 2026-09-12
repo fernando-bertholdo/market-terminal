@@ -3,7 +3,7 @@
 Este diretório agrupa **iniciativas** (planos, validações e handoffs) que suportam o desenvolvimento do projeto, sem competir com a "fonte de verdade" em `documents/`.
 
 Princípios:
-- Cada iniciativa tem seu **próprio diretório** dentro da pasta apropriada por tipo (`milestones/`, `detours/`, `patches/`), com `README.md`, `CONTEXT.md` e subpastas (`plans/`, `validation/`, `handoff/`).
+- Cada iniciativa tem seu **próprio diretório** dentro da pasta apropriada por tipo (`milestones/`, `detours/`), com `README.md`, `CONTEXT.md` e subpastas (`plans/`, `validation/`, `handoff/`).
 - Evidências (screenshots, exports, logs) ficam dentro da initiative correspondente.
 - Artefatos potencialmente sensíveis (exports, dados baixados) devem ficar **gitignored**.
 
@@ -32,20 +32,26 @@ Princípios:
 
 ## Tipos de Trabalho
 
-| Tipo | Quando | `.planning/`? | Tracking |
-|------|--------|---------------|----------|
-| **milestone** | No Roadmap (M1.X) | `milestones/M1.X-nome/handoff/<id>-CONTEXT.md` | Roadmap + TODO |
-| **detour** | >2 sessões, precisa evidências | `detours/<detour-name>/` (mesma estrutura) | Roadmap "Desvios" + TODO |
-| **patch** | <=2 sessões, correção rápida | `patches/<slug>/` (`plan.md` em diretório próprio) | Opcional (lifecycle leve; ver `patches/README.md`) |
+São dois, e o que os distingue não é tamanho nem duração — é a obrigação que
+cada um tem com o plano.
+
+| Tipo | Obrigação com o plano | `.planning/`? | Tracking |
+|------|-----------------------|---------------|----------|
+| **milestone** | Avança o plano: já estava no Roadmap (M1.X) | `milestones/M1.X-nome/handoff/<id>-CONTEXT.md` | Roadmap |
+| **detour** | Não estava no plano e o altera | `detours/<detour-name>/` (mesma estrutura) | Roadmap "Desvios" |
+
+Trabalho que não altera o plano é **issue avulsa**: sem tipo, sem estrutura em
+`.planning/`, sem obrigação de reconciliar. Quem abre uma avulsa que altera o
+plano está errando de tipo — é detour.
 
 ### Árvore de Decisão
 
 ```
 No Roadmap como milestone? ──────────────→ milestone → `milestones/M1.X-nome/`
                                 ↓ não
->2 sessões ou precisa evidências? ───────→ detour   → `detours/<detour-name>/`
+Altera o plano? ─────────────────────────→ detour    → `detours/<detour-name>/`
                                 ↓ não
-                              → patch    → `patches/<slug>/` (com `plan.md`)
+                              → issue avulsa (sem estrutura em `.planning/`)
 ```
 
 ---
@@ -83,7 +89,7 @@ Ao completar todos os milestones de uma initiative (último DoD PASS):
 
 3. `reconcile-initiative <initiative-id>` (se não foi acionado pelo validate-dod)
    - Gera `.planning/audit-reports/reconcile-<id>-<data>.md`
-   - Aplica atualizações aprovadas em Roadmap.md, TODO.md, Projeto.md
+   - Aplica atualizações aprovadas em Roadmap.md e Projeto.md
 
 4. `archive-initiative <initiative-id>` (ao iniciar nova fase OU sob demanda)
    - Move para `.planning/_archive/<id>/`
@@ -97,9 +103,16 @@ Ao completar todos os milestones de uma initiative (último DoD PASS):
 
 <!-- Listar initiatives conforme criadas durante desenvolvimento.
      Formato: `<tipo>/<nome>/` (status) — Breve descrição do escopo.
-     Tipos: milestones/, detours/, patches/. -->
+     Tipos: milestones/, detours/. -->
 
-_Nenhuma initiative criada ainda. Use `init-milestone <id>` para criar a primeira (ou `fresh-context [milestone-id]` para retomar uma existente)._
+- `_archive/rename-node-homelab/` (arquivado) — desacopla a identidade da máquina
+  Windows do nome do projeto: nó Tailscale `market-terminal` → `homelab`. Shipado
+  em 2026-07-26; arquivado em 2026-09-12 pela TECH-220, junto com a revogação do
+  terceiro tipo de trabalho, sob o qual ele nasceu. O que o diretório preserva é
+  a tabela de alternativas descartadas; a razão do arquivamento está em
+  `_archive/rename-node-homelab/NOTE.md`.
+
+_Demais initiatives: usar `init-milestone <id>` para criar (ou `fresh-context [milestone-id]` para retomar uma existente)._
 
 ---
 
@@ -107,7 +120,6 @@ _Nenhuma initiative criada ainda. Use `init-milestone <id>` para criar a primeir
 
 - `milestones/` — Iniciativas ligadas a milestones do Roadmap. Criadas via `init-milestone`.
 - `detours/` — Iniciativas fora do Roadmap (>2 sessões, transversais). Criação manual seguindo mesma estrutura de milestones.
-- `patches/` — Diretório de patches ativos (correções rápidas, ≤2 sessões). Cada patch tem seu próprio subdir com `plan.md`. Ver `patches/README.md` para template e lifecycle.
 - `handoff/` — Template e padrão do CONTEXT.md (uso transversal; não é "iniciativa").
 - `verification-reports/` — Relatórios de verificação (DoR/DoD, pre-commit, etc.).
 - `audit-reports/` — Auditorias pontuais (arquitetura/drift) e reconciliation reports.
@@ -121,7 +133,7 @@ _Nenhuma initiative criada ainda. Use `init-milestone <id>` para criar a primeir
 1. Agente consulta **este README** para identificar a initiative do milestone atual
 2. Lê `.planning/milestones/<id>-<nome>/CONTEXT.md` (contexto vivo, ponto de entrada)
 3. Se retomando milestone → lê `.planning/milestones/<id>-<nome>/handoff/<id>-CONTEXT.md`
-4. Se nenhum CONTEXT existe → `Roadmap.md` + `TODO.md` como fallback
+4. Se nenhum CONTEXT existe → `Roadmap.md` como fallback
 5. Se veio de `generate-session-prompt` com ref a scratch → lê `.planning/scratch/<slug>-CONTEXT.md`
 
 ---
@@ -163,13 +175,6 @@ Quando uma initiative é criada, seguir a estrutura apropriada ao tipo:
 │   └── <id>-CONTEXT.md
 ├── plans/             # Planos de implementação
 └── validation/        # Relatórios de validação específicos
-```
-
-### Patch — ver `patches/README.md`
-
-```
-.planning/patches/<slug>/
-└── plan.md            # Plano leve (lifecycle simplificado)
 ```
 
 ---
