@@ -37,7 +37,7 @@ Operacoes recorrentes de documentacao, validacao, manutencao e lifecycle de init
 | `enhanced-planning` | [enhanced-planning/SKILL.md](enhanced-planning/SKILL.md) | Guardrails estruturais para planos | Ao criar planos, antes de writing-plans |
 | `audit-rules` | [audit-rules/SKILL.md](audit-rules/SKILL.md) | Auditar qualidade e integridade das regras | Antes de commits, ao completar fases |
 | `claude-design-flow` | [claude-design-flow/SKILL.md](claude-design-flow/SKILL.md) | Fluxo de prototipacao visual: 7 etapas, 3 bundles, modo local + publicacao no Claude Design | Ao trabalhar interface, identidade visual, fluxos de usuario |
-| `audit-roadmap-refs` | [audit-roadmap-refs/SKILL.md](audit-roadmap-refs/SKILL.md) | Auditar referências a skills em Roadmap/TODO | Após criar skill, auditoria periódica |
+| `audit-roadmap-refs` | [audit-roadmap-refs/SKILL.md](audit-roadmap-refs/SKILL.md) | Auditar referências a skills no Roadmap | Após criar skill, auditoria periódica |
 | `audit-architecture` | [audit-architecture/SKILL.md](audit-architecture/SKILL.md) | Auditar redundância e sincronização entre arquivos | Antes de completar fase, após criar docs |
 | `organize-commits` | [organize-commits/SKILL.md](organize-commits/SKILL.md) | Organizar mudanças em commits granulares | Após trabalho extenso, antes de push |
 | `update-docs` | [update-docs/SKILL.md](update-docs/SKILL.md) | Atualizar documentação técnica | Após milestone, decisão arquitetural |
@@ -186,7 +186,7 @@ validate-dod
 # 2. Atualizar Projeto.md (milestone) + refs no Roadmap
 → update-docs task [milestone-id]
 
-# (Opcional) Reprioritizar Roadmap/TODO
+# (Opcional) Reprioritizar o Roadmap
 → update-docs roadmap
 
 # 3. Atualizar arquitetura (se necessário)
@@ -379,7 +379,6 @@ Skills seguem padrão MCP (Model Context Protocol) Agent Skills:
 ### Documentação Core
 - `documents/core/Projeto.md` - Contexto do projeto
 - `documents/core/Roadmap.md` - Milestones e fases
-- `documents/core/TODO.md` - Tracking granular
 - `CLAUDE.md` - Regras sempre ativas
 
 ### Regras
@@ -522,4 +521,5 @@ Total: 15 skills (de 13)
 | 2026-08-17 | `d607fbc` | — | `fresh-context/CLAUDE.md`, `validate-dod/templates/CLAUDE.md` | Remove stubs residuais do claude-mem (170 bytes, só o bloco `<claude-mem-context>`). Plugin desinstalado há meses; varredura global achou 43 cópias em 8 repos |
 | 2026-09-02 | `PENDING` | `SYNC-20260805-004` | `claude-design-flow/` (SKILL.md + 10 references), `README.md` | Propagação do tech-product-template: migração de executor Figma → Claude Design (modo local primário, publicação via /design-sync, estados de artefato, security gate). O alias deprecated `figma-design-flow` NÃO foi propagado — este repositório nunca teve o executor Figma, mesmo critério aplicado ao lass em `6ce3a45` |
 | 2026-09-02 | `PENDING` | `SYNC-20260805-005` | `generate-session-prompt/SKILL.md` × 2 camadas | Propagação do tech-product-template: fecha a paridade interna (`.claude` estava em `59c0491`, com o contexto de negócio vazado; `.agents` estava na v3.0.0 `01beee7`) e sobe as duas para a v4.0.0 corrente. A adaptação local `.planning/patches/{slug}/plan.md` sai junto com o tipo `patch`, aposentado na origem por `5c16300` (TECH-127) — o único patch deste repositório, `rename-node-homelab`, está fechado desde 2026-07-26 |
-| 2026-09-02 | `PENDING` | — | `generate-session-prompt/SKILL.md` × 2 camadas | Adaptação local declarada (TECH-209): restaura as referências a `TODO.md` e ao tipo `patch` que a propagação de `5818ee8`/`5c16300` tinha tirado. Na origem os dois são coerentes — o `tech-product-template` não tem `documents/core/TODO.md`; aqui não. Medido nesta branch: `TODO.md` com 420 linhas, 39 arquivos de agente ainda o exigem, o `.planning/README.md` declara o tipo `patch` em 7 pontos e `.planning/patches/` existe (com `rename-node-homelab`). A adaptação vale até a **TECH-210** decidir o destino de `documents/core/TODO.md` e de `.planning/patches/`; enquanto ela não decidir, nova propagação do template NÃO deve reintroduzir a remoção neste repositório. |
+| 2026-09-02 | `PENDING` | — | `generate-session-prompt/SKILL.md` × 2 camadas | Adaptação local declarada (TECH-209) e **encerrada em 2026-09-12 pela TECH-210** — a validade dela era explícita, e a decisão chegou. Ela restaurava as referências a `TODO.md` e ao tipo de trabalho que a propagação de `5818ee8`/`5c16300` tinha tirado, porque naquela data o derivado ainda tinha os dois: 420 linhas de `TODO.md`, 39 arquivos de agente exigindo-o e 7 pontos do `.planning/README.md` declarando o tipo. A divergência deixou de existir por execução, não por promoção: a TECH-220 apagou o arquivo, aposentou o tipo e trouxe esta skill de volta à v4.0.0 pura do template. Propagação do template volta a aplicar sem ressalva. |
+| 2026-09-12 | `PENDING` | — | 22 arquivos por camada (skills, prompts, workflows, `CLAUDE.md`) | TECH-220 · detour TECH-210 (saída 1 com régua A): desliga a referência a `documents/core/TODO.md` nas duas camadas — progresso passa a vir do `CONTEXT.md` da iniciativa, escopo do `Roadmap.md`, e o gate lê em vez de escrever em documento core — e tira o tipo de trabalho revogado do vocabulário. `init-detour` e `enhanced-planning` adotam o critério de **obrigação com o plano**, verbatim da origem (`8d4c3fc`, `93c1c21`), no lugar do limiar de duração, que era a definição operacional do tipo. O fecho vira script versionado em `scripts/validate/fecho-todo-patch.sh` |
