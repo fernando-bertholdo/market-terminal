@@ -63,7 +63,7 @@ Lead (modelo principal): coordena, sintetiza, decide
 ### Workflow
 
 ```
-1. Lead lê Roadmap.md + TODO.md do milestone
+1. Lead lê Roadmap.md do milestone
 2. Lead define 2-3 perguntas de pesquisa independentes
 3. Lead spawna researchers com prompts focados
 4. Researchers investigam em paralelo (leitura only)
@@ -91,7 +91,7 @@ ESCOPO de leitura: {{DIRS_TO_ANALYZE}}
 
 RESTRIÇÕES:
 - Apenas LEITURA (não edite nenhum arquivo)
-- Não edite documents/core/ (TODO, Roadmap, Projeto)
+- Não edite documents/core/ (Roadmap, Projeto)
 - Não faça git commit/add/push
 
 DELIVERABLE: Reportar ao Lead com:
@@ -146,7 +146,7 @@ Lead (modelo principal, modo delegação): distribui tasks, valida, commita
 ### Workflow
 
 ```
-1. Lead lê Roadmap.md + TODO.md do milestone
+1. Lead lê Roadmap.md do milestone
 2. Lead mapeia tasks → arquivos (garantir zero overlap)
 3. Lead entra em modo delegação (se suportado pela ferramenta)
 4. Lead spawna teammates com tasks e arquivos designados
@@ -183,7 +183,7 @@ PADRÕES DO PROJETO (conforme stack):
 
 RESTRIÇÕES:
 - Edite APENAS os arquivos designados acima
-- NÃO edite documents/core/ (TODO, Roadmap, Projeto)
+- NÃO edite documents/core/ (Roadmap, Projeto)
 - NÃO faça git commit/add/push (Lead commita)
 - NÃO invoque skills de documentação
 
@@ -292,7 +292,7 @@ Fase 4 — Documentation (Lead, sequencial):
 ### Workflow
 
 ```
-1. Lead lê Roadmap.md + TODO.md
+1. Lead lê Roadmap.md
 2. Lead executa Fase 1 (research paralelo)
 3. Lead sintetiza findings e apresenta approach ao usuário
 4. Após aprovação, Lead executa Fase 2 (implementation paralelo)
@@ -310,8 +310,7 @@ Fase 4 — Documentation (Lead, sequencial):
 
 | Ação | Por que Lead Only |
 |------|-------------------|
-| `git add/commit/push` | Atomic commits com rastreamento em TODO.md |
-| Editar `TODO.md` | Single Source of Truth para tracking |
+| `git add/commit/push` | Commit atômico exige visão global do que mudou |
 | Editar `Roadmap.md` | Single Source of Truth para timeline |
 | Editar `Projeto.md` | Single Source of Truth para decisões |
 | `organize-commits` | Requer visão global de todas as mudanças |
@@ -329,7 +328,6 @@ Fase 4 — Documentation (Lead, sequencial):
 **Teammates NÃO PODEM:**
 - Editar `.planning/README.md` (Lead only — mantém mapeamento)
 - Criar diretórios em `.planning/` (Lead only)
-- Editar `patches/{slug}/plan.md` (Lead only)
 
 ### Prevenção de Conflitos de Arquivo
 
@@ -377,9 +375,8 @@ Usuário: agent-team sprint {{MILESTONE_ID}}
 
 Lead:
 # Preparação
-1. Lê Roadmap.md → {{MILESTONE_ID}} tem 3 tasks independentes
-2. Lê TODO.md → Tasks: T01, T02, T03 (em arquivos diferentes)
-3. Mapeia tasks → arquivos (garantir zero overlap entre teammates)
+1. Lê Roadmap.md → {{MILESTONE_ID}} tem 3 tasks independentes: T01, T02, T03
+2. Mapeia tasks → arquivos (garantir zero overlap entre teammates)
 
 # Criação de equipe
 "Crie uma equipe com 2 subagentes para implementar {{MILESTONE_ID}} em

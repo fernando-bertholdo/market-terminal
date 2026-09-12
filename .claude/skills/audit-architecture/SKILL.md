@@ -25,7 +25,6 @@ O projeto segue a arquitetura de "fonte única de verdade":
 | Detalhes técnicos | `.claude/rules/*.md` | Path-targeted |
 | Workflows | `.claude/skills/*/SKILL.md` | Quando trigga |
 | Timeline | `documents/core/Roadmap.md` | Sob demanda |
-| Tarefas | `documents/core/TODO.md` | Sob demanda |
 
 ## Procedimento de Auditoria
 
@@ -56,8 +55,7 @@ Checklist:
 Arquivos a comparar:
 1. .claude/CLAUDE.md vs documents/core/Projeto.md
 2. .claude/rules/*.md vs .claude/skills/*/SKILL.md
-3. documents/core/Roadmap.md vs documents/core/TODO.md
-4. .claude/CLAUDE.md vs .claude/rules/*.md
+3. .claude/CLAUDE.md vs .claude/rules/*.md
 ```
 
 ### 4. Verificar Links e @imports
@@ -184,7 +182,7 @@ Checklist:
 
 - `validate-docs-links` - Validar apenas links
 - `audit-rules` - Auditar apenas rules/
-- `audit-roadmap-refs` - Validar referências cruzadas Roadmap/TODO
+- `audit-roadmap-refs` - Validar referências a skills no Roadmap
 
 ## Referências
 

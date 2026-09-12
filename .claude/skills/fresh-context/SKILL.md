@@ -23,11 +23,11 @@ Sessões longas (>150k tokens) degradam qualidade. CONTEXT.md permite recomeço 
 
 ## Escopo
 
-O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em contexto limpo). O output deve ser **curto** e apontar para fontes (Roadmap/TODO/Projeto), não duplicar documentação.
+O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em contexto limpo). O output deve ser **curto** e apontar para fontes (Roadmap/Projeto), não duplicar documentação.
 
 **Inclua no CONTEXT.md:**
 - Escopo (DoR/DoD) com referência ao `Roadmap.md`
-- Progresso e próximos passos com referência ao `TODO.md`
+- Progresso e próximos passos da iniciativa
 - Decisões locked mínimas para continuar sem re-debater
 
 **Não inclua no CONTEXT.md:**
@@ -57,7 +57,6 @@ O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em cont
 
 3. Ler documentos fonte:
    - Roadmap.md → Escopo (DoR/DoD do milestone)
-   - TODO.md → Progresso e tarefas pendentes
    - Projeto.md → Decisões técnicas já tomadas (se aplicável)
    - CONTEXT.md resolvido no step 2 → Contexto vivo (se existir)
    - Sessão atual → Decisões e discussões recentes
@@ -248,7 +247,6 @@ Vamos continuar M1.2 (Coletor Básico).
 
 **Referências:**
 - @.planning/btg-collectors/handoff/M1.2-CONTEXT.md (handoff)
-- @documents/core/TODO.md (tracking)
 - @rules/api-integration-patterns.md (BTG portal)
 ```
 
@@ -297,11 +295,10 @@ O skill `fresh-context` complementa `generate-session-prompt`:
 - **Milestones:** `.planning/milestones/MX.X-nome/` (CONTEXT.md, handoff/)
 - **Detours:** `.planning/detours/<nome>/` (CONTEXT.md, handoff/)
 - **Roadmap:** `documents/core/Roadmap.md`
-- **TODO:** `documents/core/TODO.md`
 
 ## Skills Relacionadas
 
 - `generate-session-prompt` - Prompt para retomada (brief/standard/detailed)
 - `validate-dor` - Validar DoR antes de iniciar
 - `validate-dod` - Validar DoD ao concluir
-- `update-docs` - Atualizar docs (Projeto/Roadmap/TODO/arquitetura)
+- `update-docs` - Atualizar docs (Projeto/Roadmap/arquitetura)

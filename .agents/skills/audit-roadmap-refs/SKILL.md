@@ -1,11 +1,11 @@
 ---
 name: audit-roadmap-refs
-description: Auditar referências a skills em Roadmap.md e TODO.md para garantir que todas skills úteis estão documentadas e acessíveis. Use após criar nova skill, antes de completar milestone, durante auditoria periódica, ou quando sentir que falta uma skill em contexto.
+description: Auditar referências a skills em Roadmap.md para garantir que todas skills úteis estão documentadas e acessíveis. Use após criar nova skill, antes de completar milestone, durante auditoria periódica, ou quando sentir que falta uma skill em contexto.
 ---
 
 # Skill: audit-roadmap-refs
 
-Auditar referências a skills em Roadmap.md e TODO.md.
+Auditar referências a skills em Roadmap.md.
 
 ## Quando Usar
 
@@ -52,18 +52,7 @@ Verificar se skills mencionadas existem
 Identificar skills úteis não mencionadas
 ```
 
-### 3. Escanear TODO.md
-
-```
-Buscar referências a skills em:
-  - Descrições de tarefas
-  - Critérios de conclusão
-  - Notas e observações
-
-Verificar consistência com Roadmap.md
-```
-
-### 4. Identificar Gaps
+### 3. Identificar Gaps
 
 ```yaml
 Skills não documentadas em Roadmap:
@@ -76,10 +65,10 @@ Oportunidades de menção:
   - [contexto]: [skill que seria útil]
 ```
 
-### 5. Gerar Audit Report
+### 4. Gerar Audit Report
 
 ```markdown
-# Audit Report: Roadmap & TODO Refs
+# Audit Report: Roadmap Refs
 
 **Data:** [YYYY-MM-DD]
 **Escopo:** [full|skills|docs]
@@ -90,12 +79,11 @@ Oportunidades de menção:
 |---------|-------|
 | Skills existentes | X |
 | Skills referenciadas em Roadmap | Y |
-| Skills referenciadas em TODO | Z |
 | Gaps identificados | W |
 
 ## Skills Existentes
 
-| Skill | Em Roadmap | Em TODO | Status |
+| Skill | Em Roadmap | Status |
 |-------|------------|---------|--------|
 | validate-dor | ✅ | ✅ | OK |
 | validate-dod | ✅ | ✅ | OK |
@@ -149,7 +137,7 @@ Oportunidades de menção:
 
 1. **Skills devem ser descobríveis** - Se útil, deve estar documentado
 2. **Referências devem ser válidas** - Não referenciar skills inexistentes
-3. **Consistência entre docs** - Roadmap e TODO devem concordar
+3. **Consistência entre docs** - Roadmap e inventário de skills devem concordar
 4. **Manter atualizado** - Auditar após criar/modificar skills
 
 ## Output
@@ -174,7 +162,7 @@ Gera relatório com:
 User: audit-roadmap-refs skills
 
 Claude:
-# Audit Report: Roadmap & TODO Refs
+# Audit Report: Roadmap Refs
 
 **Data:** 2026-01-25
 **Escopo:** skills
@@ -185,12 +173,11 @@ Claude:
 |---------|-------|
 | Skills existentes | 11 |
 | Skills referenciadas em Roadmap | 8 |
-| Skills referenciadas em TODO | 6 |
 | Gaps identificados | 3 |
 
 ## Skills Existentes
 
-| Skill | Em Roadmap | Em TODO | Status |
+| Skill | Em Roadmap | Status |
 |-------|------------|---------|--------|
 | validate-dor | ✅ | ✅ | OK |
 | validate-dod | ✅ | ✅ | OK |
@@ -208,7 +195,7 @@ Claude:
 
 1. [ ] Adicionar `fresh-context` em seção de transições
 2. [ ] Adicionar `audit-architecture` em fase completion
-3. [ ] Mencionar `organize-commits` em TODO quando múltiplas mudanças
+3. [ ] Mencionar `organize-commits` no Roadmap quando múltiplas mudanças
 ```
 
 ---

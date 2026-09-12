@@ -25,7 +25,6 @@ O projeto segue a arquitetura de "fonte única de verdade":
 | Detalhes técnicos | `.agents/rules/*.md` | Path-targeted |
 | Workflows | `.agents/skills/*/SKILL.md` | Quando trigga |
 | Timeline | `documents/core/Roadmap.md` | Sob demanda |
-| Tarefas | `documents/core/TODO.md` | Sob demanda |
 
 ## Procedimento de Auditoria
 
@@ -56,8 +55,7 @@ Checklist:
 Arquivos a comparar:
 1. .agents/AGENTS.md vs documents/core/Projeto.md
 2. .agents/rules/*.md vs .agents/skills/*/SKILL.md
-3. documents/core/Roadmap.md vs documents/core/TODO.md
-4. .agents/AGENTS.md vs .agents/rules/*.md
+3. .agents/AGENTS.md vs .agents/rules/*.md
 ```
 
 ### 4. Verificar Links e @imports
@@ -184,7 +182,7 @@ Checklist:
 
 - `validate-docs-links` - Validar apenas links
 - `audit-rules` - Auditar apenas rules/
-- `audit-roadmap-refs` - Validar referências cruzadas Roadmap/TODO
+- `audit-roadmap-refs` - Validar referências a skills no Roadmap
 
 ## Referências
 

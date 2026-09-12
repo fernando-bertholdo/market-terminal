@@ -25,7 +25,6 @@ Gera documento CONTEXT.md para permitir continuação de trabalho em contexto li
 
 3. **Ler documentos fonte**
    - `documents/core/Roadmap.md` → Escopo (DoR/DoD)
-   - `documents/core/TODO.md` → Progresso
    - `documents/core/Projeto.md` → Decisões técnicas
    - `.planning/<initiative>/CONTEXT.md` → Contexto vivo (se existir)
 

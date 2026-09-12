@@ -1,6 +1,6 @@
 ---
 name: reconcile-initiative
-description: Reconciliar docs core (Roadmap, TODO, Projeto) com learnings de uma initiative concluida. Use ao completar todos milestones de uma initiative, antes de arquivar, ou sob demanda para verificar se decisoes/deferred items foram propagados.
+description: Reconciliar docs core (Roadmap, Projeto) com learnings de uma initiative concluida. Use ao completar todos milestones de uma initiative, antes de arquivar, ou sob demanda para verificar se decisoes/deferred items foram propagados.
 ---
 
 # Reconcile Initiative
@@ -52,7 +52,6 @@ reconcile-initiative btg-collectors
 
 4. Ler documentos core:
    - Roadmap.md -> milestones futuros, DoR/DoD + seção Desvios para detours
-   - TODO.md -> tarefas pendentes
    - Projeto.md -> decisoes de negocio/arquitetura
 
 5. Analise em 4 dimensoes:
@@ -61,8 +60,9 @@ reconcile-initiative btg-collectors
        - DoR reflete pre-condicoes criadas? Milestones faltando? Ordem correta?
        - Para detours: seção Desvios atualizada?
 
-   5b. TODO: Para cada <deferred> item:
-       - Existe tarefa no TODO.md? Se nao -> sugerir com verify: step
+   5b. Deferred: Para cada <deferred> item:
+       - Ja coberto por milestone do Roadmap ou por initiative registrada?
+         Se nao -> registrar como sugestao no report
 
    5c. Projeto.md: Para cada decisao locked:
        - Esta refletida? Conflita? Enriquece?
@@ -95,18 +95,22 @@ Milestones M1.6, M2.5, M3.2 dependem desses endpoints.
 -> Verificar se M2.5 referencia o inventario de endpoints.
 ```
 
-### 4b. TODO
+### 4b. Deferred
 
 **O que verificar:**
-- Para cada item em `<deferred>`: existe tarefa correspondente no TODO.md?
-- Se nao existe: sugerir criacao com `verify:` step quando aplicavel
+- Para cada item em `<deferred>`: ja esta coberto por um milestone do Roadmap
+  ou por uma initiative registrada em `.planning/README.md`?
+- Se nao esta: registrar como sugestao no proprio Reconciliation Report
 
 **Formato de sugestao:**
 ```markdown
-- [ ] [Descricao do deferred item]
+- [Descricao do deferred item]
   - origin: initiative <id>, deferred
-  - verify: `[comando de verificacao]`
+  - destino sugerido: <milestone do Roadmap | nova initiative>
 ```
+
+**Limites:** o report e o registro. O deferred item nao vira checkbox de status
+em documento core — DL-4 tirou o tracking de status do repositorio.
 
 ### 4c. Projeto.md
 
@@ -128,7 +132,7 @@ Milestones M1.6, M2.5, M3.2 dependem desses endpoints.
 
 - **Foco em `<deferred>` e `<dependencies>`** (finitos/estruturados)
 - Para `<decisions>`, apenas flagear o que NAO esta em Projeto.md
-- **Cap em top 10 sugestoes**; para o resto, criar tarefa catch-all no TODO.md
+- **Cap em top 10 sugestoes**; para o resto, uma sugestao catch-all no report
 - Nao reescrever documentos core automaticamente — apresentar sugestoes
 
 ## Template de Reconciliation Report
@@ -158,9 +162,9 @@ Milestones M1.6, M2.5, M3.2 dependem desses endpoints.
 |-----------------|-------------|--------|----------|
 | M1.6 | Inventario endpoints | OK / FALTA | [acao] |
 
-## TODO (4b)
+## Deferred (4b)
 
-| Deferred Item | Existe no TODO? | Sugestao |
+| Deferred Item | Ja coberto? | Destino sugerido |
 |--------------|-----------------|----------|
 | [item] | Sim / Nao | [acao] |
 
@@ -187,7 +191,7 @@ Milestones M1.6, M2.5, M3.2 dependem desses endpoints.
 ## Quando NAO Usar
 
 - Para atualizar docs de milestone individual -> use `update-docs task`
-- Para reordenar Roadmap/TODO -> use `update-docs roadmap`
+- Para reordenar o Roadmap -> use `update-docs roadmap`
 - Para arquivar initiative -> use `archive-initiative` (apos este skill)
 - Para auditar links -> use `validate-docs-links`
 
@@ -218,7 +222,6 @@ Se outro formato → DETOUR (strip D- se presente)
 - `.planning/*/handoff/*.md` — Handoff snapshots
 - `.planning/_archive/` — Initiatives arquivadas
 - `documents/core/Roadmap.md` — Milestones futuros, DoR/DoD + seção Desvios
-- `documents/core/TODO.md` — Tarefas pendentes
 - `documents/core/Projeto.md` — Decisoes de negocio/arquitetura
 - `.planning/README.md` — Hub: mapeamento initiative->diretório
 
@@ -227,7 +230,7 @@ Se outro formato → DETOUR (strip D- se presente)
 - `validate-dod [milestone]` — Valida DoD (trigger para este skill)
 - `archive-initiative [initiative-id]` — Arquivar initiative (requer este skill como gate)
 - `update-docs task [milestone]` — Atualizar docs de milestone individual
-- `update-docs roadmap` — Reordenar Roadmap/TODO
+- `update-docs roadmap` — Reordenar o Roadmap
 
 ---
 
@@ -236,7 +239,7 @@ Se outro formato → DETOUR (strip D- se presente)
 ### v1.0.0 (Fevereiro/2026)
 
 **Criacao Inicial:**
-- Analise em 4 dimensoes (Roadmap, TODO, Projeto.md, .planning/README.md)
+- Analise em 4 dimensoes (Roadmap, deferred, Projeto.md, .planning/README.md)
 - Reconciliation Report estruturado
 - Gate obrigatorio para archive-initiative
 - Integracao com validate-dod v3.0.0

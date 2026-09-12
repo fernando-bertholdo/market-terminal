@@ -10,7 +10,7 @@ Valida execução de testes e (quando aplicável) cobertura, conforme o stack do
 ## Pré-condição: Stack / Tooling
 
 - **Fonte de verdade:** `documents/core/Projeto.md` (stack + comandos oficiais).
-- Se o stack/tooling não estiver definido, **BLOQUEIE** a validação e registre a tarefa na **Fase 0** (Roadmap/TODO).
+- Se o stack/tooling não estiver definido, **BLOQUEIE** a validação e registre a tarefa na **Fase 0** do Roadmap.
 
 ## O Que Valida
 

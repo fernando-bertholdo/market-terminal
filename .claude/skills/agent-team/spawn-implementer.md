@@ -24,7 +24,7 @@ PADRÕES DO PROJETO (conforme stack):
 
 RESTRIÇÕES:
 - Edite APENAS os arquivos designados acima
-- NÃO edite documents/core/ (TODO, Roadmap, Projeto)
+- NÃO edite documents/core/ (Roadmap, Projeto)
 - NÃO faça git commit/add/push (Lead commita)
 - NÃO invoque skills de documentação
 

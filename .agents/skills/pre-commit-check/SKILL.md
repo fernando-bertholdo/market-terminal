@@ -18,7 +18,7 @@ Checklist completo de qualidade antes de git commit.
 
 - **Fonte de verdade:** `documents/core/Projeto.md` (stack + comandos oficiais de tooling).
 - Confirme arquivos “marcadores” do stack no repo (ex.: `pyproject.toml`, `package.json`, `go.mod`, `Cargo.toml`, etc.).
-- Se o stack/tooling **não** estiver definido: **BLOQUEIE o commit** e registre a tarefa na **Fase 0** (Roadmap/TODO).
+- Se o stack/tooling **não** estiver definido: **BLOQUEIE o commit** e reporte a lacuna — definir o stack é trabalho de Fase 0, e o gate reporta, não escreve documento core.
 
 ### 1. Code Quality
 
@@ -217,9 +217,9 @@ validate-docs-links check
    M  (manifesto de deps do stack)
 
 ⚠️  Arquivos não staged (1):
-   M  documents/core/TODO.md
+   M  README.md
 
-Ação recomendada: git add documents/core/TODO.md
+Ação recomendada: git add README.md
 
 ## 5. Mensagem de Commit 💡
 Use conventional commit:

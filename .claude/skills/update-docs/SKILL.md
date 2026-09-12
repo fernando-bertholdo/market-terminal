@@ -1,6 +1,6 @@
 ---
 name: update-docs
-description: Atualizar documentação do projeto (Projeto/Roadmap/TODO e arquitetura). Use ao completar milestone, após decisão técnica significativa, após reprioritização, ou após refactoring estrutural.
+description: Atualizar documentação do projeto (Projeto/Roadmap e arquitetura). Use ao completar milestone, após decisão técnica significativa, após reprioritização, ou após refactoring estrutural.
 ---
 
 # Update Documentation
@@ -36,13 +36,12 @@ Atualizar o `Projeto.md` com decisões/entregas do milestone e manter o `Roadmap
 **O que atualiza:**
 - `documents/core/Projeto.md` (seções relevantes + Changelog)
 - `documents/core/Roadmap.md` (adicionar referência/keywords apontando para o registro no Projeto.md)
-- (Opcional) `documents/core/TODO.md` (checkboxes/verify/commits, se ainda não estiver atualizado)
 
 > **Nota:** `documents/guides/` fica reservado para **playbooks/guias reutilizáveis**.  
 > Se algo virar procedimento recorrente, documente em `documents/guides/<slug>.md` e indexe em `documents/README.md`.
 
-### Roadmap/TODO (reprioritização)
-Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap/TODO após decisões novas.
+### Roadmap (reprioritização)
+Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap após decisões novas.
 
 **Quando usar:**
 - Quando adiantar uma etapa futura do Roadmap
@@ -52,7 +51,6 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap/TODO 
 
 **O que atualiza:**
 - `documents/core/Roadmap.md`
-- `documents/core/TODO.md`
 
 ## Procedimento por Tipo
 
@@ -95,23 +93,20 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap/TODO 
    - Detour: seção Desvios — Nome — adicionar referência ao Projeto.md
    - Preferir referência de Changelog (ex.: "Projeto.md: v1.0.19 (M1.2 — requests-first)")
 
-5. (Opcional) Atualizar documents/core/TODO.md:
-   - Checkboxes / verify: steps / "Commits do milestone"
-
-6. Verificar .planning/README.md:
+5. Verificar .planning/README.md:
    - Status do milestone na tabela de mapeamento (ativo/concluido)
    - Se milestone concluiu: atualizar status para (concluido)
    - Se initiative não existe na tabela: adicionar entrada
 
-7. Se milestone é o último da initiative (verificar .planning/README.md):
+6. Se milestone é o último da initiative (verificar .planning/README.md):
    - Lembrar: invocar reconcile-initiative <id> após este update-docs
    - Nota: validate-dod já orquestra a sequência; se chamado independentemente, lembrar
 
-8. Sugerir commit:
+7. Sugerir commit:
    docs(core): atualiza Projeto/Roadmap após {milestone-id}
 ```
 
-### Reorder Roadmap & TODO
+### Reorder Roadmap
 
 ```bash
 1. Capturar mudanças relevantes da sessão:
@@ -124,33 +119,29 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap/TODO 
    - Dependências explícitas (DoR)
    - Critérios de entrega (DoD)
 
-3. Ler documents/core/TODO.md:
-   - Tarefas do milestone atual + próximos milestones
-   - Tarefas bloqueadas/deferred
-
-4. Mapear impacto:
+3. Mapear impacto:
    - O que precisa ser adiantado/adiado?
    - O que virou pré-requisito (DoR) de outro milestone?
-   - O que precisa virar tarefa no TODO (com verify: quando aplicável)?
+   - O que precisa virar milestone ou entrada nova no Roadmap?
 
-5. Atualizar Roadmap.md e TODO.md mantendo consistência:
+4. Atualizar Roadmap.md mantendo consistência:
    - Não apagar histórico (preservar concluídos)
    - Registrar motivo em notas curtas / changelog
    - Manter referências cruzadas coerentes (milestones, seções, links)
 
-6. Atualizar metadata/changelog em Roadmap.md e TODO.md
+5. Atualizar metadata/changelog em Roadmap.md
 
-7. Verificar .planning/README.md:
+6. Verificar .planning/README.md:
    - Tabela de mapeamento milestone→initiative reflete mudanças
    - Desvios (detours) registrados se aplicável
    - Status de initiatives coerente com Roadmap
 
-8. (Opcional) Se mexeu em links/refs:
+7. (Opcional) Se mexeu em links/refs:
    - validate-docs-links check
    - audit-roadmap-refs
 
-9. Sugerir commit:
-   docs(core): reprioritiza Roadmap/TODO após [contexto]
+8. Sugerir commit:
+   docs(core): reprioritiza o Roadmap após [contexto]
 ```
 
 ## Templates
@@ -211,7 +202,7 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap/TODO 
 
 **Use ao invés:**
 - Projeto.md → Edição manual + commit
-  - Roadmap.md/TODO.md → Use este skill apenas no procedimento “Reorder Roadmap & TODO” (caso contrário, edição manual)
+  - Roadmap.md → Use este skill apenas no procedimento “Reorder Roadmap” (caso contrário, edição manual)
 - Criar regra → Seguir ciclo de vida de regras
 - Docstrings → Responsabilidade do desenvolvedor
 
@@ -219,8 +210,7 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap/TODO 
 
 ```
 .planning/
-├── README.md                        # Hub: registry de milestones, detours, patches
-├── patches/                          # Patches ativos (um subdir por patch)
+├── README.md                        # Hub: registry de milestones e detours
 ├── milestones/                      # 1 dir por milestone (OBRIGATÓRIO)
 │   └── MX.X-nome/
 │       ├── CONTEXT.md               # Contexto vivo (unificado, sem README separado)
@@ -241,8 +231,7 @@ documents/
 ├── README.md                    # Índice de documentação do projeto
 ├── core/                        # Fonte de verdade (negócio/decisões)
 │   ├── Projeto.md
-│   ├── Roadmap.md
-│   └── TODO.md
+│   └── Roadmap.md
 ├── technical/                   # Documentação técnica suplementar
 │   └── architecture.md
 └── guides/                      # Guias reutilizáveis (playbooks)
@@ -262,7 +251,6 @@ documents/
 
 - `documents/core/Projeto.md` - Fonte de verdade de arquitetura
 - `documents/core/Roadmap.md` - Milestones e fases
-- `documents/core/TODO.md` - Tarefas granulares
 - `.planning/milestones/MX.X-nome/` - Diretório do milestone (CONTEXT.md, verification/, handoff/)
 - `.planning/detours/<nome>/` - Diretório do detour (CONTEXT.md, verification/, handoff/)
 - `.planning/README.md` - Hub: mapeamento milestone→initiative
@@ -277,7 +265,7 @@ documents/
 **Durante milestones:**
 - `validate-dod [milestone]` - Validar DoD (inclui documentação)
 - `/update-docs task [milestone]` - Atualizar Projeto.md + refs no Roadmap
-- `/update-docs roadmap` - Reordenar/atualizar Roadmap & TODO
+- `/update-docs roadmap` - Reordenar/atualizar o Roadmap
 
 **Ao completar initiative:**
 - `reconcile-initiative [initiative-id]` - Reconciliar docs core

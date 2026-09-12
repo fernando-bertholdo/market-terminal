@@ -10,7 +10,7 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 
 ---
 
-## 1. Acompanhamento de Roadmap e TODO
+## 1. Acompanhamento de Roadmap
 
 ### Responsabilidade Contínua
 
@@ -19,13 +19,11 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 - **Invocar skill `init-milestone [milestone-id]`** ou **`init-detour [detour-name]`** para criar infraestrutura de planning (se diretório não existe)
 - **Invocar skill `validate-dor [initiative-id]`** para validar pré-requisitos
 - Se DoR não estiver completo, PARE e trabalhe nas dependências primeiro
-- Consultar @documents/core/TODO.md para tarefas granulares
 
 **Durante o desenvolvimento:**
 - Consultar periodicamente o **DoD (Definition of Done)** no Roadmap
 - **Invocar skill `validate-testing`** para validar cobertura de testes
-- Marcar checkboxes no TODO.md conforme avança
-- Usar formato `- verify:` nas tarefas para verificações programáticas
+- Usar formato `- verify:` nos critérios de DoD para verificações programáticas
 
 **Antes de commit:**
 - **Invocar skill `pre-commit-check`** (inclui code quality, testing, security)
@@ -33,13 +31,12 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 
 **Ao completar uma tarefa:**
 - **Invocar skill `validate-dod [initiative-id]`** para validar conclusão
-  - Executa `verify:` steps do TODO.md automaticamente
+  - Executa `verify:` steps do DoD automaticamente
   - Gera Verification Report com PASS/FAIL
   - Se PASS e último milestone da initiative: `validate-dod` aciona `reconcile-initiative` automaticamente
 - **Invocar skill `update-docs task [milestone-id]`** para atualizar `documents/core/Projeto.md` (incl. Changelog) e manter referência curta no `documents/core/Roadmap.md`
-- Se decisões mudarem a ordem/dependências, **invocar `update-docs roadmap`** para revisar `Roadmap.md` + `TODO.md`
+- Se decisões mudarem a ordem/dependências, **invocar `update-docs roadmap`** para revisar o `Roadmap.md`
 - Verificar se `reconcile-initiative` foi executado antes de marcar initiative como concluída
-- Atualizar checkboxes no TODO.md
 - Documentar evidências (testes, screenshots, métricas)
 
 **Ao completar uma fase:**
@@ -124,7 +121,7 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 **Reduza Noise no Contexto:**
 - **Leia apenas docs relevantes** para a tarefa atual
 - **Use `documents/README.md` como índice** - não leia todos os docs de uma vez
-- **Consulte documentos específicos (Roadmap/TODO/Projeto/architecture/walkthrough/Fresh Context)** ao invés de explorar todo o codebase
+- **Consulte documentos específicos (Roadmap/Projeto/architecture/walkthrough/Fresh Context)** ao invés de explorar todo o codebase
 
 ### Salvaguardas de Documentação (IA)
 
@@ -155,12 +152,10 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 3. Se retomando, leia handoff em `.planning/<tipo>/<nome>/handoff/`
 4. Se nenhum CONTEXT existe, use skill `fresh-context` para criar
 
-**Para patches (correções rápidas, ≤2 sessões):**
-- Crie `.planning/patches/{slug}/` com `plan.md` (estrutura simétrica a milestones/detours)
-- Se escalar (>2 sessões), promova para detour mantendo o slug
-- Ver `.planning/patches/README.md` para template e lifecycle
-
-**Tipos de trabalho:** milestone | detour | patch
+**Tipos de trabalho:** milestone | detour — a taxonomia é por **obrigação com o
+plano**, não por tamanho. Milestone avança o plano; detour não estava no plano e
+o altera. Trabalho que não altera o plano é **issue avulsa**: sem tipo, sem
+diretório em `.planning/`, sem obrigação de reconciliar.
 - Ver `.planning/README.md` para árvore de decisão e mapeamento
 
 ---
@@ -189,7 +184,7 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 
 **CRÍTICO — Teammates NÃO podem:**
 - Fazer `git commit` ou `git add` → **Apenas o Lead commita**
-- Editar `documents/core/TODO.md` ou `Roadmap.md` → **Apenas o Lead atualiza docs core**
+- Editar `documents/core/Roadmap.md` → **Apenas o Lead atualiza docs core**
 - Editar `documents/core/Projeto.md` → **Single Source of Truth protegido**
 - Invocar skills de documentação (`update-docs`, `organize-commits`) → **Lead only**
 - Fazer `git push` → **Lead only, após consolidação**
@@ -199,7 +194,7 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 - Criar/editar código nos diretórios designados pelo Lead (ex.: `src/`, `tests/`, ou equivalente do stack)
 - Executar testes (`pytest`, `npm test`, etc.)
 - Reportar findings via mensagem ao Lead
-- Ler Roadmap.md/TODO.md para entender contexto
+- Ler Roadmap.md para entender contexto
 
 ### Delegate Mode
 
@@ -276,7 +271,6 @@ Commits atômicos permitem:
 2. **SEMPRE** stage arquivos individualmente por task
 3. **MÁXIMO** 100 linhas por commit
 4. **FORMATO:** `{type}({milestone}-{task}): {descricao-em-pt-br}`
-5. **RASTREAR** hashes em TODO.md seção "Commits do Milestone"
 
 ### Triggers para Commits
 
@@ -370,14 +364,12 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 ### Timeline e Gestão
 
 - @documents/core/Roadmap.md → Fases, milestones, DoR/DoD
-- @documents/core/TODO.md → Tarefas granulares
 
 ### Planning e Iniciativas
 
-- @.planning/README.md → Hub: registry de milestones, detours, patches
+- @.planning/README.md → Hub: registry de milestones e detours
 - `.planning/milestones/MX.X-<nome>/` → Diretório do milestone (CONTEXT.md, verification/, handoff/, plans/)
 - `.planning/detours/<nome>/` → Diretório do detour (CONTEXT.md, verification/, handoff/, plans/)
-- `.planning/patches/{slug}/` → Patches ativos (correções rápidas, ≤2 sessões; um diretório por patch)
 - `.planning/scratch/` → Context dumps sob demanda (efêmeros)
 - Skills de inicialização: `init-milestone` (milestones) | `init-detour` (detours)
 
