@@ -35,6 +35,20 @@ init-detour fee-intelligence --related M1.6,M2.2
 
 Lista de milestone IDs relacionados (separados por vírgula). Registrados na metadata do CONTEXT.md e na seção Desvios do Roadmap.md.
 
+### --parent-issue (opcional)
+
+Identificador da issue-pai no rastreador (ex.: `LAS-40`, `TECH-459`) sob a qual este detour
+nasce aninhado. Registrado no CONTEXT.md como **Issue-pai no board**.
+
+O diretório do detour continua plano — `.planning/detours/<nome>/`, irmão dos outros, nunca
+dentro da pasta de uma milestone. O aninhamento é do **board**, não do filesystem: um detour
+pode ser filho de uma milestone lá e continuar sendo um diretório de primeiro nível aqui. Este
+campo é o que liga os dois, e é o que permite responder "de quem este detour é filho?" sem
+abrir o rastreador.
+
+Omita o argumento quando o detour não se ata a nenhuma milestone — desvio exploratório, de
+depuração ou de investigação nasce de topo, e isso é normal.
+
 ## Procedimento
 
 ```bash
@@ -65,6 +79,7 @@ Lista de milestone IDs relacionados (separados por vírgula). Registrados na met
    | **Última atualização** | YYYY-MM-DD |
    | **Trigger** | [Perguntar ao usuário o que motivou] |
    | **Milestones relacionados** | [M1.6, M2.2, ...] |
+   | **Issue-pai no board** | [--parent-issue, ou "nenhuma (detour de topo)"] |
    | **Referência Roadmap** | Roadmap.md § Desvios — <Nome> |
 
    <domain>

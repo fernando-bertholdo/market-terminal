@@ -89,6 +89,23 @@ Compromissos que vivem só na prosa da conversa evaporam. Registro faz parte da 
 | Requisito de initiative AINDA NÃO formalizada | Seed: `.planning/scratch/seed-<slug>.md` + linha na seção Seeds do `.planning/README.md` |
 | Decisão consolidada de negócio/arquitetura | `update-docs` → `documents/core/Projeto.md` |
 | Fato operacional de ambiente/infra durável | Runbook/doc operacional em `documents/` |
+| Trabalho emergente que cruza a veia principal | **Classifique antes de criar** (ver abaixo): apara, fatia ou detour — o destino é diferente nos três casos |
+
+**Classificar antes de criar issue.** O destino de uma descoberta que virou trabalho depende da
+classe dela, e a classe é decidida ANTES de a issue existir. Duas perguntas, nesta ordem:
+
+1. **É apara?** Deriva de uma revisão **e conserta o mesmo diff que o revisor leu** → nasce sob a
+   issue cuja fatia foi criticada, nunca sob a issue-pai de topo. Para aqui.
+2. **Dois destes três sinais fazem um detour**, não uma fatia: nasce **fora do plano** escrito da
+   pai · entrega **artefato ou ferramenta própria** que passa a ser mantida · corre **em paralelo**
+   à veia principal sem ser insumo do DoD de outra fatia. Um sinal só é fatia; dois ou mais pedem
+   `init-detour <nome> --parent-issue <ID-da-milestone>`.
+
+O número de issues derivadas **não** entra na decisão de criar — quando você sabe que o trabalho
+rendeu três issues, elas já nasceram no lugar errado. Ele serve para **reclassificar**: cluster com
+3 derivadas, ou que atravessa mais de uma sessão em paralelo, pede reavaliação, e quem percebe
+**propõe e para**. O critério em extenso está no `AGENTS.md` § 2, "Classificar antes de criar issue";
+esta é a versão operacional, e as duas não podem divergir.
 
 **Harness-agnóstico:** memória nativa do harness (ex.: auto-memory do Claude Code), quando existir, é **cache pessoal do agente** — acelera recall, mas nunca é registro canônico. Nenhuma skill ou regra pode depender de conteúdo que só exista na memória de um harness.
 
