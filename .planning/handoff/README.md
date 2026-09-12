@@ -104,12 +104,12 @@ CONTEXT.md (handoff)
     ↓ context
 Subagente/Nova Sessão
     ↓ execução
-TODO.md (tracking)
+Commits e issues do board
 ```
 
 **Não duplicar:**
 - DoR/DoD vem do Roadmap.md (referência, não cópia)
-- Tarefas granulares vem do TODO.md
+- Tarefas granulares vivem no board de issues, não em documento versionado
 - Regras de negócio vem do Projeto.md
 - Decisões/entregas consolidadas do milestone devem ser registradas em `documents/core/Projeto.md` e referenciadas no `documents/core/Roadmap.md` (o CONTEXT só aponta para essas fontes)
 
@@ -136,7 +136,6 @@ Vamos continuar a implementação do [MILESTONE-ID].
 - **Hub de Iniciativas:** `.planning/README.md` (mapeamento milestone → initiative)
 - **Skill:** `.claude/skills/fresh-context/SKILL.md`
 - **Roadmap:** `documents/core/Roadmap.md`
-- **TODO:** `documents/core/TODO.md`
 
 ---
 

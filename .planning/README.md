@@ -119,7 +119,7 @@ _Demais initiatives: usar `init-milestone <id>` para criar (ou `fresh-context [m
 ## Infraestrutura Compartilhada
 
 - `milestones/` — Iniciativas ligadas a milestones do Roadmap. Criadas via `init-milestone`.
-- `detours/` — Iniciativas fora do Roadmap (>2 sessões, transversais). Criação manual seguindo mesma estrutura de milestones.
+- `detours/` — Iniciativas fora do Roadmap que **alteram o plano**. Criação manual seguindo mesma estrutura de milestones.
 - `handoff/` — Template e padrão do CONTEXT.md (uso transversal; não é "iniciativa").
 - `verification-reports/` — Relatórios de verificação (DoR/DoD, pre-commit, etc.).
 - `audit-reports/` — Auditorias pontuais (arquitetura/drift) e reconciliation reports.
