@@ -14,10 +14,13 @@ uma URL branded refaz a mesma investigação.
 **Estado na data do arquivamento:** `Status: mergeado`, declarado pelo próprio
 `plan.md`. Conferido antes de mover.
 
-**Data de ship:** 2026-07-26. Evidência, por comando:
+**Data de ship:** 2026-07-26. Evidência, por comando — sem o corte de data o
+`--grep=homelab` também acha commits de PRs posteriores que citam este
+arquivamento (inclusive desta própria migração TECH-220), então o `--until`
+é o que reproduz exatamente o ship original:
 
 ```bash
-git log --format='%h %ad %s' --date=short --grep=homelab
+git log --format='%h %ad %s' --date=short --grep=homelab --until=2026-07-31
 # 0dddbee 2026-07-26 chore(planning): fecha critério de verificação visual do patch rename-node-homelab
 # 4602861 2026-07-26 chore(planning): registra patch rename-node-homelab e atualiza referências de URL
 # f9460a8 2026-07-26 docs(docs): atualiza URL pública na arquitetura-alvo do Ciclo 1
