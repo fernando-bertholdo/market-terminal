@@ -43,7 +43,7 @@ Allowlist
   entrada declara `arquivo:linha` e a razão daquela linha. Ver os blocos
   ALLOWLIST_* abaixo.
 
-  O `--exclude-dir` das quatro varreduras não é allowlist, é alcance:
+  O `--exclude-dir` das cinco varreduras não é allowlist, é alcance:
   `_archive/` guarda registro histórico deliberadamente fora do texto vivo que
   o gate audita, e `audit-reports/` hoje tem 0 ocorrências dos termos
   varridos — os dois diretórios ficam de fora da varredura por escopo, não
@@ -87,11 +87,12 @@ ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(523|567):'
 # `documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation.md:124`,
 #     `:157`, `:167`, `:198`, `:632`, `:700` — plano de implementação do Ciclo
 #     1, de 28/06/2026, ciclo já encerrado. Três delas (`:167`, `:198`, `:700`)
-#     são checkbox `- [ ]` nunca marcado; `:632` é linha de tabela, não
-#     checkbox; `:124` e `:157` são prosa. O artefato que descrevem foi criado
-#     na época e depois aposentado por esta própria migração (TECH-220) — o
-#     checkbox aberto não é pendência viva, é o registro de um plano de ciclo
-#     fechado. Plano histórico não se reescreve; o equivalente na origem são os
+#     são checkbox `- [ ]` nunca marcado; `:632` é célula de status `[ ]` numa
+#     tabela, não item de lista — mesma leitura, outra forma; `:124` e `:157`
+#     são prosa. O artefato que descrevem foi criado na época e depois
+#     aposentado por esta própria migração (TECH-220) — o checkbox aberto não é
+#     pendência viva, é o registro de um plano de ciclo fechado. Plano
+#     histórico não se reescreve; o equivalente na origem são os
 #     `.claude/plans/`, que a iniciativa declarou fora de escopo.
 ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(524|525|568|569):|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
 
@@ -212,22 +213,35 @@ test "$vivas" -eq 0 || falhou "asserção 8: $vivas linha(s) ainda definem inici
 # uma das três ocorrências que esta fatia limpou. Sem a entidade no padrão, o
 # gate passaria por cima dela — medido nos dois sentidos em 12/09/2026.
 #
-# `+` e `\|` entraram no separador, e `core/TODO` seguido de qualquer coisa que
-# não seja `.` entrou como ramo próprio, depois de o veredito do PR #7 medir que
-# a forma-path (`documents/core/TODO`, sem extensão, ao lado de "para o
-# backlog") e os separadores `+`/`|` atravessavam o padrão anterior — o mesmo
-# vetor que este script foi escrito para fechar. O ramo exige explicitamente
-# que o caractere seguinte não seja `.` (em vez de só `\b`), porque `\b` sozinho
-# também caça `core/TODO.md` — a citação com extensão, já coberta pela
-# asserção 6 e pelo `ALLOWLIST_TODO` — e isso reabriria falso FAIL nas seis
-# linhas históricas que aquele allowlist já isenta.
+# `+` e `\|` entraram no separador, e `core/TODO\b` entrou como ramo próprio,
+# depois de o veredito do PR #7 medir que a forma-path (`documents/core/TODO`,
+# sem extensão, ao lado de "para o backlog") e os separadores `+`/`|`
+# atravessavam o padrão anterior — o mesmo vetor que este script foi escrito
+# para fechar.
+#
+# O ramo já foi uma classe negada de `.`, escrita para não caçar `core/TODO.md`
+# sem precisar de allowlist. A rodada seguinte mediu o preço disso: a classe
+# excluía **todo** caractere `.`, não só a extensão, e com ela
+# `- Consulte o backlog em documents/core/TODO.` — o termo nu em fim de frase,
+# a forma mais natural em prosa portuguesa — saía PASS. A asserção 6 também não
+# pegava, porque não há `.md` ali para casar.
+#
+# Por isso o ramo volta ao `\b` e a asserção passa a filtrar a saída pelo
+# `ALLOWLIST_TODO`, como as asserções 4, 6 e 7 já filtram as suas: o `\b`
+# também caça `core/TODO.md`, e quem isenta as seis linhas históricas passa a
+# ser o allowlist — que as nomeia por `arquivo:linha` — em vez de um recorte de
+# padrão que, para isentá-las, isentava junto todo ponto final.
+#
+# Custo aceito e declarado: a asserção 9 herda daí a fragilidade de numeração
+# do allowlist ancorado em `arquivo:linha` (§9.5 da régua). Ela tem endereço
+# próprio na TECH-512 e não se conserta aqui.
 SEP=' *([,/+]|\||&(amp;)?| e | and ) *'
-rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP(Roadmap|Projeto|Project)|(Roadmap|Projeto|Project|CONTEXT\.md)$SEP\bTODO\b|core/ *\(TODO|core/TODO([^.[:alnum:]_]|$)" . \
+rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP(Roadmap|Projeto|Project)|(Roadmap|Projeto|Project|CONTEXT\.md)$SEP\bTODO\b|core/ *\(TODO|core/TODO\b" . \
   --include='*.md' --include='.gitattributes' --include='*.html' \
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
 test "$rc" -le 1 || falhou 'asserção 9: a varredura não conseguiu olhar (exit 2)'
-vivas=$(printf '%s' "$nu" | command grep -c . || true)
+vivas=$(printf '%s' "$nu" | command grep -vE "$ALLOWLIST_TODO" | command grep -c . || true)
 test "$vivas" -eq 0 || falhou "asserção 9: $vivas citação(ões) pelo termo nu, sem extensão"
 
 printf 'PASS · as 9 asserções do fecho passam\n'
