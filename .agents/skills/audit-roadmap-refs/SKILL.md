@@ -84,10 +84,10 @@ Oportunidades de menção:
 ## Skills Existentes
 
 | Skill | Em Roadmap | Status |
-|-------|------------|---------|--------|
-| validate-dor | ✅ | ✅ | OK |
-| validate-dod | ✅ | ✅ | OK |
-| fresh-context | ❌ | ❌ | ⚠️ Não documentado |
+|-------|------------|--------|
+| validate-dor | ✅ | OK |
+| validate-dod | ✅ | OK |
+| fresh-context | ❌ | ⚠️ Não documentado |
 
 ## Gaps Identificados
 
@@ -178,18 +178,18 @@ Claude:
 ## Skills Existentes
 
 | Skill | Em Roadmap | Status |
-|-------|------------|---------|--------|
-| validate-dor | ✅ | ✅ | OK |
-| validate-dod | ✅ | ✅ | OK |
-| pre-commit-check | ✅ | ✅ | OK |
-| organize-commits | ✅ | ❌ | ⚠️ |
-| fresh-context | ❌ | ❌ | ⚠️ |
-| validate-testing | ✅ | ✅ | OK |
-| update-docs | ✅ | ❌ | ⚠️ |
-| audit-rules | ✅ | ❌ | ⚠️ |
-| audit-architecture | ❌ | ❌ | ⚠️ |
-| validate-docs-links | ✅ | ❌ | ⚠️ |
-| audit-roadmap-refs | ❌ | ❌ | ⚠️ |
+|-------|------------|--------|
+| validate-dor | ✅ | OK |
+| validate-dod | ✅ | OK |
+| pre-commit-check | ✅ | OK |
+| organize-commits | ✅ | ⚠️ |
+| fresh-context | ❌ | ⚠️ |
+| validate-testing | ✅ | OK |
+| update-docs | ✅ | ⚠️ |
+| audit-rules | ✅ | ⚠️ |
+| audit-architecture | ❌ | ⚠️ |
+| validate-docs-links | ✅ | ⚠️ |
+| audit-roadmap-refs | ❌ | ⚠️ |
 
 ## Recomendações
 
