@@ -23,7 +23,7 @@ fecho-todo-patch.sh — gate de fecho da TECH-220 (detour TECH-210).
 
 Propósito
   Prova, por execução, que o `documents/core/TODO.md` e o terceiro tipo de
-  trabalho saíram deste repositório — e que não voltaram. São oito asserções:
+  trabalho saíram deste repositório — e que não voltaram. São nove asserções:
 
   1. o arquivo não existe
   2. o diretório do tipo não existe
@@ -42,6 +42,12 @@ Allowlist
   Isenção é propriedade de LINHA, nunca de arquivo nem de diretório, e cada
   entrada declara `arquivo:linha` e a razão daquela linha. Ver os blocos
   ALLOWLIST_* abaixo.
+
+  O `--exclude-dir` das quatro varreduras não é allowlist, é alcance:
+  `_archive/` guarda registro histórico deliberadamente fora do texto vivo que
+  o gate audita, e `audit-reports/` hoje tem 0 ocorrências dos termos
+  varridos — os dois diretórios ficam de fora da varredura por escopo, não
+  isentos linha a linha dentro dela.
 
 Argumentos
   --help, -h   mostra esta ajuda e sai
@@ -80,8 +86,12 @@ ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(523|567):'
 #     registra que aquele PR criou o arquivo. Fato datado.
 # `documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation.md:124`,
 #     `:157`, `:167`, `:198`, `:632`, `:700` — plano de implementação do Ciclo
-#     1, de 28/06/2026: cada linha descreve um passo já executado naquele PR.
-#     Plano histórico não se reescreve; o equivalente na origem são os
+#     1, de 28/06/2026, ciclo já encerrado. Três delas (`:167`, `:198`, `:700`)
+#     são checkbox `- [ ]` nunca marcado; `:632` é linha de tabela, não
+#     checkbox; `:124` e `:157` são prosa. O artefato que descrevem foi criado
+#     na época e depois aposentado por esta própria migração (TECH-220) — o
+#     checkbox aberto não é pendência viva, é o registro de um plano de ciclo
+#     fechado. Plano histórico não se reescreve; o equivalente na origem são os
 #     `.claude/plans/`, que a iniciativa declarou fora de escopo.
 ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(524|525|568|569):|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
 
@@ -201,8 +211,18 @@ test "$vivas" -eq 0 || falhou "asserção 8: $vivas linha(s) ainda definem inici
 # deste derivado são HTML, e ali o `&` vem escapado: `Roadmap &amp; TODO` era
 # uma das três ocorrências que esta fatia limpou. Sem a entidade no padrão, o
 # gate passaria por cima dela — medido nos dois sentidos em 12/09/2026.
-SEP=' *([,/]|&(amp;)?| e | and ) *'
-rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP(Roadmap|Projeto|Project)|(Roadmap|Projeto|Project|CONTEXT\.md)$SEP\bTODO\b|core/ *\(TODO" . \
+#
+# `+` e `\|` entraram no separador, e `core/TODO` seguido de qualquer coisa que
+# não seja `.` entrou como ramo próprio, depois de o veredito do PR #7 medir que
+# a forma-path (`documents/core/TODO`, sem extensão, ao lado de "para o
+# backlog") e os separadores `+`/`|` atravessavam o padrão anterior — o mesmo
+# vetor que este script foi escrito para fechar. O ramo exige explicitamente
+# que o caractere seguinte não seja `.` (em vez de só `\b`), porque `\b` sozinho
+# também caça `core/TODO.md` — a citação com extensão, já coberta pela
+# asserção 6 e pelo `ALLOWLIST_TODO` — e isso reabriria falso FAIL nas seis
+# linhas históricas que aquele allowlist já isenta.
+SEP=' *([,/+]|\||&(amp;)?| e | and ) *'
+rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP(Roadmap|Projeto|Project)|(Roadmap|Projeto|Project|CONTEXT\.md)$SEP\bTODO\b|core/ *\(TODO|core/TODO([^.[:alnum:]_]|$)" . \
   --include='*.md' --include='.gitattributes' --include='*.html' \
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
