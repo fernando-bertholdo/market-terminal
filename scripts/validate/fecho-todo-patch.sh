@@ -34,9 +34,13 @@ Propósito
   7. nenhum texto vivo cita o nome do tipo fora do allowlist
   8. nenhum texto define iniciativa pelo limiar de duração (a definição
      operacional do tipo revogado — trocar a palavra não aposenta o tipo)
-  9. nenhum texto cita o documento pelo **termo nu**, sem extensão, ao lado dos
-     outros documentos core — o vetor que escapa de toda varredura por
-     `TODO\.md`
+  9. nenhum texto cita o documento pelo **termo nu** ao lado de outro
+     documento core. A classe coberta é o produto cartesiano: documento core
+     (`Roadmap`, `Projeto`, `Project`, `CONTEXT`) × grafia nua ou com `.md` ×
+     markup inline nenhum, crase ou negrito × separador (`,` `/` `+` `|` `&`
+     `&amp;`, ` e `, ` and `), **nas duas ordens** — `TODO` antes ou depois do
+     outro documento. São 384 formas, e a asserção pega as 384; o que ela não
+     guarda é a citação com extensão, que é da asserção 6
 
 Allowlist
   Isenção é propriedade de LINHA, nunca de arquivo nem de diretório, e cada
@@ -232,16 +236,48 @@ test "$vivas" -eq 0 || falhou "asserção 8: $vivas linha(s) ainda definem inici
 # ser o allowlist — que as nomeia por `arquivo:linha` — em vez de um recorte de
 # padrão que, para isentá-las, isentava junto todo ponto final.
 #
-# Custo aceito e declarado: a asserção 9 herda daí a fragilidade de numeração
-# do allowlist ancorado em `arquivo:linha` (§9.5 da régua). Ela tem endereço
-# próprio na TECH-512 e não se conserta aqui.
-SEP=' *([,/+]|\||&(amp;)?| e | and ) *'
-rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP(Roadmap|Projeto|Project)|(Roadmap|Projeto|Project|CONTEXT\.md)$SEP\bTODO\b|core/ *\(TODO|core/TODO\b" . \
+# Custo aceito e declarado, em duas dimensões. Fragilidade de numeração: a
+# asserção 9 herda o allowlist ancorado em `arquivo:linha` (§9.5 da régua), que
+# tem endereço próprio na TECH-512 e não se conserta aqui. E alcance: o filtro
+# isenta as 12 âncoras do `ALLOWLIST_TODO`, das quais o vetor com extensão
+# precisava de 6 — as outras 6 (skills README duas vezes, o CONTEXT do Ciclo 1
+# e três linhas do plano de 28/06) passaram a ficar isentas também do termo nu
+# sem que nada pedisse isso. Efeito medido hoje: nulo, nenhuma delas cita o
+# termo nu. É ponto cego latente, não erro ativo, e some junto com a TECH-512.
+#
+# Por que o padrão é CONSTRUÇÃO e não mais um remendo. As rodadas 1, 2 e 3
+# acharam cada uma uma forma nova da mesma linha — forma-path, ponto final,
+# extensão do lado esquerdo — e as três foram fechadas acrescentando ao padrão
+# a forma achada. Isso é enumerar vetor, e enumerar vetor rende um CRÍTICO por
+# rodada: medido no head da 3ª, o padrão cobria 80 das 384 formas que a
+# asserção dizia cobrir. Duas dimensões independentes faltavam.
+#
+# (i) SIMETRIA. Os dois ramos não carregavam o mesmo conjunto de documentos nem
+# a mesma grafia: à esquerda `(Roadmap|Projeto|Project)` sem `CONTEXT` e sem
+# extensão, à direita `CONTEXT` com extensão obrigatória. O mesmo par era pego
+# numa ordem e escapava na outra. O `$DOC` é derivado uma vez e usado nos dois.
+#
+# (ii) MARKUP INLINE. O `SEP` só admitia espaço, então `` `Roadmap.md`, `TODO` ``
+# escapava: entre a vírgula e o termo há uma crase. É a forma dominante deste
+# repositório — a linha `:198` do plano do Ciclo 1, a ocorrência viva que
+# motivou a 4ª rodada, é literalmente ``- [ ] `Projeto.md`, `Roadmap.md`,
+# `TODO.md` criados.``. O `[\`*_]*` de cada lado do separador absorve crase,
+# negrito e sublinhado adjacentes.
+#
+# Medido nos dois sentidos, nas 384 formas (4 documentos × 2 grafias × 3
+# markups × 8 separadores × 2 ordens): o padrão anterior pegava 80; só a
+# simetria levaria a 128, deixando vivas as 256 com markup; só o markup não
+# fecharia as formas assimétricas. Juntos, 384/384. Repositório limpo segue
+# PASS, e os dois controles da régua — a palavra portuguesa "todo" e o
+# placeholder `TODO PROJECT` — seguem sem ser acusados.
+SEP=' *[`*_]* *([,/+]|\||&(amp;)?| e | and ) *[`*_]* *'
+DOC='(Roadmap|Projeto|Project|CONTEXT)(\.md)?'
+rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP$DOC|$DOC$SEP\bTODO\b|core/ *\(TODO|core/TODO\b" . \
   --include='*.md' --include='.gitattributes' --include='*.html' \
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
 test "$rc" -le 1 || falhou 'asserção 9: a varredura não conseguiu olhar (exit 2)'
 vivas=$(printf '%s' "$nu" | command grep -vE "$ALLOWLIST_TODO" | command grep -c . || true)
-test "$vivas" -eq 0 || falhou "asserção 9: $vivas citação(ões) pelo termo nu, sem extensão"
+test "$vivas" -eq 0 || falhou "asserção 9: $vivas citação(ões) pelo termo nu ao lado de documento core"
 
 printf 'PASS · as 9 asserções do fecho passam\n'
