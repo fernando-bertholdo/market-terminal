@@ -185,7 +185,7 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 4. Se nenhum CONTEXT existe, use skill `fresh-context` para criar
 
 **Tipos de trabalho:** milestone | detour — a taxonomia é pela **relação com o
-plano escrito**, não por tamanho, e a régua é a do `AGENTS.md` §2. Milestone já
+plano escrito**, não por tamanho, e a régua é a do `AGENTS.md` do `tech-product-template`, §2 (o `AGENTS.md` deste repositório é documento próprio do projeto e não tem a seção correspondente). Milestone já
 estava no Roadmap. Detour satisfaz **dois de três sinais** — nasce fora do plano ·
 entrega artefato próprio mantido · corre em paralelo. **Alterar o plano não é um
 dos sinais:** um detour pode alterar e muitos alteram, mas não é isso que o

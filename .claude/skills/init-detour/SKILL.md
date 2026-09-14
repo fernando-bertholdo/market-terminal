@@ -197,7 +197,7 @@ O skill `validate-dor` detecta tipo automaticamente:
 
 ### v2.0.0 (14/Set/2026 — TECH-574)
 - **BREAKING:** a dívida de saída é substituída por pergunta de entrada. O detour não escreve mais linha de delta no `Roadmap.md` ao fechar
-- A definição de detour passa a ser a mesma do `AGENTS.md` §2 (dois de três sinais); alterar o plano deixa de ser definidor
+- A definição de detour passa a ser a mesma do `AGENTS.md` do `tech-product-template`, §2 (dois de três sinais); alterar o plano deixa de ser definidor
 - Sai o passo que registrava na seção "🔀 Desvios e Iniciativas Apartadas" do `Roadmap.md` — seção que nunca existiu no template
 - O índice do detour vive só no `.planning/README.md`
 - Medição que motivou: 66 detours na linhagem, zero linhas de delta cumpridas
