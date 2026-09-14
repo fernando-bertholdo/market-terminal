@@ -68,6 +68,13 @@ services/model-engine/.venv/
 # e gitignore não alcança arquivo no índice — esse caso se resolve com verify
 # escopado por pathspec, não com padrão de ignore.
 .multica/
+# Worktrees que o Claude Code cria no checkout ao isolar trabalho. Os diretórios
+# de destino vivem no scratchpad da sessão e são apagados com ela; o que sobra
+# aqui é registro administrativo não-rastreado, que reaparece a cada sessão.
+# Sem esta linha ele derruba o pré-voo de árvore limpa, produz acerto falso em
+# varredura que lê o working tree em vez de `git ls-files` e seria varrido para
+# dentro de um commit por um `git add -A`. Ver TECH-432 e TECH-529.
+.claude/worktrees/
 .agent_context/
 .claude/skills/multica-*/
 .agents/skills/multica-*/
