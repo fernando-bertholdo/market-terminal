@@ -2,6 +2,18 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
+Template de origem: tech-product-template@2.13.0
+
+> **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
+> template de origem e a versão dele que este repositório contém — é ela que diz à
+> propagação qual é o gap. Gravada em 2026-09-14 (TECH-540) com a versão **medida por
+> conteúdo**, não pelo número que o rodapé declarava: verificou-se a presença das marcas
+> de 2.10 (`claude-design-flow`), 2.11 (§1.7), 2.12 (`paths:` nas rules) e 2.13 (registro
+> de horizontes). O número de versão local do `CLAUDE.md` segue numeração própria e **não**
+> é o mesmo eixo — três repositórios da linhagem chegaram a "2.13.0" com conteúdos
+> diferentes, e foi isso que motivou o marcador.
+
+
 > **Arquitetura Single Source of Truth:**
 > - Regras operacionais → Este arquivo
 > - Contexto de negócio e arquitetura → @documents/core/Projeto.md
