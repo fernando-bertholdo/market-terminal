@@ -71,3 +71,10 @@ services/model-engine/.venv/
 .agent_context/
 .claude/skills/multica-*/
 .agents/skills/multica-*/
+# Worktrees que o Claude Code cria no checkout ao isolar trabalho. Os diretórios
+# de destino vivem no scratchpad da sessão e são apagados com ela; o que sobra
+# aqui é registro administrativo não-rastreado, que reaparece a cada sessão.
+# Sem esta linha ele (1) derruba o pré-voo de árvore limpa, (2) produz acerto
+# falso em varredura que lê o working tree em vez de `git ls-files` e (3) seria
+# varrido para dentro de um commit por um `git add -A`. Ver TECH-432 e TECH-529.
+.claude/worktrees/
