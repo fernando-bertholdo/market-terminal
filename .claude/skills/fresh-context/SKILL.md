@@ -163,7 +163,7 @@ O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em cont
 ## Escopo do Milestone
 
 **O que ESTÁ no scope:**
-- Login automatizado no Portal BTG
+- Login automatizado no portal do fornecedor
 - Download de relatórios (carteira + extrato) para 1-2 fundos piloto
 - Parsing básico dos arquivos baixados
 - Validação de completude dos dados
@@ -203,7 +203,7 @@ O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em cont
 <specifics>
 ## Referências Específicas
 
-- Credenciais BTG em `.env` (BTG_USERNAME, BTG_PASSWORD)
+- Credenciais do portal em `.env` (PORTAL_USERNAME, PORTAL_PASSWORD)
 - Timeout padrão: 30 segundos
 - Retry: 3 tentativas com backoff
 </specifics>
@@ -223,8 +223,8 @@ O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em cont
 
 ## Próximos Passos
 
-1. Implementar BTGScraper.login()
-2. Implementar BTGScraper.download_carteira()
+1. Implementar PortalScraper.login()
+2. Implementar PortalScraper.download_carteira()
 3. Implementar Parser básico
 
 **Skills aplicáveis:**
@@ -243,11 +243,11 @@ Vamos continuar M1.2 (Coletor Básico).
 
 **Decisões locked:** Selenium, XML ISO20022
 
-**Próxima tarefa:** Implementar BTGScraper.login()
+**Próxima tarefa:** Implementar PortalScraper.login()
 
 **Referências:**
 - @.planning/btg-collectors/handoff/M1.2-CONTEXT.md (handoff)
-- @rules/api-integration-patterns.md (BTG portal)
+- @rules/api-integration-patterns.md (portal do fornecedor)
 ```
 
 ## Parâmetros
