@@ -2,7 +2,7 @@
 
 Diretório agnóstico de configuração para agentes de desenvolvimento IA. Compatível com qualquer ferramenta que suporte os padrões [AGENTS.md](https://agents.md), [Agent Skills](https://agentskills.io), ou diretórios `.agents/`.
 
-Template de origem: tech-product-template@2.13.0
+Template de origem: tech-product-template@2.14.0
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
