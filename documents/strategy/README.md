@@ -9,6 +9,13 @@ A **fonte de verdade** do projeto continua sendo `documents/core/Projeto.md`.
 - Nenhuma decisao final deve existir apenas aqui; sempre refletir no `Projeto.md`
 - Se houver conflito, **Projeto.md prevalece**
 
+> **Exceção nomeada — [`scope-horizons.md`](scope-horizons.md).** Um horizonte é, por
+> definição, a **ausência** de decisão final: refletí-lo no `Projeto.md` enquanto está
+> engavetado inventaria um compromisso não assumido. A salvaguarda volta a valer no desfecho —
+> horizonte que vira trabalho chega ao `Projeto.md` por `update-docs`; o que vira recusa chega
+> pelo `constraints-no-goals.md`. A exceção é temporária e autolimitada, e esta nota existe
+> para que a `audit-architecture` não a leia como violação.
+
 ## Referencia principal
 
 - [Projeto.md](../core/Projeto.md)
@@ -27,6 +34,7 @@ Documentos fundamentais para qualquer projeto nao-trivial. Criados via `design-s
 | [constraints-no-goals.md](constraints-no-goals.md) | O que NAO sera construido + limitacoes | Nao |
 | [success-metrics.md](success-metrics.md) | Como medir sucesso (validacao + valor + operacional) | Nao |
 | [risk-assumptions.md](risk-assumptions.md) | Riscos, premissas e dependencias externas | **Sim** |
+| [scope-horizons.md](scope-horizons.md) | O que pode vir a ser, e por que ainda nao | **Sim** |
 
 ### Tier 2 — Condicionais
 
