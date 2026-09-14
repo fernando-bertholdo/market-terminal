@@ -86,14 +86,14 @@ O skill extrai e executa `verify:` steps inline nas tarefas:
 #### M1.2: Coletor Básico
 
 - [x] Implementar login automatizado
-  - files: src/collectors/btg_scraper.py
-  - verify: `pytest tests/unit/test_btg_scraper.py::test_login -v`
-  - verify: `python -c "from src.collectors import BTGScraper; print('OK')"`
+  - files: src/collectors/portal_scraper.py
+  - verify: `pytest tests/unit/test_portal_scraper.py::test_login -v`
+  - verify: `python -c "from src.collectors import PortalScraper; print('OK')"`
   - done: Login bem-sucedido com credenciais de .env
 
 - [ ] Download de carteira diária
-  - files: src/collectors/btg_scraper.py
-  - verify: `pytest tests/unit/test_btg_scraper.py::test_download -v`
+  - files: src/collectors/portal_scraper.py
+  - verify: `pytest tests/unit/test_portal_scraper.py::test_download -v`
   - done: Arquivo XML baixado e validado
 ```
 
@@ -210,9 +210,9 @@ Listada para validação manual:
 #### M1.2: Coletor Básico
 
 - [x] Implementar login automatizado
-  - files: src/collectors/btg_scraper.py
-  - verify: `pytest tests/unit/test_btg_scraper.py::test_login -v`
-  - verify: `python -c "from src.collectors.btg_scraper import BTGScraper; print('Import OK')"`
+  - files: src/collectors/portal_scraper.py
+  - verify: `pytest tests/unit/test_portal_scraper.py::test_login -v`
+  - verify: `python -c "from src.collectors.portal_scraper import PortalScraper; print('Import OK')"`
   - done: Login bem-sucedido
 ```
 
@@ -220,15 +220,15 @@ Listada para validação manual:
 
 ```bash
 # Executando verify step 1/2...
-$ pytest tests/unit/test_btg_scraper.py::test_login -v
+$ pytest tests/unit/test_portal_scraper.py::test_login -v
 
-tests/unit/test_btg_scraper.py::test_login PASSED [100%]
+tests/unit/test_portal_scraper.py::test_login PASSED [100%]
 ========================= 1 passed in 0.45s =========================
 
 # Exit code: 0 → PASS ✅
 
 # Executando verify step 2/2...
-$ python -c "from src.collectors.btg_scraper import BTGScraper; print('Import OK')"
+$ python -c "from src.collectors.portal_scraper import PortalScraper; print('Import OK')"
 
 Import OK
 
