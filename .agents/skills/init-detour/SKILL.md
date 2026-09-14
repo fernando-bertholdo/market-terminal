@@ -13,6 +13,17 @@ Cria a infraestrutura de planning para um detour, garantindo que o diretório de
 
 `validate-dor` e `validate-dod` aceitam detour IDs e validam com o mesmo rigor que milestones.
 
+## A Dívida que o Detour Contrai
+
+O detour é o tipo que **não estava no plano e o altera**. Por isso, no momento em
+que ele nasce, esta skill escreve no `CONTEXT.md` a dívida que ele assume: **ao
+fechar, uma linha de delta no `Roadmap.md` com o identificador da issue**,
+produzida por `reconcile-initiative` e verificável por
+`grep <ID> documents/core/Roadmap.md`. Sem essa linha, o detour não fecha.
+
+A dívida fica escrita onde quem trabalha vai ler — no contexto vivo da própria
+iniciativa —, não só no `.planning/README.md`.
+
 ## Quando Usar
 
 - Quando surge trabalho emergente que cruza múltiplos milestones
@@ -34,6 +45,20 @@ init-detour fee-intelligence --related M1.6,M2.2
 ### --related (opcional)
 
 Lista de milestone IDs relacionados (separados por vírgula). Registrados na metadata do CONTEXT.md e na seção Desvios do Roadmap.md.
+
+### --parent-issue (opcional)
+
+Identificador da issue-pai no rastreador (ex.: `LAS-40`, `TECH-459`) sob a qual este detour
+nasce aninhado. Registrado no CONTEXT.md como **Issue-pai no board**.
+
+O diretório do detour continua plano — `.planning/detours/<nome>/`, irmão dos outros, nunca
+dentro da pasta de uma milestone. O aninhamento é do **board**, não do filesystem: um detour
+pode ser filho de uma milestone lá e continuar sendo um diretório de primeiro nível aqui. Este
+campo é o que liga os dois, e é o que permite responder "de quem este detour é filho?" sem
+abrir o rastreador.
+
+Omita o argumento quando o detour não se ata a nenhuma milestone — desvio exploratório, de
+depuração ou de investigação nasce de topo, e isso é normal.
 
 ## Procedimento
 
@@ -65,7 +90,9 @@ Lista de milestone IDs relacionados (separados por vírgula). Registrados na met
    | **Última atualização** | YYYY-MM-DD |
    | **Trigger** | [Perguntar ao usuário o que motivou] |
    | **Milestones relacionados** | [M1.6, M2.2, ...] |
+   | **Issue-pai no board** | [--parent-issue, ou "nenhuma (detour de topo)"] |
    | **Referência Roadmap** | Roadmap.md § Desvios — <Nome> |
+   | **Dívida de reconciliação** | Ao fechar: linha de delta em `documents/core/Roadmap.md` com o identificador da issue — `grep <ID> documents/core/Roadmap.md` |
 
    <domain>
    ## Escopo
@@ -129,6 +156,8 @@ Lista de milestone IDs relacionados (separados por vírgula). Registrados na met
    #### DoD
    - [ ] [Perguntar critérios de aceite ao usuário]
    - verify: `[comando de verificação, se aplicável]`
+   - [ ] Delta do plano registrado neste Roadmap com o identificador da issue
+   - verify: `grep <ID> documents/core/Roadmap.md`
 
    #### Entregas
    [A preencher conforme progresso]
@@ -169,6 +198,12 @@ O skill `validate-dor` detecta tipo automaticamente:
 ---
 
 ## Changelog
+
+### v1.1.0 (Agosto/2026)
+
+**Taxonomia por obrigação:**
+- O tipo `patch` deixou de existir; trabalho que não altera o plano é issue avulsa, sem estrutura em `.planning/`
+- CONTEXT.md e DoD do Roadmap passam a registrar, na criação, a dívida de reconciliação do detour: linha de delta no `Roadmap.md` com o identificador da issue
 
 ### v1.0.0 (Março/2026)
 
