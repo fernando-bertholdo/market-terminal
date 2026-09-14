@@ -51,14 +51,16 @@ reconcile-initiative btg-collectors
    - Fallback legado: _archive/milestones/MX.X-*/ -> _archive/detours/<nome>/ -> _archive/<id>/
 
 4. Ler documentos core:
-   - Roadmap.md -> milestones futuros, DoR/DoD + seção Desvios para detours
+   - Roadmap.md -> milestones futuros, DoR/DoD; `.planning/README.md` -> índice dos detours
    - Projeto.md -> decisoes de negocio/arquitetura
 
 5. Analise em 4 dimensoes:
 
    5a. Roadmap: Para milestones futuros que dependem desta initiative:
        - DoR reflete pre-condicoes criadas? Milestones faltando? Ordem correta?
-       - Para detours: seção Desvios atualizada?
+       - Para detours: aplicar a dimensão 4a.1 — o plano mudou? Se mudou, alterar
+         o Roadmap onde a sequência vive (a fase, o milestone); se não mudou, não
+         tocar o Roadmap. O índice do detour vive no `.planning/README.md`.
 
    5b. Deferred: Para cada <deferred> item:
        - Ja coberto por milestone do Roadmap ou por initiative registrada?
@@ -94,6 +96,27 @@ Milestones M1.6, M2.5, M3.2 dependem desses endpoints.
 -> Verificar se DoR de M1.6 menciona endpoints como pre-requisito.
 -> Verificar se M2.5 referencia o inventario de endpoints.
 ```
+
+### 4a.1 O plano mudou? (detour)
+
+Ler no `CONTEXT.md` do detour o campo **O que muda no plano**, gravado pela
+pergunta de entrada do `init-detour`, e confrontá-lo com o que o trabalho de fato
+entregou.
+
+- **Mudou** → alterar o `documents/core/Roadmap.md` **onde a sequência vive**: a
+  fase é reescrita, o milestone entra, sai ou troca de lugar. O identificador da
+  issue vai **no commit**, não numa linha de log no documento.
+- **Não mudou** → o `Roadmap.md` não é tocado. `documents/README.md` manda
+  atualizá-lo quando o plano muda e **nunca para registrar avanço**. Registrar
+  aqui que não houve mudança é suficiente.
+- **Não mudou e o detour tinha 3 sinais fracos** → sinalizar ao humano que a
+  classificação pode ter sido generosa. Não reclassificar sozinho.
+
+> **Mudou em 14/09/2026 (TECH-574).** Antes, esta dimensão exigia uma linha de
+> delta datada no `Roadmap.md`, "sem a qual o detour não fecha", verificada por
+> `grep <ID>`. Medição: **66 detours** na linhagem e **zero** linhas cumpridas. A
+> obrigação vinha de uma definição de detour que já não era a régua, criava um
+> sétimo lugar de status e nunca funcionou como gate.
 
 ### 4b. Deferred
 
@@ -162,6 +185,14 @@ em documento core — DL-4 tirou o tracking de status do repositorio.
 |-----------------|-------------|--------|----------|
 | M1.6 | Inventario endpoints | OK / FALTA | [acao] |
 
+## O plano mudou? (4a.1 — detour)
+
+| Verificacao | Evidencia |
+|------------|-----------|
+| Campo "O que muda no plano" lido do CONTEXT.md | <resposta registrada na criação> |
+| Confrontado com o entregue | MUDOU / NAO MUDOU |
+| Se MUDOU: Roadmap alterado onde a sequencia vive | <fase ou milestone tocado> / n/a |
+
 ## Deferred (4b)
 
 | Deferred Item | Ja coberto? | Destino sugerido |
@@ -221,7 +252,8 @@ Se outro formato → DETOUR (strip D- se presente)
 - `.planning/detours/<nome>/CONTEXT.md` — Contexto vivo de detour
 - `.planning/*/handoff/*.md` — Handoff snapshots
 - `.planning/_archive/` — Initiatives arquivadas
-- `documents/core/Roadmap.md` — Milestones futuros, DoR/DoD + seção Desvios
+- `documents/core/Roadmap.md` — Milestones futuros, DoR/DoD
+- `.planning/README.md` — tabela de Desvios e Índice de Iniciativas
 - `documents/core/Projeto.md` — Decisoes de negocio/arquitetura
 - `.planning/README.md` — Hub: mapeamento initiative->diretório
 
@@ -235,6 +267,11 @@ Se outro formato → DETOUR (strip D- se presente)
 ---
 
 ## Changelog
+
+### v3.0.0 (14/Set/2026 — TECH-574)
+- **BREAKING:** a dimensão 4a.1 deixa de escrever linha de delta no `Roadmap.md` e passa a perguntar se o plano mudou, lendo o campo gravado na criação do detour
+- Se mudou, o `Roadmap.md` é alterado onde a sequência vive e o identificador vai no commit; se não mudou, o Roadmap não é tocado
+- Some o gate `grep <ID> documents/core/Roadmap.md` — medição: 66 detours na linhagem, zero linhas cumpridas
 
 ### v1.0.0 (Fevereiro/2026)
 
