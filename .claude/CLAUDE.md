@@ -45,6 +45,7 @@ Este arquivo contém as **regras operacionais sempre ativas** para o projeto Mar
 - **Invocar skill `audit-architecture`** para verificar redundâncias (inclui revisão de seeds)
 - **Revisar a seção Seeds** do `.planning/README.md` — consumir, promover ou deletar; nenhum seed atravessa a fase sem decisão (§1.7)
 - **Invocar skill `archive-initiative --phase <fase>`** para arquivar initiatives concluídas
+- **Invocar skill `scope-horizons review`** para dar veredito aos horizontes de escopo vivos — **não é gate bloqueador**: "continua engavetado" é resposta válida para todos
 
 ### Regra de Ouro
 
@@ -86,6 +87,7 @@ Compromissos que vivem só na prosa da conversa evaporam. Registro faz parte da 
 | Requisito de initiative AINDA NÃO formalizada | Seed: `.planning/scratch/seed-<slug>.md` + linha na seção Seeds do `.planning/README.md` |
 | Decisão consolidada de negócio/arquitetura | `update-docs` → `documents/core/Projeto.md` |
 | Fato operacional de ambiente/infra durável | Runbook/doc operacional em `documents/` |
+| **Ampliação do escopo do produto**, fora do plano, fundamentada em evidência linkável | `scope-horizons capture` → `documents/strategy/scope-horizons.md`. Três testes obrigatórios: amplia o produto · está fora do plano · nasceu de evidência. Três de três, ou não é horizonte — e o agente **propõe, nunca grava sozinho**, no máximo uma proposta por turno |
 
 **Harness-agnóstico:** memória nativa do harness (ex.: auto-memory do Claude Code), quando existir, é **cache pessoal do agente** — acelera recall, mas nunca é registro canônico. Nenhuma skill ou regra pode depender de conteúdo que só exista na memória de um harness.
 
