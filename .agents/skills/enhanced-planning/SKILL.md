@@ -23,7 +23,7 @@ description: Adicionar guardrails estruturais a planos de implementacao. Use ao 
 ## Quando NAO Usar
 
 - Tarefas simples (1-2 arquivos, <100 linhas)
-- Patches rapidos (<=2 sessoes, sem risco de regressao)
+- Correcoes pontuais sem risco de regressao, que nao alteram o plano
 - Exploracao/pesquisa sem deliverable definido
 - Quando `writing-plans` do superpowers ja foi invocado e a tarefa e trivial
 

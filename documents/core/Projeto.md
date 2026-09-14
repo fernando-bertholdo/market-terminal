@@ -31,7 +31,6 @@ Este é um **living document** — a fonte ATUAL de verdade do projeto Market Te
 ## Referências Principais
 
 - [Roadmap.md](Roadmap.md) — Fases, milestones e DoR/DoD (gestão)
-- [TODO.md](TODO.md) — Tarefas granulares e progresso diário
 - [../../CLAUDE.md](../../CLAUDE.md) — Guia de arquitetura para Claude Code (fontes de dados, design system, padrões)
 - [../../AGENTS.md](../../AGENTS.md) e [../../.claude/CLAUDE.md](../../.claude/CLAUDE.md) — Regras de desenvolvimento sempre ativas
 - [Design do Ciclo 1 (SP0+SP1)](../superpowers/specs/2026-06-28-market-terminal-selfhost-foundation-design.md) — Spec da transição self-hosted/multi-tenant (origem das decisões D1–D8)
@@ -655,7 +654,7 @@ Atualize quando:
 - `update-docs task [milestone-id]` — Atualizar Projeto.md (decisões/entregas + Changelog) e referenciar no Roadmap.md
 
 **Manutenção:**
-- `update-docs roadmap` — Reprioritizar Roadmap/TODO quando decisões mudarem o plano
+- `update-docs roadmap` — Reprioritizar o Roadmap quando decisões mudarem o plano
 - `validate-docs-links check` — Validar sistema de links
 - `audit-architecture` — Auditar redundância em documentação
 

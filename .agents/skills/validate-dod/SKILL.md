@@ -37,10 +37,10 @@ Este é um **gate bloqueador** - nenhuma initiative deve ser marcada como comple
    - Se encontrado → prosseguir
 
 4. Ler fontes de DoD por tipo:
-   - MILESTONE: Roadmap.md § DoD do milestone + TODO.md § MX.X (verify: steps)
-   - DETOUR: Roadmap.md § Desvios — Nome (DoD) + TODO.md § Nome (verify: steps)
+   - MILESTONE: Roadmap.md § DoD do milestone + CONTEXT.md § DoD (verify: steps)
+   - DETOUR: Roadmap.md § Desvios — Nome (DoD) + CONTEXT.md § DoD (verify: steps)
 
-5. Extrair verify: steps do TODO.md (se existirem)
+5. Extrair verify: steps do DoD (Roadmap.md e CONTEXT.md da iniciativa)
 
 6. EXECUTAR verificações programáticas:
    - Rodar cada comando verify:
@@ -78,7 +78,7 @@ Este é um **gate bloqueador** - nenhuma initiative deve ser marcada como comple
 12. Se FAIL: Gerar plano de correção focado
 ```
 
-## Verify Steps - Formato no TODO.md
+## Verify Steps - Formato
 
 O skill extrai e executa `verify:` steps inline nas tarefas:
 
@@ -204,7 +204,7 @@ Listada para validação manual:
 
 ## Exemplo de Execução de Verify Steps
 
-### Input: TODO.md com verify: steps
+### Input: DoD com verify: steps
 
 ```markdown
 #### M1.2: Coletor Básico
@@ -301,7 +301,6 @@ O relatório gerado inclui:
 - `init-milestone` - Criar infraestrutura de milestone (se ausente)
 - `init-detour` - Criar infraestrutura de detour (se ausente)
 - `documents/core/Roadmap.md` - DoD por milestone + seção Desvios para detours
-- `documents/core/TODO.md` - Tracking de progresso e verify: steps
 - `.planning/milestones/MX.X-nome/` - Diretório do milestone
 - `.planning/detours/<nome>/` - Diretório do detour
 - `.planning/*/verification/` - DoD reports co-localizados
@@ -372,7 +371,7 @@ validate-dor M1.3   # Validar próximo ready
 ### v2.0.0 (27/Janeiro/2026)
 
 **Evolução para Verify Steps:**
-- Adicionado suporte a `verify:` steps inline no TODO.md
+- Adicionado suporte a `verify:` steps inline nos critérios de DoD
 - Execução programática de comandos de verificação
 - Geração de Verification Report estruturado
 - Distinção entre verificação programática e humana

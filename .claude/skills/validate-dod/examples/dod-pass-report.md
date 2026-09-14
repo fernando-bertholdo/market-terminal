@@ -68,9 +68,8 @@ Use como referência ao calibrar o formato ou validar se um relatório está cor
 **Human checkpoints:** 2/2 confirmados
 
 Próximas Ações:
-1. Atualizar TODO.md: Marcar M1.2 como completo ✅
-2. Commitar: `docs(milestone): completa M1.2`
-3. Validar DoR do próximo: validate-dor M1.3
-4. Se último milestone: reconcile-initiative <initiative-id>
-5. Se nova fase: archive-initiative --phase <fase>
+1. Commitar: `docs(milestone): completa M1.2`
+2. Validar DoR do próximo: validate-dor M1.3
+3. Se último milestone: reconcile-initiative <initiative-id>
+4. Se nova fase: archive-initiative --phase <fase>
 ```

@@ -20,7 +20,7 @@
 
 ## Verificações Programáticas
 
-Comandos executados automaticamente via `verify:` steps do TODO.md.
+Comandos executados automaticamente via `verify:` steps do DoD da iniciativa.
 
 ### Testes
 

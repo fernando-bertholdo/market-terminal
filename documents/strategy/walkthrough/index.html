@@ -215,7 +215,7 @@
               <span class="timeline__num">4</span>
             </div>
             <div class="timeline__card">
-              <h4>Roadmap &amp; TODO</h4>
+              <h4>Roadmap</h4>
               <p>Fases, milestones, DoR/DoD declarados. Single source of truth.</p>
               <div class="timeline__skills">
                 <span class="skill-chip">update-docs</span>
@@ -333,7 +333,7 @@ flowchart TB
             </li>
             <li>
               <strong>reconcile-initiative</strong>
-              <span>Reconcilia decisões e learnings em Projeto.md, Roadmap.md, TODO.md.</span>
+              <span>Reconcilia decisões e learnings em Projeto.md e Roadmap.md.</span>
             </li>
             <li>
               <strong>archive-initiative</strong>
@@ -476,7 +476,7 @@ sequenceDiagram
               <h4>Por que importa</h4>
               <p>Tarefas com 3+ subtarefas independentes ganham 2-3× em paralelismo. Lead delega; teammates executam; Lead consolida.</p>
               <ul>
-                <li><strong>Só o Lead commita</strong> — teammates não tocam git, docs core ou TODO.md.</li>
+                <li><strong>Só o Lead commita</strong> — teammates não tocam git nem docs core.</li>
                 <li>Haiku para pesquisa, Sonnet para implementação, Opus para coordenação.</li>
                 <li>Delegate Mode (Shift+Tab) restringe Lead a coordenar — evita que vire mais um implementador.</li>
               </ul>
@@ -811,7 +811,6 @@ sequenceDiagram
           <ul class="artifact-list">
             <li><code>documents/core/Projeto.md</code><span>living doc · single source of truth</span></li>
             <li><code>documents/core/Roadmap.md</code><span>fases, milestones, DoR/DoD</span></li>
-            <li><code>documents/core/TODO.md</code><span>tarefas granulares</span></li>
             <li><code>documents/strategy/</code><span>visão, métricas, riscos (Tier 1)</span></li>
             <li><code>documents/technical/</code><span>arquitetura, integrações</span></li>
             <li><code>documents/archive/</code><span>TAP, transcrições, histórico</span></li>
@@ -826,7 +825,6 @@ sequenceDiagram
           </header>
           <ul class="artifact-list">
             <li><code>.planning/&lt;initiative&gt;/</code><span>CONTEXT.md + plans + handoff</span></li>
-            <li><code>.planning/patches/</code><span>correções ≤2 sessões</span></li>
             <li><code>.planning/scratch/</code><span>context dumps efêmeros</span></li>
             <li><code>.planning/audit-reports/</code><span>reconciliation + drift</span></li>
             <li><code>.planning/_archive/</code><span>initiatives concluídas + INDEX.md</span></li>

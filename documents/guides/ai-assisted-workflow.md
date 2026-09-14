@@ -189,7 +189,7 @@ git push origin main
 
 ### Objetivo da Fase 0
 
-Completar todas as decisões técnicas necessárias para iniciar o desenvolvimento. Ao final, o projeto deve ter: stack definido, arquitetura documentada, ambiente configurado, e TODO.md com tasks da primeira fase de desenvolvimento.
+Completar todas as decisões técnicas necessárias para iniciar o desenvolvimento. Ao final, o projeto deve ter: stack definido, arquitetura documentada, ambiente configurado, e a primeira fase de desenvolvimento aberta como tarefas no rastreador do projeto.
 
 ### Validar Pré-Requisitos
 
@@ -255,12 +255,12 @@ Se DoR falhar:
 ### Fluxo de Desenvolvimento Diário
 
 ```
-1. Ler TODO.md → identificar task atual
+1. Pegar a task atual no rastreador do projeto
 2. Implementar em chunks ≤100 linhas
 3. Testar
 4. pre-commit-check
 5. Commitar (1 task = 1 commit)
-6. Atualizar checkbox no TODO.md
+6. Fechar a task no rastreador
 7. Repetir
 ```
 
@@ -409,7 +409,7 @@ entre milestones, e carga de trabalho.
 Apresente opções: implementar agora, deferir para Fase N,
 ou rejeitar com justificativa.
 ```
-Se aceito, atualize Roadmap.md e TODO.md:
+Se aceito, atualize o Roadmap:
 ```
 update-docs roadmap
 ```
@@ -448,7 +448,7 @@ Após completar cada fase, reflita sobre o que funcionou e o que não funcionou.
 ```
 Faça uma retrospectiva da Fase 1.
 Analise: timeline planejado vs real (Roadmap.md),
-tasks que bloquearam outras (TODO.md),
+tasks que bloquearam outras (rastreador do projeto),
 decisões técnicas que mudaram durante a fase (Projeto.md).
 Documente lições aprendidas em documents/strategy/.
 ```
@@ -599,7 +599,7 @@ O projeto está sendo encerrado. Execute as seguintes validações finais:
 - **Projeto.md:** Deve refletir o estado final do projeto, não o planejado
 - **README.md:** Atualizar com instruções de uso (não mais linguagem de template)
 - **Roadmap.md:** Marcar fase final como concluída
-- **TODO.md:** Seção "Backlog Deferido" com itens não implementados e justificativas
+- **Backlog:** Itens não implementados ficam no rastreador do projeto, com justificativa
 
 ### Handoff
 

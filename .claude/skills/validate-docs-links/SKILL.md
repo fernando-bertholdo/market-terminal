@@ -50,7 +50,7 @@ Tentar corrigir automaticamente links quebrados identificados pelo check.
 
 | Tipo | Exemplo | Validação |
 |------|---------|-----------|
-| **Relativo (mesmo dir)** | `[TODO.md](../../../documents/core/TODO.md)` | Arquivo existe |
+| **Relativo (mesmo dir)** | `[Roadmap.md](../../../documents/core/Roadmap.md)` | Arquivo existe |
 | **Relativo (pai)** | `[CLAUDE.md](../../CLAUDE.md)` | Resolve path e verifica |
 | **Relativo (subdir)** | `[arch.md](../../../documents/technical/architecture.md)` | Path completo |
 | **Âncora (mesmo arquivo)** | `[Seção](#secao)` | Âncora existe |

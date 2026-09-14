@@ -13,7 +13,7 @@
 
 | Item | Status | Evidência |
 |------|--------|-----------|
-| [Milestone X completo (DoD 100%)] | ✅ / ❌ | [referência no TODO.md / data de validação] |
+| [Milestone X completo (DoD 100%)] | ✅ / ❌ | [report de DoD / data de validação] |
 
 ### Arquivos e Configurações
 

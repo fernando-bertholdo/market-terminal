@@ -25,7 +25,6 @@ Commits atômicos permitem:
 2. **SEMPRE** stage arquivos individualmente por task
 3. **MÁXIMO** 100 linhas por commit (não 500)
 4. **FORMATO:** `{type}({milestone}-{task}): {description}`
-5. **RASTREAR** hashes em TODO.md seção "Commits do Milestone"
 
 ### Exceções Permitidas
 
@@ -47,10 +46,10 @@ Commits atômicos permitem:
 1. Analisar mudanças pendentes
    - git status (ver arquivos modificados)
    - git diff --stat (contar linhas)
-   - Identificar tasks associadas (via TODO.md)
+   - Identificar tasks associadas (via Roadmap.md e CONTEXT.md da iniciativa)
 
 2. Mapear mudanças por TASK (não por arquivo):
-   - Qual task do TODO.md cada arquivo pertence?
+   - A qual task cada arquivo pertence?
    - Marcar arquivos órfãos (sem task clara)
 
 3. Para CADA task, criar UM commit:
@@ -71,14 +70,9 @@ Commits atômicos permitem:
    git add -A # NUNCA!
    ```
 
-5. Rastrear hash em TODO.md:
-   - Adicionar hash na seção "Commits do Milestone"
-   - Formato: `1. **Task N: Nome** - \`abc123f\` (type)`
-
-6. Validar resultado:
+5. Validar resultado:
    - git log --oneline -5 (ver commits recentes)
    - Verificar se cada commit é atômico
-   - Confirmar hashes rastreados
 ```
 
 ## Convenções de Commits (Conventional Commits)
@@ -203,7 +197,6 @@ Definir scopes específicos do projeto em AGENTS.md. Exemplos comuns:
    - Commit 2: Depende de Commit 1
    - Commit 3: Depende de Commits 1+2
 
-## Rastreamento de Commits no TODO.md
 
 Após cada commit, adicionar hash na seção do milestone:
 
@@ -261,7 +254,6 @@ feat: adiciona scraper, corrige bug no parser, atualiza README
 
 ❌ **Commit sem rastreamento** (hash não registrado)
 ```
-# Commit feito mas não adicionado ao TODO.md
 # Perde-se rastreabilidade task → commit
 ```
 
@@ -274,18 +266,15 @@ feat: adiciona scraper, corrige bug no parser, atualiza README
 $ git status
 modified:   src/collectors/scraper.py
 modified:   tests/unit/test_scraper.py
-modified:   documents/core/TODO.md
 
 $ git diff --stat
  src/collectors/scraper.py     | 85 +++++++++++++
  tests/unit/test_scraper.py    | 42 +++++++
- documents/core/TODO.md            |  3 +
- 3 files changed, 130 insertions(+)
+ 2 files changed, 127 insertions(+)
 
 # 2. Mapear por task
 # - scraper.py → Task M1.2-01 (Login)
 # - test_scraper.py → Task M1.2-01 (Login)
-# - TODO.md → Atualização de tracking
 
 # 3. Commit 1: Feature (85 linhas ✅)
 $ git add src/collectors/scraper.py
@@ -295,18 +284,10 @@ $ git commit -m "feat(M1.2-01): implementa login automatizado"
 $ git add tests/unit/test_scraper.py
 $ git commit -m "test(M1.2-01): adiciona testes de login"
 
-# 5. Commit 3: Tracking (3 linhas ✅)
-$ git add documents/core/TODO.md
-$ git commit -m "docs(M1.2): atualiza tracking de commits"
-
-# 6. Verificar resultado
-$ git log --oneline -3
+# 5. Verificar resultado
+$ git log --oneline -2
 abc123f feat(M1.2-01): implementa login automatizado
 def456g test(M1.2-01): adiciona testes de login
-ghi789h docs(M1.2): atualiza tracking de commits
-
-# 7. Atualizar TODO.md com hashes
-# (adicionar na seção "Commits do Milestone M1.2")
 ```
 
 ## Ferramentas Complementares
@@ -350,7 +331,6 @@ pre-commit-check
 # 3. Push para remoto
 git push origin main
 
-# 4. Atualizar TODO.md
 # Marcar tarefas como completas
 ```
 
@@ -360,7 +340,6 @@ git push origin main
 - [Semantic Versioning](https://semver.org/)
 - `AGENTS.md` - Seção "Commit Strategy"
 - `documents/core/Roadmap.md` - Milestones
-- `documents/core/TODO.md` - Tracking de commits
 
 ## Skills Relacionadas
 
@@ -378,7 +357,6 @@ git push origin main
 - Regra hard-coded: NUNCA git add . ou git add -A
 - Limite reduzido: 100 linhas (era 500)
 - Formato: `{type}({milestone}-{task}): {description}`
-- Rastreamento de hashes em TODO.md
 - Exemplos atualizados com workflow atômico
 
 ### v1.0.0

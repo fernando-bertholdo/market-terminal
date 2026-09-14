@@ -379,7 +379,7 @@ Baseados na arquitetura: `[scope1], [scope2], [scope3], [scope4], docs, mileston
 
 ## 13. Backlog Macro Priorizado (P0/P1/P2)
 
-> Organizado por épicos/streams, alimenta TODO.md por milestone.
+> Organizado por épicos/streams, alimenta o Roadmap.md por milestone.
 
 ### P0 — Must-have (MVP / Risco Crítico)
 
@@ -399,7 +399,7 @@ Baseados na arquitetura: `[scope1], [scope2], [scope3], [scope4], docs, mileston
 |-------|------|-----------|---------|-------------------|
 | [Épico 3] | [Item] | — | S/M/L | [Critério] |
 
-**Placeholders alimentados:** Tasks para `TODO.md` por milestone
+**Placeholders alimentados:** Itens de backlog para o `Roadmap.md` por milestone
 
 ---
 

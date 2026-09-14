@@ -153,7 +153,7 @@ sequenceDiagram
 
             KP ->> FS: Preencher Market Terminal, Fernando Bertholdo,<br/>web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning, Fernando Bertholdo...
             KP ->> FS: Preencher npm run type-check, npm run lint,<br/>npx prettier --check ., npm run type-check...
-            KP ->> FS: Preencher conteudo em Projeto.md,<br/>Roadmap.md, TODO.md
+            KP ->> FS: Preencher conteudo em Projeto.md<br/>e Roadmap.md
             KP ->> FS: Preencher 2026-06-28, {{START_DATE}}, {{END_DATE}}
 
             KP ->> KP: Garantir consistencia:<br/>mesmo placeholder = mesmo valor<br/>em TODOS os arquivos
@@ -226,7 +226,7 @@ sequenceDiagram
         VDL -->>- Dev: Link Validation Report
 
         %% Manual Review
-        Dev ->> FS: Revisar manualmente:<br/>Projeto.md, Roadmap.md, TODO.md,<br/>CLAUDE.md, README.md, .env.example
+        Dev ->> FS: Revisar manualmente:<br/>Projeto.md, Roadmap.md,<br/>CLAUDE.md, README.md, .env.example
     end
 
     %% ═══════════════════════════════════════

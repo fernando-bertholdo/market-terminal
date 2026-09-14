@@ -99,7 +99,7 @@ Estes placeholders configuram as skills operacionais do projeto:
 - `npm update` — Ex.: `pip install --upgrade`, `npm update`
 
 **MEDIUM — Conteúdo de documentação:**
-Placeholders em `documents/core/` (Projeto.md, Roadmap.md, TODO.md) que descrevem o negócio, objetivos, fases, riscos, etc.
+Placeholders em `documents/core/` (Projeto.md, Roadmap.md) que descrevem o negócio, objetivos, fases, riscos, etc.
 
 **LOW — Metadata:**
 `2026-06-28`, `{{START_DATE}}`, `{{END_DATE}}`, e metadata de arquivos.

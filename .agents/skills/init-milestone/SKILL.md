@@ -101,7 +101,7 @@ Slug kebab-case para o diretório. Se omitido:
 
    ## Próximos Passos
 
-   [Extrair do TODO.md]
+   [Extrair do Roadmap.md e do CONTEXT.md da iniciativa]
 
    <deferred>
    ## Ideias Adiadas
@@ -131,7 +131,7 @@ O skill `validate-dor` adiciona um step pré-checklist:
 ## Quando NÃO Usar
 
 - Para detours → usar skill `init-detour` (cria estrutura equivalente em `.planning/detours/`)
-- Para patches → criar `.planning/patches/{slug}/plan.md`
+- Para trabalho avulso (não altera o plano) → sem estrutura em `.planning/`; o registro é o histórico do git
 - Para milestone já existente → idempotente (reporta e sai)
 
 ## Referências
@@ -139,7 +139,6 @@ O skill `validate-dor` adiciona um step pré-checklist:
 - `.planning/README.md` — Hub de initiatives
 - `.planning/milestones/` — Diretório raiz de milestones
 - `documents/core/Roadmap.md` — Definição de milestones (DoR/DoD)
-- `documents/core/TODO.md` — Tarefas granulares
 
 ## Skills Relacionadas
 

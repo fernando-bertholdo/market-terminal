@@ -69,13 +69,12 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
 ### 1. Milestone Anterior Completo
 
 **Validação:**
-- Verificar TODO.md (milestone marcado como completo)
-- Verificar DoD foi validado (data de validação)
+- Verificar DoD do milestone anterior foi validado (report em `.planning/*/verification/`)
 
 **Exemplo:**
 ```
 ✅ M1.1 completo (DoD 100%)
-   - Validado: M1.1 marcado como completo em TODO.md
+   - Validado: report de DoD de M1.1 em .planning/*/verification/
    - DoD M1.1 validado em 20/Jan/2026
 ```
 
@@ -140,7 +139,7 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
 ## Checklist de Pré-requisitos
 
 ✅ M1.1 completo (DoD 100%)
-   - Validado: M1.1 marcado como completo em TODO.md
+   - Validado: report de DoD de M1.1 em .planning/*/verification/
    - DoD M1.1 validado em 20/Jan/2026
 
 ✅ Credenciais BTG validadas
@@ -168,10 +167,9 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
 **Todos os 6 pré-requisitos completos (100%)**
 
 Próximas Ações:
-1. Atualizar TODO.md: Marcar M1.2 como "em progresso"
-2. Iniciar implementação seguindo DoD como checklist
-3. Consultar pre-commit-check e validate-testing durante desenvolvimento
-4. Validar DoD ao completar: validate-dod M1.2
+1. Iniciar implementação seguindo DoD como checklist
+2. Consultar pre-commit-check e validate-testing durante desenvolvimento
+3. Validar DoD ao completar: validate-dod M1.2
 ```
 
 ### Cenário: DoR Incompleto (❌ FAIL)
@@ -272,7 +270,7 @@ validate-dor M1.3
 ### Automáticas (✅ ou ❌)
 
 - **Arquivos existem:** Verifica filesystem
-- **Milestone anterior completo:** Checa TODO.md e Roadmap.md
+- **Milestone anterior completo:** Checa o report de DoD e o Roadmap.md
 - **Decisões documentadas:** Busca em Projeto.md
 - **Configurações presentes:** Verifica .env, settings
 
@@ -355,7 +353,6 @@ Se outro formato → DETOUR (strip D- se presente)
 - `init-milestone` - Criar infraestrutura de milestone (se ausente)
 - `init-detour` - Criar infraestrutura de detour (se ausente)
 - `documents/core/Roadmap.md` - DoR por milestone + seção Desvios para detours
-- `documents/core/TODO.md` - Tracking de progresso
 - `documents/core/Projeto.md` - Decisões e requisitos
 - `.planning/milestones/MX.X-nome/` - Diretório do milestone
 - `.planning/detours/<nome>/` - Diretório do detour

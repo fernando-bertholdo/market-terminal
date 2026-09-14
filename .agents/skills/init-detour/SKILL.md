@@ -1,6 +1,6 @@
 ---
 name: init-detour
-description: Inicializar infraestrutura de planning para um detour transversal. Cria diretório dedicado em .planning/detours/ com CONTEXT.md unificado e subpastas (verification/, handoff/, plans/). Registra automaticamente em .planning/README.md, Roadmap.md (seção Desvios) e TODO.md. Use quando surgir trabalho emergente que cruza milestones.
+description: Inicializar infraestrutura de planning para um detour transversal. Cria diretório dedicado em .planning/detours/ com CONTEXT.md unificado e subpastas (verification/, handoff/, plans/). Registra automaticamente em .planning/README.md e Roadmap.md (seção Desvios). Use quando surgir trabalho emergente que cruza milestones.
 ---
 
 # Init Detour
@@ -17,7 +17,7 @@ Cria a infraestrutura de planning para um detour, garantindo que o diretório de
 
 - Quando surge trabalho emergente que cruza múltiplos milestones
 - Quando `validate-dor` reportar BLOQUEADOR por falta de diretório de detour
-- Quando um patch escala (>2 sessões) e precisa ser promovido a detour
+- Quando trabalho avulso se revela alterando o plano e precisa virar detour
 
 ## Parâmetros
 
@@ -136,19 +136,7 @@ Lista de milestone IDs relacionados (separados por vírgula). Registrados na met
    **Referência:** `.planning/detours/<nome>/CONTEXT.md`
    ```
 
-6. Registrar em documents/core/TODO.md:
-   - Adicionar header na seção de desvios
-   ```markdown
-   ### <Nome Humanizado>
-
-   **Commits do Detour:**
-   | Hash | Tipo | Descrição |
-   |------|------|-----------|
-
-   - [ ] [Tarefas iniciais do detour]
-   ```
-
-7. Sugerir commit:
+6. Sugerir commit:
    chore(planning): inicializa infraestrutura para detour <nome>
 ```
 
@@ -162,7 +150,7 @@ O skill `validate-dor` detecta tipo automaticamente:
 ## Quando NÃO Usar
 
 - Para milestones → usar skill `init-milestone`
-- Para patches (≤2 sessões) → criar `.planning/patches/{slug}/plan.md`
+- Para trabalho avulso (não altera o plano) → sem estrutura em `.planning/`; o registro é o histórico do git
 - Para detour já existente → idempotente (reporta e sai)
 
 ## Referências
@@ -170,7 +158,6 @@ O skill `validate-dor` detecta tipo automaticamente:
 - `.planning/README.md` — Hub de initiatives
 - `.planning/detours/` — Diretório raiz de detours
 - `documents/core/Roadmap.md` — Seção Desvios (DoR/DoD)
-- `documents/core/TODO.md` — Tarefas granulares
 
 ## Skills Relacionadas
 
@@ -189,7 +176,7 @@ O skill `validate-dor` detecta tipo automaticamente:
 - Criação idempotente de diretório de detour
 - CONTEXT.md unificado com metadata table + XML tags
 - Subdiretórios: verification/, handoff/, plans/
-- Registro automático em .planning/README.md, Roadmap.md e TODO.md
+- Registro automático em .planning/README.md e Roadmap.md
 - Template DoR/DoD na seção Desvios do Roadmap
 - Integração com validate-dor/validate-dod como initiative unificada
 

@@ -23,7 +23,7 @@ ESCOPO de leitura: {{DIRS_TO_ANALYZE}}
 
 RESTRIÇÕES:
 - Apenas LEITURA (não edite nenhum arquivo)
-- Não edite documents/core/ (TODO, Roadmap, Projeto)
+- Não edite documents/core/ (Roadmap, Projeto)
 - Não faça git commit/add/push
 
 DELIVERABLE: Reportar ao Lead com:
