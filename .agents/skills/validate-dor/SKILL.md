@@ -86,13 +86,13 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
 
 **Exemplo:**
 ```
-✅ Credenciais BTG validadas
-   - Validado: .env existe com BTG_USERNAME, BTG_PASSWORD
+✅ Credenciais do portal validadas
+   - Validado: .env existe com PORTAL_USERNAME, PORTAL_PASSWORD
    - Teste de conectividade: Acesso ao portal OK
 
 ❌ Dicionário de DC não existe
    - BLOQUEADOR: data/dicionario_dc.json não encontrado
-   - Ação: Criar dicionário baseado em nomenclaturas BTG
+   - Ação: Criar dicionário baseado em nomenclaturas fornecedor
 ```
 
 ### 3. Decisões Técnicas Documentadas
@@ -120,7 +120,7 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
 ⚠️  Entendimento do fluxo de navegação no portal
    - ATENÇÃO: Validação manual necessária
    - Você entende o fluxo de login → navegação → download?
-   - Documentado em: Projeto.md seção "Fluxo de Coleta"
+   - Documentado em: Projeto.md seção "Fluxo de Ingestão"
 ```
 
 ## Exemplo de Validação
@@ -142,12 +142,12 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
    - Validado: report de DoD de M1.1 em .planning/*/verification/
    - DoD M1.1 validado em 20/Jan/2026
 
-✅ Credenciais BTG validadas
-   - Validado: .env existe com BTG_USERNAME, BTG_PASSWORD
-   - Teste de conectividade: Portal BTG acessível
+✅ Credenciais do portal validadas
+   - Validado: .env existe com PORTAL_USERNAME, PORTAL_PASSWORD
+   - Teste de conectividade: portal do fornecedor acessível
 
 ✅ Dicionário de fundos definido (1-2 piloto)
-   - Validado: documents/core/Projeto.md seção "Fundos Piloto"
+   - Validado: documents/core/Projeto.md seção "Escopo Piloto"
    - 2 fundos identificados: Fundo A, Fundo B
 
 ✅ Decisão sobre fonte de dados tomada
@@ -155,7 +155,7 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
    - Análise comparativa documentada (XML vs PDF vs Excel)
 
 ✅ Entendimento do fluxo de navegação no portal
-   - Validado: Documentado em Projeto.md seção "Fluxo de Coleta"
+   - Validado: Documentado em Projeto.md seção "Fluxo de Ingestão"
 
 ✅ Projeto.md atualizado com decisão
    - Validado: Projeto.md v1.1.0 (changelog confirma)
@@ -190,14 +190,14 @@ Próximas Ações:
 
 ❌ Dicionário de DC (direitos creditórios) criado
    - BLOQUEADOR: data/dicionario_dc.json não encontrado
-   - Ação: Criar dicionário baseado em nomenclaturas BTG
+   - Ação: Criar dicionário baseado em nomenclaturas fornecedor
 
 ✅ Dados brutos de 1-2 fundos disponíveis
    - Validado: data/raw/fundo_A.xml, fundo_B.xml existem
 
-❌ Nomenclaturas BTG mapeadas
+❌ Nomenclaturas do fornecedor mapeadas
    - BLOQUEADOR: Mapeamento não documentado
-   - Ação: Documentar em Projeto.md seção "Dicionário de Ativos"
+   - Ação: Documentar em Projeto.md seção "Dicionário de Domínio"
 
 ✅ Regras de classificação definidas
    - Validado: Projeto.md seção "Regras de Negócio Críticas"
@@ -235,8 +235,8 @@ NÃO inicie trabalho no M1.3 até resolver bloqueadores!
    Referência: TAP seção 4.3 "Classificação de Ativos"
 
 2. **Documentar mapeamento de nomenclaturas**
-   - Atualizar Projeto.md seção "Dicionário de Ativos"
-   - Incluir: nomenclaturas BTG, classificação, ambiguidades
+   - Atualizar Projeto.md seção "Dicionário de Domínio"
+   - Incluir: nomenclaturas fornecedor, classificação, ambiguidades
    - Atualizar changelog (v1.2.0)
 
 ### RECOMENDADO (Não-bloqueante)

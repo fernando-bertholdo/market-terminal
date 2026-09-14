@@ -214,7 +214,7 @@ Extraindo notas de cada material...
 
 ## Relatório de Geração do TAP
 
-**Arquivo gerado:** documents/archive/TAP_monitor-fundos.md
+**Arquivo gerado:** documents/archive/TAP_{{PROJECT_NAME}}.md
 
 **Seções completas:** 0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 17, Apêndice A
 **Seções com gaps:**

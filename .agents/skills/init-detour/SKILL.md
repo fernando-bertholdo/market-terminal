@@ -1,6 +1,6 @@
 ---
 name: init-detour
-description: Inicializar infraestrutura de planning para um detour transversal. Cria diretório dedicado em .planning/detours/ com CONTEXT.md unificado e subpastas (verification/, handoff/, plans/). Registra automaticamente em .planning/README.md e Roadmap.md (seção Desvios). Use quando surgir trabalho emergente que cruza milestones.
+description: Inicializar infraestrutura de planning para um detour transversal. Cria diretório dedicado em .planning/detours/ com CONTEXT.md unificado e subpastas (verification/, handoff/, plans/). Registra automaticamente em .planning/README.md (tabela de Desvios e Índice de Iniciativas). Use quando surgir trabalho emergente que cruza milestones.
 ---
 
 # Init Detour
@@ -12,6 +12,31 @@ Cria a infraestrutura de planning para um detour, garantindo que o diretório de
 > **"Detours têm a mesma disciplina de milestones — DoR/DoD rigoroso e bloqueante."**
 
 `validate-dor` e `validate-dod` aceitam detour IDs e validam com o mesmo rigor que milestones.
+
+## A Pergunta de Entrada
+
+O detour é o tipo que satisfaz **dois de três sinais** — nasce fora do plano
+escrito · entrega artefato próprio que passa a ser mantido · corre em paralelo à
+veia principal. Alterar o plano **não** é um dos sinais: um detour pode alterar e
+muitos alteram, mas não é isso que o define.
+
+Por isso, no momento em que o detour nasce, esta skill faz **uma pergunta** e
+registra a resposta no `CONTEXT.md`:
+
+> **O que este trabalho muda no plano?**
+> — Se a resposta for "nada", confira a classificação antes de seguir: pode ser
+>   fatia da milestone (um sinal só) ou issue avulsa (nenhum).
+> — Se for algo, escreva o quê. Ao fechar, é isso que o `Roadmap.md` recebe **na
+>   fase ou milestone que muda** — nunca como linha de log datada.
+
+O teste vale na **entrada**, onde reclassificar custa um minuto. Se o plano não
+mudou ao fechar, o `Roadmap.md` não é tocado: `documents/README.md` manda
+atualizá-lo quando o plano muda e **nunca para registrar avanço**.
+
+> **Mudou em 14/09/2026 (TECH-574).** A versão anterior contraía uma dívida de
+> saída — uma linha de delta datada no `Roadmap.md`, "sem a qual o detour não
+> fecha". Medição: **66 detours** na linhagem e **zero** linhas cumpridas. Esta
+> skill mandava escrevê-la numa seção do `Roadmap.md` que nunca existiu.
 
 ## Quando Usar
 
@@ -33,7 +58,7 @@ init-detour fee-intelligence --related M1.6,M2.2
 
 ### --related (opcional)
 
-Lista de milestone IDs relacionados (separados por vírgula). Registrados na metadata do CONTEXT.md e na seção Desvios do Roadmap.md.
+Lista de milestone IDs relacionados (separados por vírgula). Registrados na metadata do CONTEXT.md e na tabela de Desvios do `.planning/README.md`.
 
 ## Procedimento
 
@@ -65,7 +90,9 @@ Lista de milestone IDs relacionados (separados por vírgula). Registrados na met
    | **Última atualização** | YYYY-MM-DD |
    | **Trigger** | [Perguntar ao usuário o que motivou] |
    | **Milestones relacionados** | [M1.6, M2.2, ...] |
-   | **Referência Roadmap** | Roadmap.md § Desvios — <Nome> |
+   | **Issue-pai no board** | [--parent-issue, ou "nenhuma (detour de topo)"] |
+   | **Índice** | `.planning/README.md` — tabela de Desvios e Índice de Iniciativas |
+   | **O que muda no plano** | [Resposta da pergunta de entrada; "nada" exige reconferir a classificação] |
 
    <domain>
    ## Escopo
@@ -111,30 +138,14 @@ Lista de milestone IDs relacionados (separados por vírgula). Registrados na met
    - Adicionar linha na tabela de detours
    - Formato: | <nome> | (ativo) | .planning/detours/<nome>/CONTEXT.md |
 
-5. Registrar em documents/core/Roadmap.md (seção Desvios):
-   - Adicionar bloco na seção "## 🔀 Desvios e Iniciativas Apartadas"
-   ```markdown
-   ### <Nome Humanizado>
-
-   **Status:** 🔄 ATIVO
-   **Iniciado em:** YYYY-MM-DD
-   **Trigger:** [O que motivou]
-   **Milestones relacionados:** M1.6, M2.2
-
-   #### DoR
-   - [x] Trigger documentado
-   - [x] Scope definido (CONTEXT.md)
-   - [x] Milestones afetados identificados
-
-   #### DoD
-   - [ ] [Perguntar critérios de aceite ao usuário]
-   - verify: `[comando de verificação, se aplicável]`
-
-   #### Entregas
-   [A preencher conforme progresso]
-
-   **Referência:** `.planning/detours/<nome>/CONTEXT.md`
-   ```
+5. Responder a pergunta de entrada e gravá-la no CONTEXT.md:
+   - Perguntar ao usuário: **"O que este trabalho muda no plano?"**
+   - Se a resposta for "nada": avisar que a classificação pode estar errada
+     (um sinal = fatia; nenhum = issue avulsa) e confirmar antes de seguir
+   - Gravar a resposta no campo **O que muda no plano** da metadata
+   - **Não** escrever no `documents/core/Roadmap.md`: o índice do detour vive no
+     `.planning/README.md` (passo 4), e o Roadmap só muda se a sequência de fases
+     mudar de fato, ao fechar, onde ela vive
 
 6. Sugerir commit:
    chore(planning): inicializa infraestrutura para detour <nome>
@@ -157,7 +168,7 @@ O skill `validate-dor` detecta tipo automaticamente:
 
 - `.planning/README.md` — Hub de initiatives
 - `.planning/detours/` — Diretório raiz de detours
-- `documents/core/Roadmap.md` — Seção Desvios (DoR/DoD)
+- `.planning/README.md` — tabela de Desvios e Índice de Iniciativas (é aqui que o detour é indexado)
 
 ## Skills Relacionadas
 
@@ -169,6 +180,19 @@ O skill `validate-dor` detecta tipo automaticamente:
 ---
 
 ## Changelog
+
+### v2.0.0 (14/Set/2026 — TECH-574)
+- **BREAKING:** a dívida de saída é substituída por pergunta de entrada. O detour não escreve mais linha de delta no `Roadmap.md` ao fechar
+- A definição de detour passa a ser a mesma do `AGENTS.md` §2 (dois de três sinais); alterar o plano deixa de ser definidor
+- Sai o passo que registrava na seção "🔀 Desvios e Iniciativas Apartadas" do `Roadmap.md` — seção que nunca existiu no template
+- O índice do detour vive só no `.planning/README.md`
+- Medição que motivou: 66 detours na linhagem, zero linhas de delta cumpridas
+
+### v1.1.0 (Agosto/2026)
+
+**Taxonomia por obrigação:**
+- O tipo `patch` deixou de existir; trabalho que não altera o plano é issue avulsa, sem estrutura em `.planning/`
+- CONTEXT.md e DoD do Roadmap passam a registrar, na criação, a dívida de reconciliação do detour: linha de delta no `Roadmap.md` com o identificador da issue
 
 ### v1.0.0 (Março/2026)
 
