@@ -88,6 +88,24 @@ Compromissos que vivem só na prosa da conversa evaporam. Registro faz parte da 
 | Decisão consolidada de negócio/arquitetura | `update-docs` → `documents/core/Projeto.md` |
 | Fato operacional de ambiente/infra durável | Runbook/doc operacional em `documents/` |
 | **Ampliação do escopo do produto**, fora do plano, fundamentada em evidência linkável | `scope-horizons capture` → `documents/strategy/scope-horizons.md`. Três testes obrigatórios: amplia o produto · está fora do plano · nasceu de evidência. Três de três, ou não é horizonte — e o agente **propõe, nunca grava sozinho**, no máximo uma proposta por turno |
+| Trabalho emergente que cruza a veia principal | **Classifique antes de criar** (ver abaixo): apara, fatia ou detour — o destino é diferente nos três casos |
+
+**Classificar antes de criar issue.** O destino de uma descoberta que virou trabalho depende da
+classe dela, e a classe é decidida ANTES de a issue existir. Duas perguntas, nesta ordem:
+
+1. **É apara?** Deriva de uma revisão **e conserta o mesmo diff que o revisor leu** → nasce sob a
+   issue cuja fatia foi criticada, nunca sob a issue-pai de topo. Para aqui.
+2. **Dois destes três sinais fazem um detour**, não uma fatia: nasce **fora do plano** escrito da
+   pai · entrega **artefato ou ferramenta própria** que passa a ser mantida · corre **em paralelo**
+   à veia principal sem ser insumo do DoD de outra fatia. Um sinal só é fatia; dois ou mais pedem
+   `init-detour <nome> --parent-issue <ID-da-milestone>`.
+
+O número de issues derivadas **não** entra na decisão de criar — quando você sabe que o trabalho
+rendeu três issues, elas já nasceram no lugar errado. Ele serve para **reclassificar**: cluster com
+3 derivadas, ou que atravessa mais de uma sessão em paralelo, pede reavaliação, e quem percebe
+**propõe e para**. O critério em extenso vive no `tech-product-template` (`AGENTS.md` § 2,
+"Classificar antes de criar issue"); aqui esta é a única versão, porque o `AGENTS.md` deste
+repositório é documento próprio do projeto e não tem a seção correspondente.
 
 **Harness-agnóstico:** memória nativa do harness (ex.: auto-memory do Claude Code), quando existir, é **cache pessoal do agente** — acelera recall, mas nunca é registro canônico. Nenhuma skill ou regra pode depender de conteúdo que só exista na memória de um harness.
 
