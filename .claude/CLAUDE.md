@@ -2,7 +2,7 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
-Template de origem: tech-product-template@2.13.0
+Template de origem: tech-product-template@2.14.0
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
@@ -184,10 +184,17 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 3. Se retomando, leia handoff em `.planning/<tipo>/<nome>/handoff/`
 4. Se nenhum CONTEXT existe, use skill `fresh-context` para criar
 
-**Tipos de trabalho:** milestone | detour — a taxonomia é por **obrigação com o
-plano**, não por tamanho. Milestone avança o plano; detour não estava no plano e
-o altera. Trabalho que não altera o plano é **issue avulsa**: sem tipo, sem
-diretório em `.planning/`, sem obrigação de reconciliar.
+**Tipos de trabalho:** milestone | detour — a taxonomia é pela **relação com o
+plano escrito**, não por tamanho, e a régua é a do `AGENTS.md` do `tech-product-template`, §2 (o `AGENTS.md` deste repositório é documento próprio do projeto e não tem a seção correspondente). Milestone já
+estava no Roadmap. Detour satisfaz **dois de três sinais** — nasce fora do plano ·
+entrega artefato próprio mantido · corre em paralelo. **Alterar o plano não é um
+dos sinais:** um detour pode alterar e muitos alteram, mas não é isso que o
+define. Um sinal só é fatia; nenhum é **issue avulsa**, sem tipo, sem diretório em
+`.planning/` e sem reconciliação.
+Ao criar um detour, `init-detour` pergunta **o que ele muda no plano** e grava a
+resposta. Ao fechar, se mudou, o `Roadmap.md` muda **onde a sequência vive** e o
+identificador vai no commit; se não mudou, o Roadmap não é tocado.
+
 - Ver `.planning/README.md` para árvore de decisão e mapeamento
 
 ---
