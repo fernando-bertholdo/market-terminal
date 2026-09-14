@@ -20,7 +20,8 @@ documents/
     ├── vision-strategy.md       # Tier 1: visao e estrategia
     ├── constraints-no-goals.md  # Tier 1: limites e no-goals
     ├── success-metrics.md       # Tier 1: metricas de sucesso
-    └── risk-assumptions.md      # Tier 1: riscos e premissas (living doc)
+    ├── risk-assumptions.md      # Tier 1: riscos e premissas (living doc)
+    └── scope-horizons.md        # Tier 1: o que pode vir a ser (living doc)
 ```
 
 ---
@@ -81,6 +82,7 @@ Documentos estrategicos gerados via `design-sprint` ou preenchimento manual.
 | [constraints-no-goals.md](strategy/constraints-no-goals.md) | O que NAO sera construido + limitacoes |
 | [success-metrics.md](strategy/success-metrics.md) | Como medir sucesso |
 | [risk-assumptions.md](strategy/risk-assumptions.md) | Riscos, premissas e dependencias (living doc) |
+| [scope-horizons.md](strategy/scope-horizons.md) | O que pode vir a ser, e por que ainda nao (living doc) |
 
 **Tier 2 — Condicionais** (criados por `design-sprint` se aplicavel):
 - `user-personas.md` — Se projeto tem usuarios finais
@@ -88,6 +90,11 @@ Documentos estrategicos gerados via `design-sprint` ou preenchimento manual.
 - `competitive-landscape.md` — Se ha competidores
 
 > **Salvaguarda:** Decisoes finais devem ser refletidas em `core/Projeto.md`. Strategy docs sao inputs/exploracao, nao fonte de verdade.
+>
+> **Exceção:** [`scope-horizons.md`](strategy/scope-horizons.md) registra o que ainda **não** foi
+> decidido — a salvaguarda passa a valer no desfecho do horizonte, não enquanto ele está
+> engavetado. Mantido pela skill `scope-horizons`; ver a nota em
+> [`strategy/README.md`](strategy/README.md).
 
 ---
 
