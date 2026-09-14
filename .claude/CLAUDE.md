@@ -2,7 +2,7 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
-Template de origem: tech-product-template@2.13.0
+Template de origem: tech-product-template@2.14.0
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
@@ -166,10 +166,16 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 3. Se retomando, leia handoff em `.planning/<tipo>/<nome>/handoff/`
 4. Se nenhum CONTEXT existe, use skill `fresh-context` para criar
 
-**Tipos de trabalho:** milestone | detour — a taxonomia é por **obrigação com o
-plano**, não por tamanho. Milestone avança o plano; detour não estava no plano e
-o altera. Trabalho que não altera o plano é **issue avulsa**: sem tipo, sem
-diretório em `.planning/`, sem obrigação de reconciliar.
+**Tipos de trabalho:** milestone | detour — a taxonomia é pela **relação com o
+plano escrito**, não por tamanho, e a régua é a do `AGENTS.md` §2. Milestone já
+estava no Roadmap. Detour satisfaz **dois de três sinais** — nasce fora do plano ·
+entrega artefato próprio mantido · corre em paralelo. **Alterar o plano não é um
+dos sinais:** um detour pode alterar e muitos alteram, mas não é isso que o
+define. Um sinal só é fatia; nenhum é **issue avulsa**, sem tipo, sem diretório em
+`.planning/` e sem reconciliação.
+Ao criar um detour, `init-detour` pergunta **o que ele muda no plano** e grava a
+resposta. Ao fechar, se mudou, o `Roadmap.md` muda **onde a sequência vive** e o
+identificador vai no commit; se não mudou, o Roadmap não é tocado.
 - Ver `.planning/README.md` para árvore de decisão e mapeamento
 
 ---
@@ -400,6 +406,11 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 **Versão:** 2.12.0
 **Última atualização:** 2026-08-05
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.14.0 (14/Set/2026 — propagado do template):**
+- Seção "Planning First": a taxonomia de trabalho passa a ser a do `AGENTS.md` §2 — detour é dois de três sinais, e **alterar o plano não é um deles** (TECH-574)
+- Aposentada a obrigação de escrever linha de delta no `Roadmap.md` ao fechar detour: medição achou 66 detours na linhagem e zero linhas cumpridas, e o `init-detour` apontava para uma seção do Roadmap que nunca existiu. Vira pergunta de entrada em `init-detour` e conferência em `reconcile-initiative`
+- Jargão de projeto derivado neutralizado nos exemplos de `validate-dor`, `validate-dod`, `fresh-context` e `generate-tap`
 
 **Changelog v2.12.0:**
 - Rules path-targeted de fato: frontmatter `paths:` adicionado às rules de `.claude/rules/` (sem frontmatter, carregavam em TODA sessão — ~12k tokens residentes)
