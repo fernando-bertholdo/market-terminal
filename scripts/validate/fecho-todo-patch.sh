@@ -122,7 +122,12 @@ ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(524|525|568|569):|^\./d
 #     Auto-casamento, não vocabulário vivo. O caminho do script não entra por
 #     `--exclude-dir`: cegar `scripts/` inteiro trocaria um auto-casamento por
 #     um ponto cego num diretório real deste repositório.
-ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents)/skills/generate-session-prompt/SKILL\.md:(654|675):|^\./\.(claude|agents)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.agents/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:(523|525|567|569):|^\./documents/core/Projeto\.md:620:'
+# `.claude/skills/init-detour/SKILL.md:208` e `.agents/skills/init-detour/SKILL.md:208`
+#     — a linha que declara, para o próximo agente, que o tipo `patch` deixou
+#     de existir. É o produto da TECH-210 (extinção do tipo), não vocabulário
+#     vivo do tipo: apagá-la ou reescrevê-la para o gate passar destruiria
+#     exatamente a instrução que a iniciativa foi feita para escrever.
+ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents)/skills/generate-session-prompt/SKILL\.md:(654|675):|^\./\.(claude|agents)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.agents/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:(523|525|567|569):|^\./documents/core/Projeto\.md:620:|^\./\.(claude|agents)/skills/init-detour/SKILL\.md:208:'
 
 falhou() { printf 'FAIL · %s\n' "$1" >&2; exit 1; }
 
