@@ -73,14 +73,14 @@ esac
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
 # --- Allowlist da asserção 4 (caminho do diretório apagado) -----------------
-# `.claude/skills/README.md:523` e `.agents/skills/README.md:567` — entrada de
+# `.claude/skills/README.md:502` e `.agents/skills/README.md:548` — entrada de
 # Changelog Local de 2026-09-02 que registra a propagação `SYNC-20260805-005`;
 # o caminho aparece ali como o que a adaptação local citava naquela data. É
 # registro histórico datado, e §9.7 da régua proíbe apagá-lo para o gate passar.
-ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(523|567):'
+ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(502|548):'
 
 # --- Allowlist da asserção 6 (`TODO.md`) ------------------------------------
-# `.claude/skills/README.md:524-525` e `.agents/skills/README.md:568-569` —
+# `.claude/skills/README.md:500` e `:503`, `.agents/skills/README.md:546` e `:549` —
 #     Changelog Local: a entrada da TECH-209, reescrita para declarar a
 #     divergência encerrada, e a entrada desta migração. Ambas precisam nomear
 #     o arquivo para que o registro diga o que saiu.
@@ -98,22 +98,22 @@ ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(523|567):'
 #     pendência viva, é o registro de um plano de ciclo fechado. Plano
 #     histórico não se reescreve; o equivalente na origem são os
 #     `.claude/plans/`, que a iniciativa declarou fora de escopo.
-ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(524|525|568|569):|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
+ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(500|503|546|549):|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
 
 # --- Allowlist da asserção 7 (nome do tipo) ---------------------------------
-# `.claude/skills/generate-session-prompt/SKILL.md:654`, `:675` e os pares em
-#     `.agents/` — Changelog Local da própria skill, em paridade byte a byte
+# `.claude/skills/generate-session-prompt/SKILL.md:660`, `:681` e os pares em
+#     `.agents/` e `.codex/` — Changelog Local da própria skill, em paridade byte a byte
 #     com a v4.0.0 do template. Corrigir aqui cria drift com a origem; se a
 #     linha estiver errada, o conserto é upstream.
 # `.claude/skills/claude-design-flow/SKILL.md:131`,
 #     `references/reconciliacao.md:50`, `references/etapa-5-hifi.md:29` e os
-#     pares em `.agents/` — homônimo de domínio: ali a palavra quer dizer diff
+#     pares em `.agents/` e `.codex/` — homônimo de domínio: ali a palavra quer dizer diff
 #     de design voltando do canvas, não tipo de iniciativa.
 # `.claude/rules/testing-requirements.md:196`, `:205`, `:223`, `:323`, `:419`
-#     e os pares em `.agents/` (`:189`, `:198`, `:216`, `:316`, `:412`) —
+#     e os pares em `.agents/` e `.codex/` (`:189`, `:198`, `:216`, `:316`, `:412`) —
 #     homônimo de código: `unittest.mock.patch` e o pacote `pytest-mock`.
-# `.claude/skills/README.md:523`, `:525` e `.agents/skills/README.md:567`,
-#     `:569` — Changelog Local: a entrada de 02/09 é histórica, e a desta
+# `.claude/skills/README.md:500`, `:502` e `.agents/skills/README.md:546`,
+#     `:548` — Changelog Local: a entrada de 02/09 é histórica, e a desta
 #     migração cita o nome deste script.
 # `documents/core/Projeto.md:620` — `MAJOR.MINOR.PATCH`, o versionamento
 #     semântico do documento.
@@ -122,12 +122,12 @@ ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(524|525|568|569):|^\./d
 #     Auto-casamento, não vocabulário vivo. O caminho do script não entra por
 #     `--exclude-dir`: cegar `scripts/` inteiro trocaria um auto-casamento por
 #     um ponto cego num diretório real deste repositório.
-# `.claude/skills/init-detour/SKILL.md:208` e `.agents/skills/init-detour/SKILL.md:208`
+# `.claude/skills/init-detour/SKILL.md:216` e os pares em `.agents/` e `.codex/`
 #     — a linha que declara, para o próximo agente, que o tipo `patch` deixou
 #     de existir. É o produto da TECH-210 (extinção do tipo), não vocabulário
 #     vivo do tipo: apagá-la ou reescrevê-la para o gate passar destruiria
 #     exatamente a instrução que a iniciativa foi feita para escrever.
-ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents)/skills/generate-session-prompt/SKILL\.md:(654|675):|^\./\.(claude|agents)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.agents/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:(523|525|567|569):|^\./documents/core/Projeto\.md:620:|^\./\.(claude|agents)/skills/init-detour/SKILL\.md:208:'
+ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents|codex)/skills/generate-session-prompt/SKILL\.md:(660|681):|^\./\.(claude|agents|codex)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.(agents|codex)/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:(500|502|546|548):|^\./documents/core/Projeto\.md:620:|^\./\.(claude|agents|codex)/skills/init-detour/SKILL\.md:216:'
 
 falhou() { printf 'FAIL · %s\n' "$1" >&2; exit 1; }
 
