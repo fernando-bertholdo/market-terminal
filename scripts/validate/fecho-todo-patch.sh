@@ -72,16 +72,25 @@ esac
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
+# --- Isenções em tabela de Changelog Local: por trecho, não por número ------
+# As linhas isentas das tabelas de `.claude/skills/README.md` e
+# `.agents/skills/README.md` são reconhecidas pelo começo literal da linha
+# (data, commit, Sync-ID, arquivo), e não pelo número dela. A §8 do
+# `.claude/CLAUDE.md` põe a linha nova no topo da tabela, então toda entrada
+# nova deslocava as isentas e levava o gate a exit 1 (medido na TECH-668:
+# uma linha de 2026-10-01 no topo e a asserção 4 falhava). Os demais arquivos
+# isentos não são tabela de changelog e continuam por `arquivo:linha`.
+
 # --- Allowlist da asserção 4 (caminho do diretório apagado) -----------------
-# `.claude/skills/README.md:502` e `.agents/skills/README.md:548` — entrada de
-# Changelog Local de 2026-09-02 que registra a propagação `SYNC-20260805-005`;
+# `.claude/skills/README.md` e `.agents/skills/README.md`, linha de Changelog
+# Local de 2026-09-02 que registra a propagação `SYNC-20260805-005`;
 # o caminho aparece ali como o que a adaptação local citava naquela data. É
 # registro histórico datado, e §9.7 da régua proíbe apagá-lo para o gate passar.
-ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(502|548):'
+ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:[0-9]+:\| 2026-09-02 \| `PENDING` \| `SYNC-20260805-005` \| `generate-session-prompt/SKILL\.md`'
 
 # --- Allowlist da asserção 6 (`TODO.md`) ------------------------------------
-# `.claude/skills/README.md:500` e `:503`, `.agents/skills/README.md:546` e `:549` —
-#     Changelog Local: a entrada da TECH-209, reescrita para declarar a
+# `.claude/skills/README.md` e `.agents/skills/README.md`, as linhas de
+#     Changelog Local de 2026-09-12 (TECH-220) e de 2026-09-02 (TECH-209): a entrada da TECH-209, reescrita para declarar a
 #     divergência encerrada, e a entrada desta migração. Ambas precisam nomear
 #     o arquivo para que o registro diga o que saiu.
 # `documents/core/Roadmap.md:135` — critério de DoD do SP0, riscado e anotado
@@ -98,7 +107,7 @@ ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:(502|548):'
 #     pendência viva, é o registro de um plano de ciclo fechado. Plano
 #     histórico não se reescreve; o equivalente na origem são os
 #     `.claude/plans/`, que a iniciativa declarou fora de escopo.
-ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(500|503|546|549):|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
+ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:[0-9]+:(\| 2026-09-12 \| `PENDING` \| — \| 22 arquivos por camada|\| 2026-09-02 \| `PENDING` \| — \| `generate-session-prompt/SKILL\.md` × 2 camadas \| Adaptação local declarada \(TECH-209\))|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
 
 # --- Allowlist da asserção 7 (nome do tipo) ---------------------------------
 # `.claude/skills/generate-session-prompt/SKILL.md:660`, `:681` e os pares em
@@ -112,8 +121,8 @@ ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(500|503|546|549):|^\./d
 # `.claude/rules/testing-requirements.md:196`, `:205`, `:223`, `:323`, `:419`
 #     e os pares em `.agents/` e `.codex/` (`:189`, `:198`, `:216`, `:316`, `:412`) —
 #     homônimo de código: `unittest.mock.patch` e o pacote `pytest-mock`.
-# `.claude/skills/README.md:500`, `:502` e `.agents/skills/README.md:546`,
-#     `:548` — Changelog Local: a entrada de 02/09 é histórica, e a desta
+# `.claude/skills/README.md` e `.agents/skills/README.md`, as linhas de
+#     2026-09-12 (TECH-220) e de 2026-09-02 (`SYNC-20260805-005`) — Changelog Local: a entrada de 02/09 é histórica, e a desta
 #     migração cita o nome deste script.
 # `documents/core/Projeto.md:620` — `MAJOR.MINOR.PATCH`, o versionamento
 #     semântico do documento.
@@ -127,7 +136,7 @@ ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:(500|503|546|549):|^\./d
 #     de existir. É o produto da TECH-210 (extinção do tipo), não vocabulário
 #     vivo do tipo: apagá-la ou reescrevê-la para o gate passar destruiria
 #     exatamente a instrução que a iniciativa foi feita para escrever.
-ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents|codex)/skills/generate-session-prompt/SKILL\.md:(660|681):|^\./\.(claude|agents|codex)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.(agents|codex)/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:(500|502|546|548):|^\./documents/core/Projeto\.md:620:|^\./\.(claude|agents|codex)/skills/init-detour/SKILL\.md:216:'
+ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents|codex)/skills/generate-session-prompt/SKILL\.md:(660|681):|^\./\.(claude|agents|codex)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.(agents|codex)/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:[0-9]+:(\| 2026-09-12 \| `PENDING` \| — \| 22 arquivos por camada|\| 2026-09-02 \| `PENDING` \| `SYNC-20260805-005` \| `generate-session-prompt/SKILL\.md`)|^\./documents/core/Projeto\.md:620:|^\./\.(claude|agents|codex)/skills/init-detour/SKILL\.md:216:'
 
 falhou() { printf 'FAIL · %s\n' "$1" >&2; exit 1; }
 
