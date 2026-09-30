@@ -231,3 +231,5 @@ Ao executar `mirror-upstream`, substituir valores concretos por placeholders.
 
 ### v1.0.0 (20/Marco/2026)
 - Criacao inicial: workflow 5-step, tier matrix, auto-assessment, integracao com skills existentes
+
+<!-- @runtime-placeholders: CODEX_MODEL, DOCS_DIR, PLANNING_DIR, PROJECT_NAME -->

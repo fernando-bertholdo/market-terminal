@@ -24,13 +24,21 @@ Se o projeto não for Python, adapte/crie uma versão equivalente desta regra pa
 
 ## Regra de Ouro
 
-**"NUNCA commitar dados sensíveis no repositório."**
+**"NUNCA commitar segredo no repositório."**
 
-Esta regra é **CRÍTICA** e **NÃO NEGOCIÁVEL**:
+Segredo é **credencial, token, chave e senha**. Esta regra é **CRÍTICA** e
+**NÃO NEGOCIÁVEL**:
 - **NUNCA** hardcodear credentials (senhas, tokens, API keys)
 - **NUNCA** commitar arquivos .env
 - **NUNCA** expor detalhes internos em mensagens de erro
-- **NUNCA** logar informações sensíveis (senhas, PII)
+- **NUNCA** logar credencial, token ou chave
+
+> ⚠️ **Dado de trabalho não é segredo, e a régua dele é outra: exatidão.**
+> Quando o repositório é privado e a organização detém o dado ou tem autorização
+> declarada, o valor entra em log, commit e artefato durável **exatamente como a
+> fonte o traz** — mascarar, redigir ou aproximar quebra a cadeia de auditoria.
+> Ver `.claude/CLAUDE.md` §5, "Regra de Ouro — dado de trabalho". As técnicas de mascaramento
+> abaixo valem para **segredo**, nunca para dado de trabalho.
 
 ---
 
@@ -326,7 +334,9 @@ def buscar_dados(item_id, data):
 
 ## 5. Logging Seguro
 
-**Regra:** Nunca logar informações sensíveis (senhas, tokens, PII).
+**Regra:** Nunca logar credencial, token ou chave. **Dado de trabalho é o
+oposto — ele vai ao log exato**, porque log é evidência de auditoria e log
+aproximado não prova nada.
 
 ### Correto: Mascarar Dados Sensíveis
 
@@ -372,9 +382,21 @@ def logar_configuracao():
     logger.info(f"API Password: {settings.API_PASSWORD}")
 
 
-def processar_item(item):
-    # Log PII (Personal Identifiable Information)
-    logger.info(f"Processando: {item}")  # Pode conter CPF, nomes, etc!
+def conectar():
+    # Expõe token no log!
+    logger.debug(f"Auth header: Bearer {settings.API_TOKEN}")
+```
+
+### Correto: dado de trabalho vai exato
+
+```python
+def processar_registro(registro):
+    # Os valores entram no log como a fonte os traz — é assim que a etapa fica
+    # conferível contra o documento de origem.
+    logger.info(
+        "Processando: id=%s titular=%s valor=%s fonte=%s",
+        registro.id, registro.titular, registro.valor, registro.path_origem,
+    )
 ```
 
 ---

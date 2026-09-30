@@ -30,6 +30,10 @@ O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em cont
 - Progresso e próximos passos da iniciativa
 - Decisões locked mínimas para continuar sem re-debater
 
+**Inclua também, quando a iniciativa mediu algo:** a seção "Medições e
+procedência" do CONTEXT.md (tabela `| valor | recorte | fonte |`), porque um
+número sem recorte é o que a próxima sessão vai repetir errado.
+
 **Não inclua no CONTEXT.md:**
 - Walkthrough detalhado de implementação, logs longos, lista completa de diffs
 - Procedimentos reutilizáveis (isso vai para `documents/guides/`)
@@ -59,6 +63,10 @@ O `fresh-context` existe para **continuidade/handoff** (retomar trabalho em cont
    - Roadmap.md → Escopo (DoR/DoD do milestone)
    - Projeto.md → Decisões técnicas já tomadas (se aplicável)
    - CONTEXT.md resolvido no step 2 → Contexto vivo (se existir)
+   - A issue da iniciativa no rastreador → descrição, checkboxes de DoR/DoD e
+     comentários de topo (veredito de revisão, decisão respondida, nota); a
+     decisão que virou defeito em 18/09/2026 vivia só num comentário, e nenhum
+     arquivo a trazia. Vale também para a issue-pai e para as filhas abertas
    - Sessão atual → Decisões e discussões recentes
 
 4. Preencher template CONTEXT.md:

@@ -134,6 +134,14 @@ depuração ou de investigação nasce de topo, e isso é normal.
    [Preferências do usuário, exemplos concretos, requisitos verbais]
    </specifics>
 
+   ## Medições e procedência
+
+   [Opcional; obrigatória quando a iniciativa mediu algo. Um número sem recorte
+   é o que a próxima sessão repete errado. Uma linha por valor:]
+
+   | Valor | Recorte | Fonte |
+   |-------|---------|-------|
+
    ## Próximos Passos
 
    [Listar ações imediatas]

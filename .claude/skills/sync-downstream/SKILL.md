@@ -275,3 +275,5 @@ Usuário: sync-downstream /path/to/MonoScribe --all
 - Relatório de sincronização com comandos git sugeridos
 
 **Contexto:** Arquitetura de sincronização bidirecional de agentes
+
+<!-- @runtime-placeholders: API_URL, PLACEHOLDER, PROJECT_NAME, TECH_STACK -->
