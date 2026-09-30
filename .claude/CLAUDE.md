@@ -471,7 +471,8 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 - Seção 1.7: linha "comentário no rastreador não é destino" e a condição de exclusão da apara na pergunta 1
 - Seção 8: a ordem das tabelas Changelog Local passa a ser declarada e cobrada por `scripts/validate/check-changelog-local.sh`; os blocos de instrução do kickoff ganham o marcador `@kickoff-instrucao`
 - Camada `.codex/` criada a partir da origem 2.18.0: o marcador de linhagem passa a valer nas três camadas
-- Aplicado à mão, fora do sync: hook `check-commit-message.sh` versionado em `.claude/hooks/`; o registro no `settings.json` é passo local, porque o arquivo é ignorado pelo git aqui (`.gitignore`)
+- Aplicado à mão, fora do sync: hooks `check-commit-message.sh` e `check-planning-index.sh` (este, da 2.14.0, faltava aqui) versionados em `.claude/hooks/`; o registro no `settings.json` é passo local, porque o arquivo é ignorado pelo git aqui (`.gitignore`)
+- `AGENTS.md` da raiz: depois do conteúdo do projeto, recebe as regras do `AGENTS.md` do template 2.18.0, adaptadas
 
 **Changelog v2.12.0:**
 - Rules path-targeted de fato: frontmatter `paths:` adicionado às rules de `.claude/rules/` (sem frontmatter, carregavam em TODA sessão — ~12k tokens residentes)
