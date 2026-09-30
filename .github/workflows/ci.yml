@@ -1,0 +1,51 @@
+# CI de derivado do tech-product-template (TECH-567, decisão do Fernando de
+# 30/09/2026: "CI nos seis derivados, rodando os gates que eles já têm").
+# É o ci.yml da origem com duas diferenças declaradas, que a propagação deve
+# tratar como adaptação local e não como drift:
+#   1. sem o passo "Pareamento .agents/ × .claude/": o script não existe neste
+#      repositório (medido em 30/09/2026), e instalá-lo é assunto da TECH-810;
+#   2. sem os passos de teste Python e Node: a decisão cobre os gates de
+#      scripts/validate/, não a suíte da aplicação; ligar a suíte é decisão à parte.
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Invariantes do repositório: valem desde já, com código ou sem
+      - name: Invariantes do repositório
+        run: |
+          test -f documents/core/Projeto.md
+          ! grep -rnE --exclude-dir=.git '^(<{7} |>{7} )' .
+          ! git ls-files | grep -E '^\.multica/'
+
+      # Vem ANTES dos gates que ele audita, e a ordem é o argumento: gate que
+      # nunca foi visto reprovando é indistinguível de gate quebrado, e os dois
+      # passos abaixo saem 0 nos dois casos. Se o controle negativo falha, o
+      # verde deles não quer dizer nada, e é melhor o CI parar aqui do que
+      # seguir e certificar a árvore com gates que já não vigiam.
+      - name: Controle negativo dos gates
+        run: bash scripts/validate/test-gates-validate.sh
+
+      - name: Versão do marcador de linhagem
+        run: bash scripts/validate/check-versao-linhagem.sh
+
+      - name: Changelog local (5 colunas, data ISO, a mais recente primeiro)
+        run: bash scripts/validate/check-changelog-local.sh
+
+      # Gate de comportamento do fecho da régua do detour
+      # `aposentar-todo-md-e-patch`: confere que o fecho escrito no harness
+      # continua idêntico ao que a régua prescreve, e que ele aborta na
+      # asserção certa nos sete cenários. Sem este passo, a mudança de critério
+      # da 4ª rodada do PR #20 dependeria de alguém lembrar de rodar o script.
+      # A régua é `export-ignore` e o `init-from-template.sh` a remove: num
+      # derivado ela não existe, e sem o `if:` este passo quebra o CI de lá.
+      - name: Fecho da régua (aposentar-todo-md-e-patch)
+        if: ${{ hashFiles('.planning/_archive/aposentar-todo-md-e-patch/CONTEXT.md') != '' }}
+        run: bash scripts/validate/test-fecho-regua.sh
