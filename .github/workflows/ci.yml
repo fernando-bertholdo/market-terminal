@@ -1,11 +1,10 @@
-# CI de derivado do tech-product-template (TECH-567, decisão do Fernando de
-# 30/09/2026: "CI nos seis derivados, rodando os gates que eles já têm").
-# É o ci.yml da origem com duas diferenças declaradas, que a propagação deve
-# tratar como adaptação local e não como drift:
-#   1. sem o passo "Pareamento .agents/ × .claude/": o script não existe neste
-#      repositório (medido em 30/09/2026), e instalá-lo é assunto da TECH-810;
-#   2. sem os passos de teste Python e Node: a decisão cobre os gates de
-#      scripts/validate/, não a suíte da aplicação; ligar a suíte é decisão à parte.
+# CI de derivado do tech-product-template (TECH-567). Decisão do Fernando de
+# 30/09/2026: CI nos seis derivados, rodando os gates que cada um já tem.
+# É o ci.yml da origem com as adaptações locais abaixo, uma por linha, na forma
+# `adaptacao-local: <chave> — <motivo>`, para a propagação ler e não tratar como drift.
+# adaptacao-local: sem-pareamento — check-pareamento-instrucoes.sh não existe neste repositório (medido em 30/09/2026); instalá-lo é a TECH-810
+# adaptacao-local: sem-testes-de-aplicacao — a decisão cobre os gates de scripts/validate/, não a suíte da aplicação
+# adaptacao-local: invariantes-exit-1 — `|| exit 1` nas linhas negadas das invariantes, que sob `bash -e` não reprovariam; a origem ainda não tem (TECH-842), e esta linha some quando tiver
 name: CI
 on:
   pull_request:
@@ -22,8 +21,8 @@ jobs:
       - name: Invariantes do repositório
         run: |
           test -f documents/core/Projeto.md
-          ! grep -rnE --exclude-dir=.git '^(<{7} |>{7} )' .
-          ! git ls-files | grep -E '^\.multica/'
+          ! grep -rnE --exclude-dir=.git '^(<{7} |>{7} )' . || exit 1
+          ! git ls-files | grep -E '^\.multica/' || exit 1
 
       # Vem ANTES dos gates que ele audita, e a ordem é o argumento: gate que
       # nunca foi visto reprovando é indistinguível de gate quebrado, e os dois
