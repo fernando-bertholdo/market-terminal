@@ -99,6 +99,14 @@ Slug kebab-case para o diretório. Se omitido:
    [Preferências do usuário, exemplos concretos, requisitos verbais]
    </specifics>
 
+   ## Medições e procedência
+
+   [Opcional; obrigatória quando a iniciativa mediu algo. Um número sem recorte
+   é o que a próxima sessão repete errado. Uma linha por valor:]
+
+   | Valor | Recorte | Fonte |
+   |-------|---------|-------|
+
    ## Próximos Passos
 
    [Extrair do Roadmap.md e do CONTEXT.md da iniciativa]

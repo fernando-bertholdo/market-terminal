@@ -51,6 +51,8 @@ Commits atômicos permitem:
 2. Mapear mudanças por TASK (não por arquivo):
    - A qual task cada arquivo pertence?
    - Marcar arquivos órfãos (sem task clara)
+   - Varrer a mensagem planejada por quantificador e numeral sem fonte
+     (pre-commit-check, seção 7)
 
 3. Para CADA task, criar UM commit:
    - Stage apenas arquivos daquela task
@@ -127,6 +129,10 @@ Definir scopes específicos do projeto em AGENTS.md. Exemplos comuns:
 - Imperativo ("adiciona" não "adicionado")
 - Sem ponto final
 - Descrever O QUE (não "porquê")
+- Sempre em português do Brasil (`pt-BR`)
+- Mesmo quando nomes técnicos estiverem em inglês, a frase do commit continua em `pt-BR`
+- Sem quantificador solto: `nenhum`, `todas`, `todos`, `cada`, `sempre`, `nunca`, `único`,
+  `em ordem` só entram com o comando que os mediu no body (varredura 7 do `pre-commit-check`)
 
 ### Body (Opcional, recomendado)
 
@@ -140,6 +146,10 @@ Definir scopes específicos do projeto em AGENTS.md. Exemplos comuns:
 - Linhas de 72 caracteres máximo
 - Bullet points com `-` ou `*`
 - Separe do subject com linha em branco
+- Escrever sempre em português do Brasil (`pt-BR`)
+- Numeral só com a fonte na mesma frase (comando, arquivo, seção, issue, PR); medição com
+  mais de dois números vai em tabela com fonte por célula, no PR ou no CONTEXT, nunca na frase
+- Mesma varredura no corpo do PR: número órfão ali é falha (varredura 7 do `pre-commit-check`)
 
 ### Footer (Opcional)
 
@@ -244,6 +254,13 @@ feat: implementa M1.2 completo
 chore: WIP
 chore: salvando progresso
 fix: corrige bug [qual bug?]
+```
+
+❌ **Número órfão ou quantificador sem medição** (na mensagem, no corpo do PR ou no diff)
+```
+docs(rule): a regra 4 cobre todas as 47 formas de pasta
+# 47 de quê? medido como? "todas" contra o quê? — medido em 18/09/2026: custou os PRs #81 do multica-playbook e #22 do lab-contratos
+docs(rule): regra 4 casa as famílias por infixo; 45/53/64 formas no recorte do s1-pastas.json (LAS-112, rodada 1)
 ```
 
 ❌ **Commit misto** (feat + fix + docs juntos)
