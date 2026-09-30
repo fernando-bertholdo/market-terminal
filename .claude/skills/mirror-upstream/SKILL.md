@@ -238,3 +238,5 @@ Usuário: mirror-upstream a1b2c3d
 - Relatório de espelhamento com comandos git sugeridos
 
 **Contexto:** Arquitetura de sincronização bidirecional de agentes
+
+<!-- @runtime-placeholders: API_URL, PROJECT_NAME, TECH_STACK, VAR -->

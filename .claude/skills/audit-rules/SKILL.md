@@ -90,6 +90,9 @@ Auditoria completa de todas as regras (Tier 1 e Tier 2), incluindo conteúdo, ex
       - Última versão == versão em metadata
       - Formato semver correto
       - Data recente (< 1 mês se fase ativa)
+      - Tabela Changelog Local do README da camada: 5 colunas, data ISO,
+        a mais recente primeiro — rode `bash scripts/validate/check-changelog-local.sh`
+        (exit 0 = íntegra; quando o projeto tiver CI, um passo dele também o roda por PR)
 
    c. Executar validate-docs-links para esta regra
 
@@ -194,6 +197,7 @@ Regras Tier 1 estão OK para commit!
 ### Conjunto de Regras
 - [ ] Todas regras Tier 1 presentes (obrigatórias)
 - [ ] README.md de regras atualizado
+- [ ] `bash scripts/validate/check-changelog-local.sh` rodado, exit 0 (ordem e colunas das tabelas Changelog Local)
 - [ ] Roadmap de regras alinhado
 - [ ] Sem duplicação de conteúdo
 - [ ] Links bidirecionais (backlinks)

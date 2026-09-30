@@ -166,6 +166,46 @@ done
 > **Referência:** rule [`.claude/rules/scripts-governance.md`](../../rules/scripts-governance.md) — Auto-loaded em edits de `scripts/**`.
 > **Auditoria completa:** invocar skill `audit-scripts`.
 
+### 7. Quantificador e número órfão
+
+Vale para a **mensagem de commit**, o **corpo do PR** e as **linhas adicionadas** do diff
+staged. Portado do gate "número órfão: falha" da skill `verificar-entrega` do
+`case-project-template`; é a mesma varredura que o revisor adversarial roda como primeira
+hipótese — feita antes, por quem escreve.
+
+**Comandos:**
+
+```bash
+# 1. Afirmação totalizadora ou de frequência: nas linhas adicionadas e na mensagem planejada
+git diff --cached -U0 | grep -E '^\+' | grep -vE '^\+\+\+' \
+  | grep -nEi '\b(nenhum|nenhuma|todas|todos|cada|sempre|nunca|únic[oa]|em ordem|não se reproduziu)\b'
+printf '%s\n' "$MSG" | grep -nEi '\b(nenhum|nenhuma|todas|todos|cada|sempre|nunca|únic[oa]|em ordem|não se reproduziu)\b'
+
+# 2. Numeral sem fonte na mesma linha (fonte = comando, arquivo, seção, issue, PR ou célula de tabela;
+#    ano e URL não contam; o filtro de linha de tabela vem ANTES do -n, senão o prefixo n: o cega)
+git diff --cached -U0 | grep -E '^\+' | grep -vE '^\+\+\+|^\+\|' \
+  | grep -vE '`|\.(md|sh|py|json|csv|ya?ml)\b|§|#[0-9]+|\b[A-Z]+-[0-9]+\b|\b(19|20)[0-9]{2}\b|https?://' \
+  | grep -nE '\b[0-9]+\b'
+```
+
+**Critérios de Aprovação:**
+
+| Validação | Meta | Bloqueador |
+|-----------|------|------------|
+| Quantificador com o comando que o mediu ao lado | 100% dos casados | ✅ Sim |
+| Numeral com fonte na mesma frase | 100% dos casados | ✅ Sim |
+| Medição com mais de dois números | tabela com fonte por célula, nunca frase | ⚠️ Review |
+
+Cada linha que o `grep` devolve é hipótese: fica se a fonte está ao lado, sai ou vira "não
+medido" se não está. Número órfão numa mensagem de commit ou num corpo de PR é falha, não
+aviso. Medido em 18–19/09/2026 no `multica-playbook` (PRs #81 e #84) e no `lab-contratos`
+(PRs #22 e #23): "47 formas" sem dizer 47 de quê e "nenhum recorte dá 47" (falso) custaram
+esses quatro PRs de conserto, e os dois teriam caído nesta varredura antes do commit. O hook
+`check-commit-message.sh` roda os mesmos dois padrões sobre a mensagem passada por `-m` (todos
+os `-m`) ou `-F <arquivo>`, como aviso, no Claude Code; heredoc por `-F -`, `--amend --no-edit`
+e `git commit` sem `-m` ficam fora dele — nesses casos a varredura é a desta seção, à mão. Hooks
+são CWD-only e viajam à mão (`hooks/README.md`).
+
 ## Procedimento Completo
 
 ```bash
@@ -214,6 +254,10 @@ done
 5. Validações opcionais:
    - Se alterou .claude/rules/: audit-rules quick
    - Se alterou documents/: validate-docs-links check
+
+5b. Varrer quantificador e número órfão (seção 7):
+   - Linhas adicionadas, mensagem planejada e corpo do PR
+   - Cada linha casada: fonte ao lado, ou sai
 
 6. Gerar relatório final: ✅ READY ou ❌ NOT READY
 ```
@@ -295,6 +339,10 @@ organize-commits
 - [ ] audit-rules quick (se alterou regras)
 - [ ] validate-docs-links check (se alterou docs)
 
+### Quantificador e número órfão
+- [ ] Nenhuma linha devolvida pela varredura 7 sem a fonte ao lado
+- [ ] Medição com mais de dois números em tabela com fonte por célula
+
 ## Quando Bloquear Commit
 
 **Bloqueadores (❌ NOT READY):**
@@ -302,6 +350,7 @@ organize-commits
 - Testing FAIL (testes falhando ou coverage baixa)
 - .env staged
 - Secrets hardcoded encontrados
+- Quantificador sem medição ou número órfão na mensagem, no corpo do PR ou nas linhas adicionadas
 
 **Warnings (⚠️  Revisar):**
 - Arquivos não staged (revisar se devem ser incluídos)

@@ -105,6 +105,9 @@ Use quando `.planning/` existe na raiz. Vocabulário e estrutura assumem o frame
      c. Fallback legado: _archive/<id>/CONTEXT.md
      d. Se nada → prosseguir sem CONTEXT.md (usar Roadmap.md)
    - Ler CONTEXT.md resolvido (contexto vivo, se existir)
+   - Ler a issue da iniciativa no rastreador: descrição, checkboxes de DoR/DoD e
+     comentários de topo (veredito, decisão respondida, nota) — o que só existe
+     na thread não chega ao prompt por arquivo nenhum (medido em 18/09/2026)
    - Ler Roadmap.md (milestone/fase atual, DoR/DoD)
    - Ler plans em .claude/plans/ (se existir)
    - Verificar últimos commits (git log --oneline -5)
@@ -312,6 +315,9 @@ Use quando `.planning/` **não** existe na raiz. Vocabulário e estrutura são u
    - git log --oneline -10 (últimos commits — narrativa do trabalho recente)
    - git status (mudanças pendentes não commitadas)
    - git diff HEAD --stat (escopo das mudanças não commitadas, se houver)
+   - Se o projeto tem rastreador de issues: a issue do trabalho corrente
+     (descrição, checkboxes, comentários de topo) — decisão que vive só na
+     thread não chega ao prompt por arquivo nenhum
    - Listar arquivos modificados nas últimas 48h:
      find . -type f -mtime -2 -not -path './.git/*' -not -path './node_modules/*' \
        -not -path './.next/*' -not -path './dist/*' -not -path './build/*' 2>/dev/null | head -20
