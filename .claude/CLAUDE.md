@@ -118,9 +118,8 @@ classe dela, e a classe é decidida ANTES de a issue existir. Duas perguntas, ne
 O número de issues derivadas **não** entra na decisão de criar — quando você sabe que o trabalho
 rendeu três issues, elas já nasceram no lugar errado. Ele serve para **reclassificar**: cluster com
 3 derivadas, ou que atravessa mais de uma sessão em paralelo, pede reavaliação, e quem percebe
-**propõe e para**. O critério em extenso vive no `tech-product-template` (`AGENTS.md` § 2,
-"Classificar antes de criar issue"); aqui esta é a única versão, porque o `AGENTS.md` deste
-repositório é documento próprio do projeto e não tem a seção correspondente.
+**propõe e para**. O critério em extenso vive no `AGENTS.md` da raiz (§ 2, "Classificar antes
+de criar issue"), que carrega as regras do template desde a TECH-668; aqui fica a versão curta.
 
 **Harness-agnóstico:** memória nativa do harness (ex.: auto-memory do Claude Code), quando existir, é **cache pessoal do agente** — acelera recall, mas nunca é registro canônico. Nenhuma skill ou regra pode depender de conteúdo que só exista na memória de um harness.
 
@@ -188,7 +187,7 @@ Você tem 200,000 tokens de contexto. Para maximizar performance:
 4. Se nenhum CONTEXT existe, use skill `fresh-context` para criar
 
 **Tipos de trabalho:** milestone | detour — a taxonomia é pela **relação com o
-plano escrito**, não por tamanho, e a régua é a do `AGENTS.md` do `tech-product-template`, §2 (o `AGENTS.md` deste repositório é documento próprio do projeto e não tem a seção correspondente). Milestone já
+plano escrito**, não por tamanho, e a régua é a do `AGENTS.md` da raiz, §2. Milestone já
 estava no Roadmap. Detour satisfaz **dois de três sinais** — nasce fora do plano ·
 entrega artefato próprio mantido · corre em paralelo. **Alterar o plano não é um
 dos sinais:** um detour pode alterar e muitos alteram, mas não é isso que o
@@ -472,7 +471,7 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 - Seção 8: a ordem das tabelas Changelog Local passa a ser declarada e cobrada por `scripts/validate/check-changelog-local.sh`; os blocos de instrução do kickoff ganham o marcador `@kickoff-instrucao`
 - Camada `.codex/` criada a partir da origem 2.18.0: o marcador de linhagem passa a valer nas três camadas
 - Aplicado à mão, fora do sync: hooks `check-commit-message.sh` e `check-planning-index.sh` (este, da 2.14.0, faltava aqui) versionados em `.claude/hooks/`; o registro no `settings.json` é passo local, porque o arquivo é ignorado pelo git aqui (`.gitignore`)
-- `AGENTS.md` da raiz: depois do conteúdo do projeto, recebe as regras do `AGENTS.md` do template 2.18.0, adaptadas
+- `AGENTS.md` da raiz: recebe, antes do conteúdo do projeto, as regras do `AGENTS.md` do template 2.18.0, adaptadas (o Codex lê só os primeiros 32768 bytes); as referências da §1.7 e da §2 ao `AGENTS.md` passam a apontar para ele
 
 **Changelog v2.12.0:**
 - Rules path-targeted de fato: frontmatter `paths:` adicionado às rules de `.claude/rules/` (sem frontmatter, carregavam em TODA sessão — ~12k tokens residentes)
