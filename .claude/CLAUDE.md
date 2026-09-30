@@ -2,7 +2,7 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
-Template de origem: tech-product-template@2.14.0
+Template de origem: tech-product-template@2.18.0
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
@@ -101,12 +101,15 @@ Compromissos que vivem só na prosa da conversa evaporam. Registro faz parte da 
 | Fato operacional de ambiente/infra durável | Runbook/doc operacional em `documents/` |
 | **Ampliação do escopo do produto**, fora do plano, fundamentada em evidência linkável | `scope-horizons capture` → `documents/strategy/scope-horizons.md`. Três testes obrigatórios: amplia o produto · está fora do plano · nasceu de evidência. Três de três, ou não é horizonte — e o agente **propõe, nunca grava sozinho**, no máximo uma proposta por turno |
 | Trabalho emergente que cruza a veia principal | **Classifique antes de criar** (ver abaixo): apara, fatia ou detour — o destino é diferente nos três casos |
+| Achado, pendência ou decisão que surgiu num **comentário no rastreador** (thread de issue, veredito de revisão, nota) | Checkbox com `verify:` na descrição da issue, ou issue própria. **Comentário no rastreador não é destino**: quem retoma lê a descrição e o repositório, não a thread — em 18/09/2026 uma correção que vivia só num comentário virou defeito no deploy seguinte |
 
 **Classificar antes de criar issue.** O destino de uma descoberta que virou trabalho depende da
 classe dela, e a classe é decidida ANTES de a issue existir. Duas perguntas, nesta ordem:
 
 1. **É apara?** Deriva de uma revisão **e conserta o mesmo diff que o revisor leu** → nasce sob a
-   issue cuja fatia foi criticada, nunca sob a issue-pai de topo. Para aqui.
+   issue cuja fatia foi criticada, nunca sob a issue-pai de topo. Para aqui. Não é apara se o
+   trabalho vai para arquivo que o escopo negativo da issue criticada proibia, ou para uma lacuna
+   do repositório inteiro: aí siga para a pergunta 2.
 2. **Dois destes três sinais fazem um detour**, não uma fatia: nasce **fora do plano** escrito da
    pai · entrega **artefato ou ferramenta própria** que passa a ser mantida · corre **em paralelo**
    à veia principal sem ser insumo do DoD de outra fatia. Um sinal só é fatia; dois ou mais pedem
@@ -275,11 +278,16 @@ Hooks configurados em `.claude/settings.json`:
 
 ---
 
-## 5. Segurança - Regras Essenciais
+## 5. Segurança e Fidelidade de Dados
 
-### Regra de Ouro
+### Regra de Ouro — segredo
 
-**NUNCA commitar dados sensíveis no repositório.**
+**NUNCA commitar segredo no repositório.**
+
+Segredo é credencial, token, chave e senha. A proibição é absoluta e não tem
+exceção, e a razão é específica: uma credencial num repositório privado continua
+sendo vulnerabilidade, porque quem obtém o repositório ganha a **capacidade de
+agir**.
 
 ### Checklist Obrigatório
 
@@ -288,6 +296,36 @@ Hooks configurados em `.claude/settings.json`:
 - [ ] .env no .gitignore
 - [ ] .env.example documentado
 - [ ] Error handling não expõe credenciais
+
+### Regra de Ouro — dado de trabalho
+
+**Um valor medido viaja exatamente como medido, rastreável à fonte.**
+
+O dado que o projeto processa — registro, documento, medição — é o **material de
+trabalho**, e não um risco a mitigar, quando o repositório é privado e a
+organização detém o dado ou tem autorização declarada para usá-lo. Nesse caso o
+valor entra no artefato durável como a fonte o traz.
+
+Redigir, arredondar, parafrasear ou substituir por equivalente são a **mesma
+classe de defeito**: quebram a cadeia de auditoria e nenhum se anuncia ao leitor
+seguinte. Onde a transformação for necessária, declare qual foi e como voltar ao
+valor de origem.
+
+**Por que é regra de correção e não de conveniência:** um pipeline que se apoia
+em dados de referência e trabalha com equivalência nunca permite confiar no
+resultado nem nas etapas intermediárias — cada aproximação silenciosa é um ponto
+onde a conferência deixa de ser possível.
+
+> ⚠️ **Os dois casos são opostos, não graus do mesmo caso.** Confundi-los é o
+> defeito que esta divisão corrige: a frase genérica "dados sensíveis" fundia
+> credencial e dado de trabalho, e o checklist acima — 5 de 5 sobre credencial —
+> mostra qual dos dois ela sempre significou.
+
+> 📌 **O projeto instanciado declara a própria base.** Quem detém o dado, sob que
+> autorização, e qual é o perímetro: isso é decisão do projeto e vive no
+> `documents/core/Projeto.md`, não aqui. **Sem essa declaração, não presuma
+> autorização** — trate dado de terceiro com cautela e registre a lacuna, em vez
+> de decidir sozinho.
 
 > **Detalhes técnicos:** `rules/security-best-practices.md` (carrega ao editar src/, *.py, .env*)
 
@@ -330,7 +368,7 @@ Commits atômicos permitem:
 
 > **Scope reservado pelo template:** `scripts` (manutenção de `scripts/**`) — sempre disponível como scope válido, independente de `web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning` do projeto.
 
-<!--
+<!-- @kickoff-instrucao
 Preencher com os scopes específicos do projeto.
 Exemplo para projeto de automação: collector, processor, storage, alerting, config, docs, milestone
 Exemplo para API: api, auth, db, models, routes, middleware, docs
@@ -376,6 +414,7 @@ Exemplo para API: api, auth, db, models, routes, middleware, docs
 - **Sync-ID:** Identificador `SYNC-YYYYMMDD-NNN` gerado ao espelhar para outro repositório. `—` = pendente de sincronização.
 - **Arquivo:** Path relativo ao subdiretório (ex: `validate-dod/SKILL.md`)
 - **Descrição:** Resumo contextual da alteração (~80 chars)
+- **Ordem:** a mais recente primeiro, como no exemplo acima; empate no mesmo dia é livre. Quem cobra é `scripts/validate/check-changelog-local.sh` (5 colunas, data ISO, ordem), no `audit-rules` e, quando o projeto tiver CI, num passo dele
 
 ### Integração com Skills de Sync
 
@@ -422,9 +461,17 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 
 ---
 
-**Versão:** 2.12.0
-**Última atualização:** 2026-08-05
+**Versão:** 2.13.0
+**Última atualização:** 2026-09-30
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.13.0:**
+- Sync downstream do tech-product-template de 2.14.0 a 2.18.0 (`b51dbf9`), por mescla em três vias com base em `08538b4` (TECH-668). Referência na origem: entradas SYNC-20260915-001, SYNC-20260915-002, SYNC-20260920-001/002 e SYNC-20260920-003 do changelog do template
+- Seção 5 renomeada para "Segurança e Fidelidade de Dados", com duas Regras de Ouro: segredo e dado de trabalho
+- Seção 1.7: linha "comentário no rastreador não é destino" e a condição de exclusão da apara na pergunta 1
+- Seção 8: a ordem das tabelas Changelog Local passa a ser declarada e cobrada por `scripts/validate/check-changelog-local.sh`; os blocos de instrução do kickoff ganham o marcador `@kickoff-instrucao`
+- Camada `.codex/` criada a partir da origem 2.18.0: o marcador de linhagem passa a valer nas três camadas
+- Aplicado à mão, fora do sync: hook `check-commit-message.sh` versionado em `.claude/hooks/`; o registro no `settings.json` é passo local, porque o arquivo é ignorado pelo git aqui (`.gitignore`)
 
 **Changelog v2.12.0:**
 - Rules path-targeted de fato: frontmatter `paths:` adicionado às rules de `.claude/rules/` (sem frontmatter, carregavam em TODA sessão — ~12k tokens residentes)
@@ -471,12 +518,12 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 - Adicionado archive-initiative ao workflow de conclusão de fase (Section 1)
 - validate-dod aciona reconcile-initiative automaticamente quando último milestone da initiative
 
-<!--
+<!-- @kickoff-instrucao
 INSTRUÇÕES DE PREENCHIMENTO:
 
 1. Substitua Market Terminal pelo nome do projeto
 2. Substitua web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning pelos scopes específicos do projeto
 3. Substitua 2026-06-28 pela data atual
 4. Substitua Fernando Bertholdo pelo responsável
-5. Remova todos os comentários <!-- --> após preencher
+5. Remova deste arquivo todo bloco marcado com @kickoff-instrucao após preencher
 -->
