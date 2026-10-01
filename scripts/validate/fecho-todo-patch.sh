@@ -43,9 +43,10 @@ Propósito
      guarda é a citação com extensão, que é da asserção 6
 
 Allowlist
-  Isenção é propriedade de LINHA, nunca de arquivo nem de diretório, e cada
-  entrada declara `arquivo:linha` e a razão daquela linha. Ver os blocos
-  ALLOWLIST_* abaixo.
+  Isenção é propriedade de LINHA, nunca de arquivo nem de diretório. Cada
+  entrada de scripts/validate/fecho-todo-patch-allowlist.txt declara o
+  caminho e o texto literal da linha inteira, sem número de linha, e o
+  comentário do bloco diz a razão. Linha reescrita perde a isenção.
 
   O `--exclude-dir` das cinco varreduras não é allowlist, é alcance:
   `_archive/` guarda registro histórico deliberadamente fora do texto vivo que
@@ -72,73 +73,45 @@ esac
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
-# --- Isenções em tabela de Changelog Local: por trecho, não por número ------
-# As linhas isentas das tabelas de `.claude/skills/README.md` e
-# `.agents/skills/README.md` são reconhecidas pelo começo literal da linha
-# (data, commit, Sync-ID, arquivo), e não pelo número dela. A §8 do
-# `.claude/CLAUDE.md` põe a linha nova no topo da tabela, então toda entrada
-# nova deslocava as isentas e levava o gate a exit 1 (medido na TECH-668:
-# uma linha de 2026-10-01 no topo e a asserção 4 falhava). Os demais arquivos
-# isentos não são tabela de changelog e continuam por `arquivo:linha`.
-
-# --- Allowlist da asserção 4 (caminho do diretório apagado) -----------------
-# `.claude/skills/README.md` e `.agents/skills/README.md`, linha de Changelog
-# Local de 2026-09-02 que registra a propagação `SYNC-20260805-005`;
-# o caminho aparece ali como o que a adaptação local citava naquela data. É
-# registro histórico datado, e §9.7 da régua proíbe apagá-lo para o gate passar.
-ALLOWLIST_CAMINHO='^\./\.(claude|agents)/skills/README\.md:[0-9]+:\| 2026-09-02 \| `PENDING` \| `SYNC-20260805-005` \| `generate-session-prompt/SKILL\.md`'
-
-# --- Allowlist da asserção 6 (`TODO.md`) ------------------------------------
-# `.claude/skills/README.md` e `.agents/skills/README.md`, as linhas de
-#     Changelog Local de 2026-09-12 (TECH-220) e de 2026-09-02 (TECH-209): a entrada da TECH-209, reescrita para declarar a
-#     divergência encerrada, e a entrada desta migração. Ambas precisam nomear
-#     o arquivo para que o registro diga o que saiu.
-# `documents/core/Roadmap.md:135` — critério de DoD do SP0, riscado e anotado
-#     com a data da revogação. Foi verdade na data; apagar seria editar o DoD.
-# `.planning/ciclo-1-fundacao/CONTEXT.md:14` — diário de rodadas do PR-0, que
-#     registra que aquele PR criou o arquivo. Fato datado.
-# `documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation.md:124`,
-#     `:157`, `:167`, `:198`, `:632`, `:700` — plano de implementação do Ciclo
-#     1, de 28/06/2026, ciclo já encerrado. Três delas (`:167`, `:198`, `:700`)
-#     são checkbox `- [ ]` nunca marcado; `:632` é célula de status `[ ]` numa
-#     tabela, não item de lista — mesma leitura, outra forma; `:124` e `:157`
-#     são prosa. O artefato que descrevem foi criado na época e depois
-#     aposentado por esta própria migração (TECH-220) — o checkbox aberto não é
-#     pendência viva, é o registro de um plano de ciclo fechado. Plano
-#     histórico não se reescreve; o equivalente na origem são os
-#     `.claude/plans/`, que a iniciativa declarou fora de escopo.
-ALLOWLIST_TODO='^\./\.(claude|agents)/skills/README\.md:[0-9]+:(\| 2026-09-12 \| `PENDING` \| — \| 22 arquivos por camada|\| 2026-09-02 \| `PENDING` \| — \| `generate-session-prompt/SKILL\.md` × 2 camadas \| Adaptação local declarada \(TECH-209\))|^\./documents/core/Roadmap\.md:135:|^\./\.planning/ciclo-1-fundacao/CONTEXT\.md:14:|^\./documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation\.md:(124|157|167|198|632|700):'
-
-# --- Allowlist da asserção 7 (nome do tipo) ---------------------------------
-# `.claude/skills/generate-session-prompt/SKILL.md:660`, `:681` e os pares em
-#     `.agents/` e `.codex/` — Changelog Local da própria skill, em paridade byte a byte
-#     com a v4.0.0 do template. Corrigir aqui cria drift com a origem; se a
-#     linha estiver errada, o conserto é upstream.
-# `.claude/skills/claude-design-flow/SKILL.md:131`,
-#     `references/reconciliacao.md:50`, `references/etapa-5-hifi.md:29` e os
-#     pares em `.agents/` e `.codex/` — homônimo de domínio: ali a palavra quer dizer diff
-#     de design voltando do canvas, não tipo de iniciativa.
-# `.claude/rules/testing-requirements.md:196`, `:205`, `:223`, `:323`, `:419`
-#     e os pares em `.agents/` e `.codex/` (`:189`, `:198`, `:216`, `:316`, `:412`) —
-#     homônimo de código: `unittest.mock.patch` e o pacote `pytest-mock`.
-# `.claude/skills/README.md` e `.agents/skills/README.md`, as linhas de
-#     2026-09-12 (TECH-220) e de 2026-09-02 (`SYNC-20260805-005`) — Changelog Local: a entrada de 02/09 é histórica, e a desta
-#     migração cita o nome deste script.
-# `documents/core/Projeto.md:620` — `MAJOR.MINOR.PATCH`, o versionamento
-#     semântico do documento.
-# `scripts/INDEX.md:21` — a entrada de índice deste próprio gate: o nome do
-#     arquivo é prescrito pelo critério de aceite da TECH-220 e carrega o termo.
-#     Auto-casamento, não vocabulário vivo. O caminho do script não entra por
-#     `--exclude-dir`: cegar `scripts/` inteiro trocaria um auto-casamento por
-#     um ponto cego num diretório real deste repositório.
-# `.claude/skills/init-detour/SKILL.md:216` e os pares em `.agents/` e `.codex/`
-#     — a linha que declara, para o próximo agente, que o tipo `patch` deixou
-#     de existir. É o produto da TECH-210 (extinção do tipo), não vocabulário
-#     vivo do tipo: apagá-la ou reescrevê-la para o gate passar destruiria
-#     exatamente a instrução que a iniciativa foi feita para escrever.
-ALLOWLIST_TIPO='^\./scripts/INDEX\.md:21:|^\./\.(claude|agents|codex)/skills/generate-session-prompt/SKILL\.md:(660|681):|^\./\.(claude|agents|codex)/skills/claude-design-flow/SKILL\.md:131:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/reconciliacao\.md:50:|^\./\.(claude|agents|codex)/skills/claude-design-flow/references/etapa-5-hifi\.md:29:|^\./\.claude/rules/testing-requirements\.md:(196|205|223|323|419):|^\./\.(agents|codex)/rules/testing-requirements\.md:(189|198|216|316|412):|^\./\.(claude|agents)/skills/README\.md:[0-9]+:(\| 2026-09-12 \| `PENDING` \| — \| 22 arquivos por camada|\| 2026-09-02 \| `PENDING` \| `SYNC-20260805-005` \| `generate-session-prompt/SKILL\.md`)|^\./documents/core/Projeto\.md:620:|^\./\.(claude|agents|codex)/skills/init-detour/SKILL\.md:216:'
-
 falhou() { printf 'FAIL · %s\n' "$1" >&2; exit 1; }
+
+# --- Allowlist: texto literal da linha inteira (§9.5 da régua, TECH-512) ----
+# As entradas e a razão de cada bloco vivem em
+# `scripts/validate/fecho-todo-patch-allowlist.txt`, uma por linha, no formato
+# `<lista>\t<caminho>\t<texto literal da linha>`. Cada entrada vira a ERE
+# `^\./<caminho>:[0-9]+:<texto escapado>$` sobre a saída de `grep -n`: o número
+# de linha é curinga, e o texto vai até o fim da linha.
+#
+# Até a TECH-537 a isenção era por `arquivo:linha`, e nas tabelas de Changelog Local
+# pelo começo literal da linha (TECH-668). O veredito de 01/10/2026 da TECH-537
+# mediu neste repositório os dois defeitos da âncora por posição: uma linha
+# nova no topo do `Projeto.md` derrubava a asserção 7 (falso vermelho), e a
+# linha isenta do `Roadmap.md` reescrita como instrução viva, sem sair do lugar,
+# seguia isenta (falso verde). Ancorar só no começo também não bastava: o fim
+# de uma linha isenta aceitava texto vivo injetado (TECH-668).
+ALLOWLIST_FILE='scripts/validate/fecho-todo-patch-allowlist.txt'
+test -r "$ALLOWLIST_FILE" || falhou "allowlist ilegível: $ALLOWLIST_FILE"
+
+ere_escape() { printf '%s' "$1" | sed 's/[][\\.^$*+?(){}|]/\\&/g'; }
+
+ALLOWLIST_CAMINHO='' ALLOWLIST_TODO='' ALLOWLIST_TIPO=''
+while IFS=$'\t' read -r lista caminho texto; do
+  case "$lista" in ''|'#'*) continue ;; esac
+  { [ -n "${caminho:-}" ] && [ -n "${texto:-}" ]; } || falhou "allowlist: entrada malformada na lista '$lista'"
+  pat="^\\./$(ere_escape "$caminho"):[0-9]+:$(ere_escape "$texto")\$"
+  case "$lista" in
+    caminho) ALLOWLIST_CAMINHO="${ALLOWLIST_CAMINHO:+$ALLOWLIST_CAMINHO|}$pat" ;;
+    todo)    ALLOWLIST_TODO="${ALLOWLIST_TODO:+$ALLOWLIST_TODO|}$pat" ;;
+    tipo)    ALLOWLIST_TIPO="${ALLOWLIST_TIPO:+$ALLOWLIST_TIPO|}$pat" ;;
+    *)       falhou "allowlist: lista desconhecida '$lista'" ;;
+  esac
+done < "$ALLOWLIST_FILE"
+
+# Lista vazia vira `^$`, que não casa nenhuma linha de `grep -n`. Sem isso o
+# `grep -vE ''` das asserções casaria tudo e isentaria a varredura inteira.
+[ -n "$ALLOWLIST_CAMINHO" ] || ALLOWLIST_CAMINHO='^$'
+[ -n "$ALLOWLIST_TODO" ] || ALLOWLIST_TODO='^$'
+[ -n "$ALLOWLIST_TIPO" ] || ALLOWLIST_TIPO='^$'
 
 # --- 1. O arquivo não existe -------------------------------------------------
 # `test !`, e não `! test`: o `!` do shell isenta o comando de `set -e`, e aí a
@@ -247,17 +220,16 @@ test "$vivas" -eq 0 || falhou "asserção 8: $vivas linha(s) ainda definem inici
 # Por isso o ramo volta ao `\b` e a asserção passa a filtrar a saída pelo
 # `ALLOWLIST_TODO`, como as asserções 4, 6 e 7 já filtram as suas: o `\b`
 # também caça `core/TODO.md`, e quem isenta as seis linhas históricas passa a
-# ser o allowlist — que as nomeia por `arquivo:linha` — em vez de um recorte de
-# padrão que, para isentá-las, isentava junto todo ponto final.
+# ser o allowlist — que as nomeia pelo texto literal da linha — em vez de um
+# recorte de padrão que, para isentá-las, isentava junto todo ponto final.
 #
-# Custo aceito e declarado, em duas dimensões. Fragilidade de numeração: a
-# asserção 9 herda o allowlist ancorado em `arquivo:linha` (§9.5 da régua), que
-# tem endereço próprio na TECH-512 e não se conserta aqui. E alcance: o filtro
-# isenta as 12 âncoras do `ALLOWLIST_TODO`, das quais o vetor com extensão
-# precisava de 6 — as outras 6 (skills README duas vezes, o CONTEXT do Ciclo 1
-# e três linhas do plano de 28/06) passaram a ficar isentas também do termo nu
-# sem que nada pedisse isso. Efeito medido hoje: nulo, nenhuma delas cita o
-# termo nu. É ponto cego latente, não erro ativo, e some junto com a TECH-512.
+# Custo aceito e declarado: alcance. O filtro isenta as 12 entradas da lista
+# `todo`, das quais o vetor com extensão precisava de 6 — as outras 6 (skills
+# README duas vezes, o CONTEXT do Ciclo 1 e três linhas do plano de 28/06)
+# ficam isentas também do termo nu sem que nada pedisse isso. Como a âncora é o
+# texto inteiro da linha, isso só alcança aquelas linhas como estão escritas
+# hoje: reescrita, a linha sai da isenção nas duas asserções. A fragilidade de
+# numeração que este parágrafo também declarava saiu com a TECH-537.
 #
 # Por que o padrão é CONSTRUÇÃO e não mais um remendo. As rodadas 1, 2 e 3
 # acharam cada uma uma forma nova da mesma linha — forma-path, ponto final,
