@@ -5,6 +5,7 @@
 # adaptacao-local: sem-pareamento — check-pareamento-instrucoes.sh não existe neste repositório (medido em 30/09/2026); instalá-lo é a TECH-810
 # adaptacao-local: sem-testes-de-aplicacao — a decisão cobre os gates de scripts/validate/, não a suíte da aplicação
 # adaptacao-local: invariantes-exit-1 — `|| exit 1` nas linhas negadas das invariantes, que sob `bash -e` não reprovariam; a origem ainda não tem (TECH-842), e esta linha some quando tiver
+# adaptacao-local: fecho-sobre-a-arvore — passo do fecho-todo-patch.sh, que a origem não tem: lá o fecho não existe e o CI roda só o harness da régua (TECH-537)
 name: CI
 on:
   pull_request:
@@ -48,3 +49,13 @@ jobs:
       - name: Fecho da régua (aposentar-todo-md-e-patch)
         if: ${{ hashFiles('.planning/_archive/aposentar-todo-md-e-patch/CONTEXT.md') != '' }}
         run: bash scripts/validate/test-fecho-regua.sh
+
+      # O fecho sobre a árvore DESTE repositório. O passo de cima roda o
+      # harness em fixtures descartáveis, e só onde a régua existe: nenhum dos
+      # dois olha a árvore daqui, e foi assim que o `.planning/patches/` passou
+      # pelo merge do `ticktick-assistant#12`. A saída não passa por pipe, para
+      # o exit do passo ser o do fecho e não o do último comando encadeado. O
+      # `if:` guarda o derivado que ainda não versiona o script.
+      - name: Fecho (TODO.md e tipo patch aposentados)
+        if: ${{ hashFiles('scripts/validate/fecho-todo-patch.sh') != '' }}
+        run: bash scripts/validate/fecho-todo-patch.sh
