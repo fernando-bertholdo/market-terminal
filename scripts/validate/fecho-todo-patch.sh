@@ -134,7 +134,13 @@ rc=0; caminho=$(command grep -RnI 'planning/patches' . \
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
 test "$rc" -le 1 || falhou 'asserção 4: a varredura não conseguiu olhar (exit 2)'
-vivas=$(printf '%s' "$caminho" | command grep -vE "$ALLOWLIST_CAMINHO" | command grep -c . || true)
+# O filtro do allowlist também tem as três saídas do `grep`, e o exit dele é
+# conferido à parte: dentro de `… | command grep -c . || true` um filtro que
+# falha (regex inválida, exit 2, saída vazia) virava "zero linhas vivas" e a
+# asserção passava. Exit 1 aqui é legítimo — o allowlist isentou tudo.
+rc=0; filtradas=$(printf '%s' "$caminho" | command grep -vE "$ALLOWLIST_CAMINHO") || rc=$?
+test "$rc" -le 1 || falhou 'asserção 4: o filtro do allowlist não conseguiu olhar (regex inválida?)'
+vivas=$(printf '%s' "$filtradas" | command grep -c . || true)
 test "$vivas" -eq 0 || falhou "asserção 4: $vivas linha(s) viva(s) apontam para o caminho apagado"
 
 # --- 5. O vocabulário do `.planning/README.md` não declara mais o tipo -------
@@ -154,7 +160,9 @@ rc=0; todos=$(command grep -RnI 'TODO\.md' . \
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
 test "$rc" -le 1 || falhou 'asserção 6: a varredura não conseguiu olhar (exit 2)'
-vivas=$(printf '%s' "$todos" | command grep -vE "$ALLOWLIST_TODO" | command grep -c . || true)
+rc=0; filtradas=$(printf '%s' "$todos" | command grep -vE "$ALLOWLIST_TODO") || rc=$?
+test "$rc" -le 1 || falhou 'asserção 6: o filtro do allowlist não conseguiu olhar (regex inválida?)'
+vivas=$(printf '%s' "$filtradas" | command grep -c . || true)
 test "$vivas" -eq 0 || falhou "asserção 6: $vivas citação(ões) viva(s) de TODO.md fora do allowlist"
 
 # --- 7. Nenhum texto vivo cita o nome do tipo fora do allowlist --------------
@@ -163,7 +171,9 @@ rc=0; tipo=$(command grep -RniIE '\bpatch(es)?\b' . \
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
 test "$rc" -le 1 || falhou 'asserção 7: a varredura não conseguiu olhar (exit 2)'
-vivas=$(printf '%s' "$tipo" | command grep -vE "$ALLOWLIST_TIPO" | command grep -c . || true)
+rc=0; filtradas=$(printf '%s' "$tipo" | command grep -vE "$ALLOWLIST_TIPO") || rc=$?
+test "$rc" -le 1 || falhou 'asserção 7: o filtro do allowlist não conseguiu olhar (regex inválida?)'
+vivas=$(printf '%s' "$filtradas" | command grep -c . || true)
 test "$vivas" -eq 0 || falhou "asserção 7: $vivas citação(ões) viva(s) do tipo fora do allowlist"
 
 # --- 8. Ninguém define iniciativa pelo limiar de duração --------------------
@@ -263,7 +273,9 @@ rc=0; nu=$(command grep -RnIE "\bTODO\b$SEP$DOC|$DOC$SEP\bTODO\b|core/ *\(TODO|c
   --exclude-dir=.git --exclude-dir=_archive \
   --exclude-dir=node_modules --exclude-dir=audit-reports) || rc=$?
 test "$rc" -le 1 || falhou 'asserção 9: a varredura não conseguiu olhar (exit 2)'
-vivas=$(printf '%s' "$nu" | command grep -vE "$ALLOWLIST_TODO" | command grep -c . || true)
+rc=0; filtradas=$(printf '%s' "$nu" | command grep -vE "$ALLOWLIST_TODO") || rc=$?
+test "$rc" -le 1 || falhou 'asserção 9: o filtro do allowlist não conseguiu olhar (regex inválida?)'
+vivas=$(printf '%s' "$filtradas" | command grep -c . || true)
 test "$vivas" -eq 0 || falhou "asserção 9: $vivas citação(ões) pelo termo nu ao lado de documento core"
 
 printf 'PASS · as 9 asserções do fecho passam\n'
