@@ -12,7 +12,9 @@
 #
 # A isenção é por caminho e texto: a mesma linha, no mesmo arquivo, segue
 # isenta em qualquer posição dele — mover a linha de lugar não a tria de novo,
-# só reescrevê-la. O mesmo texto em outro arquivo não é isento.
+# só reescrevê-la. Uma cópia dela no mesmo arquivo também fica isenta, porque o
+# texto é o mesmo (propriedade aceita do desenho). O mesmo texto em outro
+# arquivo não é isento.
 #
 # O comentário acima de cada bloco diz o que as linhas SÃO e a razão delas, e
 # não traz número de linha: ponteiro de posição apodrece na primeira edição do
