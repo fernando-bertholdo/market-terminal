@@ -1,3 +1,13 @@
+# O Codex só lê este arquivo com o projeto marcado como confiável no
+# ~/.codex/config.toml (trust_level = "trusted"), e não inteiro: [profiles.*]
+# ele ignora mesmo assim, com aviso (codex doctor --all), e o template não os
+# versiona (C-1 da TECH-852).
+# Já um [mcp_servers.*] ativo aqui ficaria habilitado para quem confiar no
+# projeto, e por isso o template não versiona nenhum; quem quiser um o declara
+# no próprio ~/.codex/config.toml, com versão fixa (pacote@<versão>, nunca
+# @latest). Sem a marca este arquivo é inerte. Ver .codex/README.md, "O que o
+# Codex lê deste repositório" (TECH-803, TECH-793).
+
 [project]
 name = "Market Terminal"
 description = "Terminal de mercado FICC (Bloomberg-style) + simulador quant de paper-trading"
@@ -5,12 +15,8 @@ version = "0.1.0"
 
 [paths]
 agents = "AGENTS.md"
-skills = ".codex/skills"
+skills = ".agents/skills"
 rules = ".codex/rules"
-
-[mcp_servers.chrome-devtools]
-command = "npx"
-args = ["-y", "chrome-devtools-mcp@latest"]
 
 [features]
 memory = true
@@ -19,31 +25,3 @@ traces = false
 [settings]
 max_context_tokens = 200000
 prefer_markdown_links = true
-
-# Perfis de sessão para lançar o Codex em modos recorrentes.
-# Eles configuram a sessão principal; a orquestração de subagentes vive em
-# `AGENTS.md` (raiz) e `.codex/skills/agent-team/SKILL.md`.
-
-[profiles.research]
-model_reasoning_effort = "high"
-model_verbosity = "low"
-approval_policy = "never"
-sandbox_mode = "read-only"
-
-[profiles.review]
-model_reasoning_effort = "high"
-model_verbosity = "low"
-approval_policy = "never"
-sandbox_mode = "read-only"
-
-[profiles.implementation]
-model_reasoning_effort = "medium"
-model_verbosity = "medium"
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-
-[profiles.docs]
-model_reasoning_effort = "medium"
-model_verbosity = "medium"
-approval_policy = "never"
-sandbox_mode = "workspace-write"
