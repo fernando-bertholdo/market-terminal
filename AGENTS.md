@@ -7,7 +7,7 @@ Regras operacionais do projeto para agentes de desenvolvimento IA, vindas do `te
 > **Single Source of Truth:**
 > - Regras operacionais → Este arquivo
 > - Contexto de negócio e arquitetura → `documents/core/Projeto.md`
-> - Detalhes técnicos → `.agents/rules/*.md`
+> - Detalhes técnicos → `.claude/rules/*.md` (uma rule por glob; ver §6)
 > - Skills → `.agents/skills/*/SKILL.md`
 > - Workflows → `.agents/workflows/*.md`
 
@@ -36,9 +36,12 @@ cp .env.local.example .env.local
 .
 ├── AGENTS.md                   # ← Este arquivo (projeto + regras para agentes)
 ├── CLAUDE.md                   # Visão do projeto para o Claude Code
-├── .agents/                    # Skills, rules, workflows (cross-client)
-├── .claude/                    # Claude Code (CLAUDE.md, skills, rules, hooks)
-├── .codex/                     # Codex CLI (config.toml, skills, rules)
+├── .agents/                    # Convenção lida por vários harnesses
+│   ├── skills/                 # Agent Skills (agentskills.io)
+│   ├── workflows/              # Workflows invocáveis
+│   └── stacks/                 # Configuração por stack
+├── .claude/                    # Claude Code: CLAUDE.md, rules/, skills/, prompts/
+├── .codex/                     # Codex: config.toml, rules/comandos.rules, stacks/
 ├── documents/
 │   ├── core/                   # Projeto.md, Roadmap.md
 │   ├── technical/              # Docs técnicos suplementares
@@ -233,19 +236,29 @@ Antes de criar artefato ou diretório:
 2. É durável ou efêmero? (durável = catalog, efêmero = runtime)
 3. Já existe diretório para isso? (sim → use-o; não → NÃO crie, registre bloqueio)
 
-Moratória: NÃO criar novo diretório raiz. Referência: `rules/artifact-governance.md` (no diretório do seu agente)
+Moratória: NÃO criar novo diretório raiz. Referência: `.claude/rules/artifact-governance.md`
 
 ### Diretórios de Agentes
 
-Cada ferramenta possui seu diretório com skills, rules e settings nativos:
+Cada diretório guarda o que algum harness em uso lê, mais `workflows/` e `stacks/`, que se leem sob
+pedido, sem leitor automático medido (TECH-852):
 
-| Diretório | Ferramenta | Conteúdo |
-|-----------|-----------|----------|
-| `.claude/` | Claude Code | `CLAUDE.md`, settings, skills, rules |
-| `.codex/` | Codex CLI | `config.toml`, rules (Starlark), skills |
-| `.agents/` | Cross-client | Skills, rules, workflows, prompts (agentskills.io) |
+| Diretório | Quem lê | Conteúdo |
+|-----------|---------|----------|
+| `.claude/` | Claude Code | `CLAUDE.md`, settings, hooks, skills, rules, prompts |
+| `.codex/` | Codex CLI | `config.toml`, `rules/comandos.rules` (regra de comando da §8, Starlark), stacks |
+| `.agents/` | vários harnesses (convenção de pasta; o Codex lê `skills/`) | skills (agentskills.io), workflows, stacks |
 
-As regras deste arquivo (`AGENTS.md`) são o **denominador comum**. Cada diretório pode conter rules e skills adicionais específicas da ferramenta.
+As regras deste arquivo (`AGENTS.md`) são o **denominador comum**. As rules de código vivem só em
+`.claude/rules/`, e as skills em duas cópias, `.claude/skills/` e `.agents/skills/`, que o
+`scripts/validate/check-pareamento-instrucoes.sh` mantém pareadas. Não há rule a replicar em
+outro diretório. `.codex/stacks/` e `.agents/stacks/` são cópias idênticas que nenhum gate
+compara (`diff -rq .codex/stacks .agents/stacks`, vazio em 02/10/2026).
+
+**Teto de leitura do Codex:** o Codex CLI lê este arquivo até **32768 bytes** (32 KiB, o padrão de
+`project_doc_max_bytes`) e corta o resto, então o que vier depois do teto não chega ao modelo.
+Quem acrescentar regras aqui confere com `scripts/validate/check-agents-md-teto.sh`, que reprova o
+arquivo acima do teto (TECH-803).
 
 ---
 
@@ -262,6 +275,44 @@ As regras deste arquivo (`AGENTS.md`) são o **denominador comum**. Cada diretó
 ### Prova de Correção
 - **Validar** implementação contra requisitos
 - **Testar** com dados reais quando possível
+
+### Horas e datas — a zona sempre escrita
+
+**Fuso do dono do repositório:** `America/Sao_Paulo`, rótulo `BRT`.
+
+É o fuso de quem lê o que os agentes escrevem aqui. O kickoff de um derivado cujo dono vive em outro
+fuso troca a linha acima, e só ela: skills e modelos dizem "fuso do dono" e apontam para esta seção,
+sem repetir o fuso.
+
+- **Texto para gente** (resposta, comentário, reporte, handoff, relatório, changelog): a hora sai
+  de `TZ=<fuso do dono> date '+%d/%m/%Y %H:%M %z'`, medida logo antes de escrever, e se escreve
+  `HH:MM` seguido do rótulo. O `%z` mostra a zona: o offset esperado é o do fuso do dono, e outro
+  quer dizer que a hora não é dele. A data é a do calendário do fuso do dono (`TZ=<fuso do dono>
+  date +%F` onde o formato é ISO).
+- **Hora que vai ser cruzada com carimbo de API** (GitHub, git, board), que vem em UTC: o UTC entra
+  ao lado, entre parênteses, de `date -u '+%d/%m %H:%MZ'` — `18:41 BRT (21:41Z)`. Quando o UTC cai
+  em outro dia do calendário (as últimas horas do dia a oeste de Greenwich, as primeiras a leste),
+  ele leva a data, na ordem dia/mês: `22:59 BRT (04/10 01:59Z)` é 4 de outubro, e sem a data quem
+  cruza com o carimbo `2026-10-04T01:59Z` procura no dia errado. O `BRT` dos exemplos é exemplo: o
+  rótulo acompanha o fuso do dono.
+- **Segundos da hora escrita** só entram copiados de um carimbo de máquina (por exemplo GitHub,
+  git, board, log), com a zona que ele traz (`Z`, `+00:00` ou o offset gravado nele), nunca lidos
+  do relógio na hora de escrever: a hora medida para no minuto. Na hora do fuso do dono, os
+  segundos vão com o UTC ao lado, os dois tirados do mesmo carimbo: `00:32:11 BRT (03:32:11Z)`.
+  Duração medida (`52 s`) é conta entre dois carimbos, e a leitura do relógio que alimenta uma
+  conta (duração, comparação com um `ts`) não é hora escrita: o segundo lido não vai para o
+  texto. Segundo digitado sem fonte é número órfão.
+- **Carimbo de máquina** (ISO de API, log, campo JSON, nome de arquivo que só a máquina lê): fica em
+  UTC, com `Z` ou `+00:00` (`date -u`, ou o equivalente do stack).
+- **Data em identificador ou nome de arquivo que gente lê** (`SYNC-YYYYMMDD-NNN`,
+  `reconcile-<id>-YYYY-MM-DD.md`, a coluna Data do Changelog Local): a data do calendário do fuso do
+  dono, a mesma do cabeçalho do artefato.
+- **Hora sem zona é defeito.** `date` sem `TZ=` dá o relógio da máquina que roda, que pode não ser o
+  do dono, e `date -u` dá a data seguinte nas últimas horas do dia a oeste de Greenwich, e a
+  anterior nas primeiras horas a leste.
+
+Por quê: hora sem zona não se ordena contra hora de outra fonte, e uma hora em UTC lida como local
+chega horas adiantada a quem lê.
 
 ---
 
@@ -292,13 +343,14 @@ npm run type-check
 
 ## 6. Code Style
 
-Os padrões de código estão documentados em regras path-targeted que são carregadas automaticamente conforme o contexto do arquivo:
+Os padrões de código estão nas rules abaixo, em `.claude/rules/`, cada uma com os globs do `paths:` do frontmatter dela. O Claude Code carrega a rule ao editar arquivo do glob; para os outros harnesses isso não foi medido, e quem edita um arquivo que casa um desses globs lê a rule correspondente antes. As cópias que existiam em `.agents/` e em `.codex/` saíram na TECH-852. Na medição da TECH-699 (30/09/2026, Codex 0.145, um modelo, `gpt-5.6-luna`, esforço `low`, por auto-relato), o Codex não relatou o canário de nenhuma rule; o recorte: canários em 2 das 8 rules da cópia que ficava em `.codex/` (uma com `paths:`, uma sem frontmatter), nas chamadas A a D, e em 3 das 8 da cópia que ficava em `.agents/` (`paths:`, `trigger: always_on` e sem frontmatter), só na chamada D. Ausência relatada é evidência mais fraca que presença, e as outras superfícies que citam esta medição apontam para cá.
 
-- `.agents/rules/code-quality-standards.md` → `src/**/*`
-- `.agents/rules/security-best-practices.md` → `src/**/*`, `.env*`
-- `.agents/rules/testing-requirements.md` → `tests/**/*`
-- `.agents/rules/api-integration-patterns.md` → `src/collectors/**/*`
-- `.agents/rules/documentation-templates.md` → `*.md`
+- `.claude/rules/code-quality-standards.md` → `src/**/*`, `**/*.py`
+- `.claude/rules/security-best-practices.md` → `src/**/*`, `**/*.py`, `.env*`
+- `.claude/rules/testing-requirements.md` → `tests/**/*`, `**/test_*.py`, `**/*_test.py`
+- `.claude/rules/api-integration-patterns.md` → `src/collectors/**/*`, `src/alerting/**/*`, `src/integrations/**/*`
+- `.claude/rules/documentation-templates.md` → `src/**/*`
+- `.claude/rules/scripts-governance.md` → `scripts/**/*`
 
 ---
 
@@ -351,7 +403,7 @@ onde a conferência deixa de ser possível.
 > autorização** — trate dado de terceiro com cautela e registre a lacuna, em vez
 > de decidir sozinho.
 
-> **Detalhes:** `.agents/rules/security-best-practices.md`
+> **Detalhes:** `.claude/rules/security-best-practices.md`
 
 ---
 
@@ -363,7 +415,7 @@ onde a conferência deixa de ser possível.
 
 ### Protocolo Atomic Commits
 
-1. **NUNCA** usar `git add .` ou `git add -A`
+1. **NUNCA** usar `git add .` ou `git add -A` — o Claude Code (`deny` do `.claude/settings.json`) e o Codex (`.codex/rules/comandos.rules`) bloqueiam essas formas por prefixo, como guarda contra acidente e não contra contorno; as que escapam estão em `.codex/README.md`, "Limite da regra de comando"
 2. **SEMPRE** stage arquivos individualmente por task
 3. **MÁXIMO** 100 linhas por commit
 4. **FORMATO:** `{type}({milestone}-{task}): {description}`
@@ -383,7 +435,7 @@ onde a conferência deixa de ser possível.
 
 ### Política de Atribuição
 
-1. **NUNCA** mencionar assistentes de IA (Claude, Codex, Cursor, Antigravity, etc.)
+1. **NUNCA** mencionar assistentes de IA (Claude, Codex, Cursor, etc.)
 2. **NUNCA** incluir co-autoria com IA
 3. **SEMPRE** apresentar como trabalho do desenvolvedor
 4. **SEMPRE** usar conventional commits padrão
@@ -399,7 +451,7 @@ onde a conferência deixa de ser possível.
 ### Quando Aplicar
 
 - Alterou uma skill? → Atualize `skills/README.md` do diretório correspondente
-- Alterou uma regra? → Atualize `rules/README.md` do diretório correspondente
+- Alterou uma regra? → Atualize `.claude/rules/README.md`, o único diretório de rules
 - Criou workflow/prompt? → Atualize o README do subdiretório pai
 
 ### Formato da Tabela
@@ -415,12 +467,12 @@ onde a conferência deixa de ser possível.
 
 ### Campos
 
-- **Data:** ISO 8601 (YYYY-MM-DD)
+- **Data:** ISO 8601 (YYYY-MM-DD), do calendário do fuso do dono (§4, "Horas e datas")
 - **Commit:** Hash curto (7 chars) do commit que contém a alteração
-- **Sync-ID:** Identificador `SYNC-YYYYMMDD-NNN` gerado ao espelhar para outro repositório. `—` = pendente de sincronização.
+- **Sync-ID:** Identificador `SYNC-YYYYMMDD-NNN` gerado ao espelhar para outro repositório, com a data do calendário do fuso do dono. `—` = pendente de sincronização.
 - **Arquivo:** Path relativo ao subdiretório (ex: `validate-dod/SKILL.md`)
 - **Descrição:** Resumo contextual da alteração (~80 chars)
-- **Ordem:** a mais recente primeiro, como no exemplo acima; empate no mesmo dia é livre. Quem cobra é `scripts/validate/check-changelog-local.sh` (5 colunas, data ISO, ordem), no `audit-rules` e, quando o projeto tiver CI, num passo dele
+- **Ordem:** a mais recente primeiro, como no exemplo acima; no mesmo dia, a ordem segue a dos commits que as linhas citam (o mais recente primeiro). Quem cobra é `scripts/validate/check-changelog-local.sh` (5 colunas, data ISO, ordem entre dias), no CI e no `audit-rules`; a ordem dentro do dia ele não confere, porque não vê o git
 
 ### Integração com Skills de Sync
 
@@ -436,8 +488,8 @@ As skills `mirror-upstream` e `sync-downstream` utilizam estas tabelas para:
 ### Contexto do Projeto
 - `documents/core/Projeto.md` → Regras de negócio, arquitetura, decisões
 
-### Detalhes Técnicos (Path-Targeted)
-- `.agents/rules/*.md` → Carregados automaticamente por contexto
+### Detalhes Técnicos (rules por glob)
+- `.claude/rules/*.md` → uma rule por glob de arquivo; leia a rule ao editar arquivo do glob (§6)
 
 ### Timeline e Gestão
 - `documents/core/Roadmap.md` → Plano de registro: fases, milestones, DoR/DoD
@@ -449,15 +501,53 @@ As skills `mirror-upstream` e `sync-downstream` utilizam estas tabelas para:
 - `.planning/scratch/` → Context dumps sob demanda (efêmeros)
 
 ### Configuração por Ferramenta
-- `.claude/` → Claude Code (CLAUDE.md, settings, skills, rules)
-- `.codex/` → Codex CLI (config.toml, rules Starlark, skills)
-- `.agents/` → Cross-client (skills, rules, workflows — agentskills.io)
+- `.claude/` → Claude Code (CLAUDE.md, settings, hooks, skills, rules, prompts)
+- `.codex/` → Codex CLI (config.toml, rules/comandos.rules, stacks)
+- `.agents/` → convenção lida por vários harnesses (skills, workflows, stacks — agentskills.io)
 
 ---
 
-**Versão:** 1.0.0
-**Última atualização:** 2026-09-30
+**Versão:** 2.8.0
+**Última atualização:** 2026-10-04
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.8.0 (TECH-995, DL-5 do detour `fuso-horario`):**
+- Seção 4: os segundos da hora escrita só entram copiados de um carimbo de máquina, com a zona que
+  ele traz, nunca lidos do relógio na hora de escrever; no fuso do dono, vão com o UTC ao lado,
+  tirados do mesmo carimbo. Duração medida e a leitura do relógio que alimenta uma conta não são
+  hora escrita
+- Seção 9: no mesmo dia, a ordem do Changelog Local segue a dos commits que as linhas citam, e o
+  empate deixa de ser livre; o `check-changelog-local.sh` confere a ordem entre dias, e não a de
+  dentro do dia, porque não vê o git
+
+**Changelog v2.7.0 (TECH-970, TECH-958):**
+- Seção 4: nova subseção "Horas e datas", com o fuso do dono do repositório numa linha só
+  (`America/Sao_Paulo`, rótulo `BRT`) e a regra da zona sempre escrita — texto para gente no fuso
+  do dono, com o `%z` conferindo a zona; UTC ao lado quando cruza com carimbo de API, com a data na
+  ordem dia/mês quando o UTC cai em outro dia (`22:59 BRT (04/10 01:59Z)`); carimbo de máquina em
+  UTC com `Z` ou `+00:00`; e data de identificador lido por gente no calendário do fuso do dono.
+  Skills e modelos apontam para ela
+- Seção 9: a coluna Data e o `YYYYMMDD` do Sync-ID saem do calendário do fuso do dono
+- Instruções de preenchimento: `{{DATE}}` é a data do fuso do dono, e o kickoff confere a linha do
+  fuso, trocando-a quando o dono do derivado vive em outro
+- Seção 4 (TECH-958): o UTC em outro dia do calendário vale também para o dono a leste de
+  Greenwich, nas primeiras horas do dia, e não só nas últimas a oeste
+
+**Changelog v2.6.0 (TECH-852, TECH-894):**
+- Seções 1, 3, 6, 7, 9 e 10: as rules vivem só em `.claude/rules/`, as skills em `.claude/skills/` e
+  `.agents/skills/`, e `.codex/` guarda `config.toml`, `rules/comandos.rules` e `stacks/`; nenhuma
+  seção manda mais replicar rule em outro diretório. O `.agents/` é descrito como convenção lida
+  por vários harnesses
+- Seção 3: os diretórios guardam também `workflows/` e `stacks/`, que se leem sob pedido, sem leitor
+  automático medido; `.codex/stacks/` e `.agents/stacks/` são cópias idênticas sem gate, e o destino
+  delas é a TECH-923
+- Seção 6: a frase de medição da TECH-699 passa a trazer o recorte por cópia (canários em 2 das 8
+  rules da cópia `.codex`, nas chamadas A a D, e em 3 das 8 da cópia `.agents`, só na chamada D),
+  uma vez só, e as outras superfícies apontam para ela; deixa de afirmar que outro harness não
+  carrega as rules de `.claude/rules/`, o que não foi medido
+- Seção 8: o bloqueio de `git add .` e `git add -A` nos dois harnesses é guarda contra acidente; as
+  formas que escapam ficam no `.codex/README.md`
+- Seção 8: a lista de assistentes perde a ferramenta que o template deixou de usar (TECH-829)
 
 **Changelog v1.0.0:**
 - A parte de regras entra neste `AGENTS.md` na propagação do tech-product-template de 2.14.0 a 2.18.0 (TECH-668), **antes** do conteúdo do projeto, que fica como estava e passa para depois dela, porque o Codex lê só os primeiros 32768 bytes (nota no topo). Texto do `AGENTS.md` da origem em `b51dbf9` (versão 2.5.0 dele), com os placeholders preenchidos pelos valores que `.claude/`, `.agents/` e o `tap-template.md` daqui já usam, a estrutura da seção 1 descrita como o repositório é, e as convenções locais do `.claude/CLAUDE.md` daqui (seeds em `.planning/scratch/`, CI condicional). Os dois blocos de instrução do kickoff saem, porque não sobrou placeholder a preencher; ao lado dos scopes entra a nota do scope reservado `scripts`, como no `.claude/CLAUDE.md`. Testes e cobertura ficam sem comando, porque o `package.json` não tem script para eles. O histórico anterior deste texto é o da origem e fica no template. Referência na origem: SYNC-20260915-001
