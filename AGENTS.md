@@ -1,8 +1,8 @@
 # AGENTS.md — Market Terminal (regras do template)
 
-> **Ordem deste arquivo:** as regras vêm primeiro porque o Codex lê só os primeiros 32768 bytes do `AGENTS.md` (`project_doc_max_bytes`, padrão; a chave não é lida do `.codex/config.toml` do repositório, medido com `codex debug prompt-input` na TECH-668). A parte do projeto vem depois e pode não chegar inteira ao Codex: o guia do projeto está no `CLAUDE.md` da raiz, que ela repete com uma linha a mais (a do *Live exit layer*, em "Quant Simulator").
+> **Ordem deste arquivo:** as regras vêm primeiro porque o Codex lê só os primeiros 32768 bytes do `AGENTS.md` (`project_doc_max_bytes`, padrão; a chave não é lida do `.codex/config.toml` do repositório, medido com `codex debug prompt-input` na TECH-668). A parte do projeto vem depois e é só um resumo de três seções (`Project Overview`, `Dev Commands` e `Environment Variables`), que cabe no teto junto com as regras: o guia completo do projeto, com a Architecture e o Quant Simulator, está só no `CLAUDE.md` da raiz.
 
-Regras operacionais do projeto para agentes de desenvolvimento IA, vindas do `tech-product-template` (marcador em `.claude/CLAUDE.md`, `.agents/README.md` e `.codex/README.md`). A visão do produto, a arquitetura e os comandos do projeto estão na segunda parte deste arquivo, depois destas regras.
+Regras operacionais do projeto para agentes de desenvolvimento IA, vindas do `tech-product-template` (marcador em `.claude/CLAUDE.md`, `.agents/README.md` e `.codex/README.md`). A visão do produto, os comandos e as variáveis de ambiente do projeto estão na segunda parte deste arquivo, depois destas regras; a arquitetura e o resto do guia estão no `CLAUDE.md` da raiz.
 
 > **Single Source of Truth:**
 > - Regras operacionais → Este arquivo
