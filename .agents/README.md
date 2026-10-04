@@ -53,15 +53,16 @@ template mostrou harness que os carregue sozinho.
 prompts, que as skills das duas cópias citam ali, e a outra cópia das skills. `.codex/` guarda
 `config.toml` e `rules/comandos.rules`, que o Codex lê, e `stacks/`, cópia idêntica de
 `.agents/stacks/` sem gate (tabela de diretórios do `AGENTS.md`, §3). As skills existem aqui e em `.claude/skills/`, e o
-`scripts/validate/check-pareamento-instrucoes.sh` cobra que as duas cópias fiquem iguais, salvo a
-diferença declarada; as rules vivem só em `.claude/rules/`, e os prompts só em `.claude/prompts/`
+pareamento das duas cópias é feito à mão: o gate de pareamento da origem (`check-pareamento-instrucoes.sh`)
+não existe neste repositório (`sem-pareamento` no `ci.yml`, TECH-810). As rules vivem só em
+`.claude/rules/`, e os prompts só em `.claude/prompts/`
 (TECH-852).
 
 ## Changelog Local
 
 | Data | Commit | Sync-ID | Arquivo | Descrição |
 |------|--------|---------|---------|-----------|
-| 2026-10-04 | `—` | — | `README.md`, `workflows/kickoff.md`, `workflows/pre-commit.md` | O marcador `Template de origem` sobe a `tech-product-template@2.21.0` e a árvore e o texto seguem a origem na 2.19.0: sem `rules/` nem `prompts/` (TECH-852), e o `.agents/` descrito como convenção lida por vários harnesses. A seção `## Changelog Local` passa a existir neste README só com esta linha: as linhas datadas que a origem tem nela descrevem a origem. As linhas do `rules/README.md` que saiu com a pasta ficam em `git show abbcdec:.agents/rules/README.md`, e os Sync-IDs que só ele registrava seguem como referência da origem: SYNC-20260330-003/004/005 (a UI Excellence na camada `.agents`), SYNC-20260523-001, SYNC-20260830-001 e SYNC-20260915-001 (as rules desta camada). Propagação do `tech-product-template` de 2.18.0 a 2.21.0 neste repositório (TECH-1020, SHA `6a60a5b` da origem, base da mescla `b51dbf9`) |
+| 2026-10-04 | `—` | — | `README.md`, `workflows/kickoff.md`, `workflows/pre-commit.md` | O marcador `Template de origem` sobe a `tech-product-template@2.21.0` e a árvore e o texto seguem a origem na 2.19.0: sem `rules/` nem `prompts/` (TECH-852), e o `.agents/` descrito como convenção lida por vários harnesses. A seção `## Changelog Local` passa a existir neste README só com esta linha: as linhas datadas que a origem tem nela descrevem a origem. As linhas do `rules/README.md` que saiu com a pasta ficam em `git show abbcdec:.agents/rules/README.md`, e os Sync-IDs que só ele registrava seguem como referência da origem: SYNC-20260330-003/004/005 (a UI Excellence na camada `.agents`), SYNC-20260523-001, SYNC-20260830-001 e SYNC-20260915-001 (as rules desta camada). A frase do pareamento diz que o gate da origem não existe aqui e que as duas cópias das skills se mantêm à mão (TECH-810). Propagação do `tech-product-template` de 2.18.0 a 2.21.0 neste repositório (TECH-1020, SHA `6a60a5b` da origem, base da mescla `b51dbf9`) |
 
 ---
 
