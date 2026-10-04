@@ -87,7 +87,7 @@ Estes placeholders aparecem em múltiplos arquivos e devem ter valor consistente
 - `Fernando Bertholdo` — Autor dos documentos
 - `Fernando Bertholdo` — Nome da organização
 - `web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning` — Scopes para conventional commits (baseados na arquitetura)
-- `2026-06-28` — Data atual (usar em todos os arquivos)
+- `2026-06-28` — Data atual do calendário do fuso do dono (`AGENTS.md`, "Horas e datas"), a mesma em todos os arquivos; confira ali a linha do fuso e troque-a se o dono do projeto vive em outro
 
 **HIGH — Comandos de stack (preencher ao definir stack):**
 Estes placeholders configuram as skills operacionais do projeto:
@@ -110,6 +110,27 @@ O mesmo placeholder deve ter o mesmo valor em TODOS os arquivos onde aparece. Ex
 - `Market Terminal` deve ser idêntico em README.md, CLAUDE.md, Projeto.md, settings.json, etc.
 - `web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning` deve ser idêntico em CLAUDE.md, AGENTS.md, README.md
 - `npm run type-check` deve ser idêntico em pre-commit-check, validate-testing, security-best-practices
+
+#### Passo 2e: Gravar a linhagem de template
+
+Os pontos de entrada das três camadas — `.claude/CLAUDE.md`, `.agents/README.md` e
+`.codex/README.md` — carregam a linha canônica de linhagem:
+
+```
+Template de origem: <template>@<versão>
+```
+
+Ela chega ao projeto novo já preenchida com o template do qual ele nasceu, porque o
+derivado copia o valor da fonte. Confira e corrija quando o repositório tiver vindo de
+uma cópia intermediária, de um fork antigo ou de outro template derivado:
+
+- `<template>` é o nome do repositório de template de origem, nunca o nome deste projeto.
+- `<versão>` é a versão do template no momento do kickoff — leia o rodapé `**Versão:**`
+  do arquivo de origem, não invente o número.
+- A linha é a mesma, byte a byte, nas três camadas. Elas precisam concordar.
+
+A linha não é um placeholder `{{...}}`: ela nunca fica vazia e não é removida no kickoff.
+`validate-kickoff` falha se ela sumir de qualquer camada ou se as camadas divergirem.
 
 ---
 
@@ -147,7 +168,7 @@ Se necessário, crie diretórios de código fonte e testes conforme o stack:
 - Ajustar `.env.example` com variáveis relevantes para o projeto
 - Remover variáveis não aplicáveis do `.env.example`
 - Configurar `.claude/settings.json` com nome e descrição do projeto
-- Configurar `.codex/config.toml` (mirror) se aplicável
+- Configurar `.codex/config.toml` se aplicável (lido pelo Codex só em projeto confiável; ver `.codex/README.md`)
 
 ---
 

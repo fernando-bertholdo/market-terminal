@@ -44,7 +44,7 @@ B) Só depois escreva o TAP final, com linguagem executiva e estrutura abaixo.
 
 FORMATO DO TAP (OBRIGATÓRIO)
 0. Capa curta + Metadados
-   - Projeto, área, dono, stakeholders, status, versão, data do documento
+   - Projeto, área, dono, stakeholders, status, versão, data do documento (do calendário do fuso do dono do projeto)
    - Nota de confidencialidade (“Uso interno — Fernando Bertholdo”)
 
 1. Resumo executivo (1 página no máximo)
