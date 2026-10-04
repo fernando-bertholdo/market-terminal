@@ -34,6 +34,13 @@
 #   1. Camada sem a linha `Template de origem: <nome>@<versão>`.
 #   2. Marcador diferente entre as camadas.
 #   3. Versão do marcador diferente da do rodapé canônico — SÓ no canônico.
+#   4. `.claude/CLAUDE.md` diferente do que era no commit que fixou a versão do
+#      rodapé, sem a versão ter subido — SÓ no canônico (TECH-695). As regras 1 a
+#      3 comparam declarações entre si, e marcador e rodapé podem estar
+#      coerentes e velhos juntos: a regra normativa muda, ninguém sobe a versão,
+#      e a propagação, que calcula o gap pela versão, não vê a mudança. A regra
+#      precisa do histórico: num clone raso ela diz que não rodou, em vez de
+#      aprovar o que não viu.
 #
 # Uso:
 #   scripts/validate/check-versao-linhagem.sh          # audita o repo corrente
@@ -54,7 +61,7 @@ readonly RODAPE=".claude/CLAUDE.md"
 log() { printf '[linhagem] %s\n' "$*"; }
 die() { printf '[linhagem] ERRO: %s\n' "$1" >&2; exit "${2:-1}"; }
 
-[[ $# -eq 0 ]] || { [[ "$1" == "-h" || "$1" == "--help" ]] && { sed -n '3,45p' "$0"; exit 0; } || die "argumento desconhecido: $1" 1; }
+[[ $# -eq 0 ]] || { [[ "$1" == "-h" || "$1" == "--help" ]] && { sed -n '3,/^set -euo/{/^set -euo/!p;}' "$0"; exit 0; } || die "argumento desconhecido: $1" 1; }
 
 command -v git >/dev/null 2>&1 || die "git não encontrado no PATH." 5
 # A raiz sai do diretório CORRENTE, não de onde o script mora: um gate precisa
@@ -104,6 +111,31 @@ elif [[ "$SOU_O_TEMPLATE" -eq 1 ]]; then
   fi
 fi
 
+# ── 3. Conteúdo × versão (só no template canônico) ───────────────────────────
+# A referência é o commit mais recente que mudou a contagem de `**Versão:** <v>`
+# no rodapé, ou seja, o que fixou a versão atual. Versão diferente da do HEAD é
+# subida em curso, e aí o conteúdo pode mudar à vontade.
+REGRA4=""
+if [[ "$SOU_O_TEMPLATE" -eq 1 && -n "${VERSAO_RODAPE:-}" ]]; then
+  if [[ "$(git rev-parse --is-shallow-repository 2>/dev/null)" == "true" ]]; then
+    REGRA4="não rodou: clone raso, sem o histórico do commit que fixou a versão $VERSAO_RODAPE"
+  elif ! git rev-parse -q --verify HEAD >/dev/null; then
+    REGRA4="não rodou: o repositório ainda não tem commit"
+  else
+    VERSAO_HEAD="$(git show "HEAD:$RODAPE" 2>/dev/null | sed -n 's/^\*\*Versão:\*\* *//p' | head -1 || true)"
+    FIXOU="$(git log -1 --format=%h -S"**Versão:** $VERSAO_RODAPE" -- "$RODAPE")"
+    if [[ "$VERSAO_HEAD" != "$VERSAO_RODAPE" ]]; then
+      REGRA4="a versão sobe de ${VERSAO_HEAD:-(nenhuma)} para $VERSAO_RODAPE nesta árvore"
+    elif [[ -z "$FIXOU" ]]; then
+      REGRA4="não rodou: nenhum commit do histórico fixou a versão $VERSAO_RODAPE em $RODAPE"
+    elif git show "$FIXOU:$RODAPE" | cmp -s - "$RODAPE"; then
+      REGRA4="$RODAPE idêntico ao do commit $FIXOU, que fixou a versão $VERSAO_RODAPE"
+    else
+      viol "$RODAPE mudou depois de $FIXOU, o commit que fixou a versão $VERSAO_RODAPE, e a versão não subiu — suba o rodapé e o marcador juntos"
+    fi
+  fi
+fi
+
 if [[ "$VIOLACOES" -gt 0 ]]; then
   printf '[linhagem] %d violação(ões).\n' "$VIOLACOES" >&2
   exit 2
@@ -111,6 +143,7 @@ fi
 
 if [[ "$SOU_O_TEMPLATE" -eq 1 ]]; then
   log "marcador '$CANONICO' íntegro nas ${#CAMADAS[@]} camadas e coerente com o rodapé."
+  log "conteúdo × versão: $REGRA4."
 else
-  log "marcador '$CANONICO' íntegro nas ${#CAMADAS[@]} camadas (derivado — rodapé não comparado)."
+  log "marcador '$CANONICO' íntegro nas ${#CAMADAS[@]} camadas (derivado — rodapé e conteúdo × versão não comparados)."
 fi

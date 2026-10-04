@@ -3,15 +3,30 @@
 # validate-clean-tree.sh — árvore de trabalho limpa, ignorando artefatos de
 # runtime de agente.
 #
-# Por que existe: os runtimes de agente (Multica/Claude, Antigravity) injetam
-# arquivos no checkout no início de cada run. `git status --porcelain` cru
-# acusa árvore suja por causa deles e trava o pré-voo — foi o que quebrou o
-# DoD da LAS-25 em 28/08/2026.
+# Por que existe: o runtime de agente do Multica injeta arquivos no checkout
+# no início de cada run. `git status --porcelain` cru acusa árvore suja por
+# causa deles e trava o pré-voo — foi o que quebrou o DoD da LAS-25 em
+# 28/08/2026.
 #
 # O `.gitignore` cobre os que nascem não-rastreados. Ele NÃO alcança arquivo
-# rastreado: `AGENTS.md` está no índice deste repo e o runtime Antigravity o
-# sobrescreve durante o run, aparecendo como modificado (DL-4 da LAS-34).
+# rastreado: `AGENTS.md` está no índice do template de origem, e de todo
+# derivado que o herda, e um runtime que o sobrescreva durante o run o faz
+# aparecer como modificado (DL-4 da LAS-34, medido com um runtime que saiu do
+# homelab e dos dois workspaces em 01/10/2026, TECH-829).
 # Por isso a exclusão aqui é por pathspec, não por gitignore.
+#
+# A exclusão do `AGENTS.md` fica, decidida na TECH-829. Medido em 02/10/2026
+# 02:30Z no homelab, na pasta do workspace tech-projects:
+#   ls -1 */workdir/CLAUDE.md | wc -l   → 130 workdirs de task com o arquivo
+#   ls -1 */workdir/AGENTS.md | wc -l   → 0
+# O que essa contagem mede é a injeção do runtime Claude do Multica na RAIZ do
+# workdir, que fica fora do checkout quando o repositório entra num
+# subdiretório (`multica repo checkout`); ela não diz se algum runtime reescreve
+# o `AGENTS.md` rastreado do checkout. Na mesma hora, `multica runtime list`
+# mostra 3 runtimes Codex e 1 Cursor `online`, e `multica agent list` mostra os
+# 7 agentes em runtimes Claude. Se um runtime não-Claude escreve o `AGENTS.md`
+# não foi medido; se escrever, tirar a exclusão faria o primeiro run dele num
+# derivado travar o pré-voo. Sai quando essa medição disser que nenhum escreve.
 #
 # `.claude/worktrees/` entrou em 15/09/2026: o worktree que o Claude Code
 # materializa dentro do repo nasceu depois deste script, e nem o `.gitignore`
