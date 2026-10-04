@@ -376,7 +376,7 @@ Skills seguem padrão MCP (Model Context Protocol) Agent Skills:
 - Skills de orquestração: 1
 - Skills de sincronização: 2
 - Sem seção no índice: 4 (`audit-scripts`, `fresh-context`, `generate-tap`, `scope-horizons`)
-- Linhas médias por skill: ~350
+- Linhas médias por skill: 291 (média de `wc -l` nos 26 `SKILL.md`, medida em 04/10/2026)
 - Coverage de workflows: 100%
 
 ---
