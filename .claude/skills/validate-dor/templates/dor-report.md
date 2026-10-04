@@ -1,7 +1,7 @@
 # DoR Report: [MILESTONE-ID]
 
 **Milestone:** [MILESTONE-ID] — [NOME]
-**Data:** [DATA]
+**Data:** [DATA, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Status:** [PASS | FAIL | PARTIAL]
 **Cobertura:** [X]/[Y] pré-requisitos ([%])
 
@@ -13,7 +13,7 @@
 
 | Item | Status | Evidência |
 |------|--------|-----------|
-| [Milestone X completo (DoD 100%)] | ✅ / ❌ | [report de DoD / data de validação] |
+| [Milestone X completo (DoD 100%)] | ✅ / ❌ | [report de DoD / data de validação, calendário do fuso do dono] |
 
 ### Arquivos e Configurações
 

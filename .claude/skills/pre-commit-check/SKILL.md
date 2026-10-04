@@ -163,7 +163,7 @@ done
 | Scripts novos em INDEX | 100% | ✅ Sim |
 | Categoria correta | Glossário do README | ⚠️ Review |
 
-> **Referência:** rule [`.claude/rules/scripts-governance.md`](../../rules/scripts-governance.md) — Auto-loaded em edits de `scripts/**`.
+> **Referência:** rule [`.claude/rules/scripts-governance.md`](../../rules/scripts-governance.md) — o Claude Code a carrega ao editar `scripts/**`; noutro harness, leia-a antes.
 > **Auditoria completa:** invocar skill `audit-scripts`.
 
 ### 7. Quantificador e número órfão
@@ -204,7 +204,10 @@ esses quatro PRs de conserto, e os dois teriam caído nesta varredura antes do c
 `check-commit-message.sh` roda os mesmos dois padrões sobre a mensagem passada por `-m` (todos
 os `-m`) ou `-F <arquivo>`, como aviso, no Claude Code; heredoc por `-F -`, `--amend --no-edit`
 e `git commit` sem `-m` ficam fora dele — nesses casos a varredura é a desta seção, à mão. Hooks
-são CWD-only e viajam à mão (`hooks/README.md`).
+são CWD-only. O Propagador atualiza no derivado só o hook que é cópia literal (conteúdo e modo) de
+alguma versão da origem até a propagada; o hook com diferença local, o hook novo da origem, que o
+derivado ainda não tem, a remoção do hook que a origem apagou e o `settings.json`, que liga os
+hooks, seguem à mão.
 
 ## Procedimento Completo
 
@@ -447,9 +450,9 @@ $ pre-commit-check
 
 ## Referências
 
-- `@rules/code-quality-standards.md` - Detalhes de padrões Python
-- `@rules/testing-requirements.md` - Requisitos de testes
-- `@rules/security-best-practices.md` - Práticas de segurança
+- `.claude/rules/code-quality-standards.md` - Detalhes de padrões Python
+- `.claude/rules/testing-requirements.md` - Requisitos de testes
+- `.claude/rules/security-best-practices.md` - Práticas de segurança
 
 ## Skills Relacionadas
 

@@ -155,7 +155,7 @@ Alerta se backlink está faltando (não crítico, apenas informativo).
 ```markdown
 # 📊 Relatório de Validação de Links
 
-**Data:** [DATA]
+**Data:** [DATA, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Escopo:** [N] arquivos .md
 
 ## Resumo Executivo

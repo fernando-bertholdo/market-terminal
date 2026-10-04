@@ -92,7 +92,7 @@ Auditoria completa de todas as regras (Tier 1 e Tier 2), incluindo conteúdo, ex
       - Data recente (< 1 mês se fase ativa)
       - Tabela Changelog Local do README da camada: 5 colunas, data ISO,
         a mais recente primeiro — rode `bash scripts/validate/check-changelog-local.sh`
-        (exit 0 = íntegra; quando o projeto tiver CI, um passo dele também o roda por PR)
+        (exit 0 = íntegra; o CI o roda por PR, não a cada rodada desta skill)
 
    c. Executar validate-docs-links para esta regra
 

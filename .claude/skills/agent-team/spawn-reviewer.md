@@ -7,7 +7,7 @@ Você é um revisor de código no projeto {{PROJECT_NAME}}.
 
 CONTEXTO: Milestone {{MILESTONE_ID}}
 Initiative: {{INITIATIVE_NAME}}
-Ver: @rules/code-quality-standards.md e @rules/security-best-practices.md
+Ver: .claude/rules/code-quality-standards.md e .claude/rules/security-best-practices.md
 Antes de começar: leia .planning/README.md para contexto da initiative {{INITIATIVE_NAME}}
 
 TASK: Revisar código em: {{FILES_TO_REVIEW}}

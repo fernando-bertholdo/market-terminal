@@ -18,8 +18,8 @@ ARQUIVOS DESIGNADOS (apenas estes):
 - {{FILE_2}}
 
 PADRÕES DO PROJETO (conforme stack):
-- Ver @rules/code-quality-standards.md para padrões de código
-- Ver @rules/security-best-practices.md para segurança
+- Ver .claude/rules/code-quality-standards.md para padrões de código
+- Ver .claude/rules/security-best-practices.md para segurança
 - Seguir convenções existentes no codebase (naming, formatting, etc.)
 
 RESTRIÇÕES:

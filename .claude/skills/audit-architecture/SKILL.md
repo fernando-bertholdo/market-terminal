@@ -83,7 +83,7 @@ Checklist:
 ```markdown
 # Relatório de Auditoria de Arquitetura
 
-**Data:** [data atual]
+**Data:** [data atual do calendário do fuso do dono, seção "Horas e datas" das regras do projeto]
 **Fase:** [fase atual do projeto]
 
 ## Resumo

@@ -24,7 +24,7 @@ Espelha a árvore catalog × runtime de `artifact-governance.md`. O repo é a **
 `local-draft` → `local-approved` → `publication-pending` → `published` → (`remote-divergent`)
 
 - **DoD de uma etapa = `local-approved`** (gate + aprovação do usuário). Publicação é ato de release, não requisito de done.
-- `publication-pending`: aprovado e aguardando publicação (ex.: camada sem a tool, sem auth, ou aguardando lote curado).
+- `publication-pending`: aprovado e aguardando publicação (ex.: harness sem a tool, sem auth, ou aguardando lote curado).
 - `remote-divergent`: hash remoto difere do último publicado → **bloqueia** novo publish e Ready-for-Dev até resolução (ver reconciliação).
 
 ## Quando Usar / Quando NÃO Usar
@@ -90,11 +90,11 @@ Execução SEMPRE em ordem numérica. "Cumulativo" descreve escopo, não ordem.
 
 | Nível | O quê | Onde vale |
 |---|---|---|
-| Documental | Skill idêntica nas 3 camadas (`.claude/`, `.codex/`, `.agents/`) | Sempre |
-| Local | B1-B3 completos em modo local (zero dependência externa) | Todas as camadas |
+| Documental | Skill idêntica nas duas cópias (`.claude/skills/`, `.agents/skills/`) | Sempre |
+| Local | B1-B3 completos em modo local (zero dependência externa) | Todo harness |
 | Remota (publicação/reconciliação remota) | Tool `DesignSync` + auth | **Só Claude Code** em plano direto Anthropic (indisponível em Bedrock/Foundry/Vertex) |
 
-Camada sem capacidade remota gera **publication request** (`design/publication-request.md` da iniciativa: paths, projeto alvo, estado) — uma sessão Claude Code o consome com `--publish`.
+Harness sem capacidade remota gera **publication request** (`design/publication-request.md` da iniciativa: paths, projeto alvo, estado) — uma sessão Claude Code o consome com `--publish`.
 
 **Matriz de auth:** terminal interativo → login claude.ai da sessão (ou `/design-login`); headless → caminho indicado pela mensagem de erro da tool; provedores cloud → modo local + publication request.
 
@@ -149,6 +149,10 @@ Dual e idempotente: lado repo (REGISTRY + DECISIONS) e lado projeto Claude Desig
 ---
 
 ## Changelog
+
+### v2.0.1 (2026-10-02)
+
+- A paridade documental vale para as duas cópias da skill (`.claude/skills/`, `.agents/skills/`), e o que dependia da "camada" passa a depender do harness: a cópia que ficava em `.codex/` saiu na TECH-852 (TECH-894)
 
 ### v2.0.0 (2026-07-26)
 

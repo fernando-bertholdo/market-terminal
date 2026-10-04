@@ -74,7 +74,7 @@ sync-downstream /path/to/projeto --all --scope rules
        - Se gap > 1 versão major → avisar: "Drift significativo detectado"
 
    4b. Comparar estrutura de diretórios:
-       - Listar pastas em template: .agents/{skills,rules,workflows,prompts,stacks}
+       - Listar pastas em template: .agents/{skills,workflows,stacks} e .claude/{rules,prompts}
        - Listar pastas no projeto alvo
        - Identificar: pastas inteiras que existem no template mas NÃO no projeto
        - Identificar: skills/regras individuais faltantes
@@ -134,23 +134,32 @@ sync-downstream /path/to/projeto --all --scope rules
 
 8. Aplicação no projeto alvo:
    - Escrever arquivos traduzidos nos diretórios correspondentes
-   - REPLICAÇÃO ENTRE CAMADAS (obrigatório):
+   - REPLICAÇÃO ENTRE CÓPIAS (obrigatório):
      a. Aplicar o arquivo em .claude/ (fonte canônica)
-     b. Copiar o mesmo conteúdo para .codex/ e .agents/ (mesmo path relativo)
-     c. Se a camada destino não tem o subdiretório → criá-lo
-     d. Exemplo: `.claude/skills/foo/SKILL.md` →
-        `.codex/skills/foo/SKILL.md` e `.agents/skills/foo/SKILL.md`
-     NUNCA aplicar em apenas uma camada — as 3 devem ser atualizadas em conjunto
+     b. Skill → copiar o mesmo conteúdo para `.agents/skills/` (mesmo path relativo),
+        criando o subdiretório se faltar; rule → fica só em `.claude/rules/`
+     c. Exemplo: `.claude/skills/foo/SKILL.md` → `.agents/skills/foo/SKILL.md`
+     d. Projeto alvo anterior à 2.19.0 com `.codex/skills/`, `.codex/rules/*.md`,
+        `.agents/rules/`, `.agents/prompts/` ou `.codex/prompts/`: a sincronização da
+        2.19.0 as remove (TECH-852, TECH-894), e nada é escrito nelas
+     e. Prompt → fica só em `.claude/prompts/`
+     f. Stack → `.agents/stacks/` e `.codex/stacks/` são cópias idênticas, sem gate:
+        copiar o mesmo conteúdo para as duas até a TECH-923, que decide o destino delas
+     g. `.codex/rules/comandos.rules` → não se copia de outra camada: nasce da regra de
+        comando da §6 do `.claude/CLAUDE.md`, é escrita à mão, e
+        `scripts/validate/check-regra-comandos.sh` reprova a §6 que ganha comando sem ela
+     NUNCA aplicar uma skill em apenas uma cópia — o gate de pareamento reprova o par
 
 9. Atualização de índices no projeto alvo:
-   - Se nova skill → adicionar à tabela em skills/README.md de CADA camada (.claude/, .codex/, .agents/)
-   - Se nova regra → adicionar à tabela em rules/README.md de CADA camada (.claude/, .codex/, .agents/)
-   - Manter formato e estilo do README de cada camada (podem diferir entre si)
+   - Se nova skill → adicionar à tabela em skills/README.md das duas cópias (.claude/, .agents/)
+   - Se nova regra → adicionar à lista em .claude/rules/README.md, o único índice de rules
+   - Manter formato e estilo do README de cada cópia (podem diferir entre si)
 
 10. Registro de Sync-ID (RASTREABILIDADE):
    - Usar o mesmo Sync-ID da entrada de origem no template
    - Se a entrada no template já tem Sync-ID → usar esse mesmo ID
-   - Se não tem (sync avulso) → gerar novo SYNC-YYYYMMDD-NNN
+   - Se não tem (sync avulso) → gerar novo SYNC-YYYYMMDD-NNN, com a data do calendário do
+     fuso do dono (`AGENTS.md`, "Horas e datas"), a mesma da coluna Data
    - REGISTRAR no Changelog Local do subdiretório do projeto alvo
    - Garantir que o mesmo Sync-ID existe nos dois repos
 
@@ -237,6 +246,16 @@ Usuário: sync-downstream /path/to/MonoScribe --all
 ---
 
 ## Changelog
+
+### v1.4.0
+
+**Camadas da 2.19.0 (TECH-852, TECH-894):**
+- Step 4b: a estrutura comparada é `.agents/{skills,workflows,stacks}` e `.claude/{rules,prompts}`
+- Step 8: skill vai às duas cópias (`.claude/skills/`, `.agents/skills/`); rule e prompt ficam só
+  no `.claude/`; stack vai a `.agents/stacks/` e `.codex/stacks/`; a `comandos.rules` é escrita à
+  mão a partir da §6; num alvo anterior à 2.19.0, `.codex/skills/`, `.codex/rules/*.md`,
+  `.agents/rules/`, `.agents/prompts/` e `.codex/prompts/` saem em vez de receber escrita
+- Step 9: índice de skills nas duas cópias e de rules só em `.claude/rules/README.md`
 
 ### v1.3.0
 
