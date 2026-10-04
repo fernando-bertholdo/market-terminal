@@ -163,7 +163,7 @@ done
 | Scripts novos em INDEX | 100% | ✅ Sim |
 | Categoria correta | Glossário do README | ⚠️ Review |
 
-> **Referência:** rule [`.agents/rules/scripts-governance.md`](../../rules/scripts-governance.md) — Auto-loaded em edits de `scripts/**`.
+> **Referência:** rule [`.claude/rules/scripts-governance.md`](../../../.claude/rules/scripts-governance.md) — o Claude Code a carrega ao editar `scripts/**`; noutro harness, leia-a antes.
 > **Auditoria completa:** invocar skill `audit-scripts`.
 
 ### 7. Quantificador e número órfão
@@ -204,7 +204,10 @@ esses quatro PRs de conserto, e os dois teriam caído nesta varredura antes do c
 `check-commit-message.sh` roda os mesmos dois padrões sobre a mensagem passada por `-m` (todos
 os `-m`) ou `-F <arquivo>`, como aviso, no Claude Code; heredoc por `-F -`, `--amend --no-edit`
 e `git commit` sem `-m` ficam fora dele — nesses casos a varredura é a desta seção, à mão. Hooks
-são CWD-only e viajam à mão (`hooks/README.md`).
+são CWD-only. O Propagador atualiza no derivado só o hook que é cópia literal (conteúdo e modo) de
+alguma versão da origem até a propagada; o hook com diferença local, o hook novo da origem, que o
+derivado ainda não tem, a remoção do hook que a origem apagou e o `settings.json`, que liga os
+hooks, seguem à mão.
 
 ## Procedimento Completo
 
@@ -247,11 +250,12 @@ são CWD-only e viajam à mão (`hooks/README.md`).
       - Confirmar que são os corretos
 
    b. Planejar mensagem de commit
-      - Formato: type(scope): subject
+      - Formato: type(scope): assunto-em-pt-br
+      - `subject` e `body` sempre em português do Brasil
       - Referência: organize-commits
 
 5. Validações opcionais:
-   - Se alterou .agents/rules/: audit-rules quick
+   - Se alterou .claude/rules/: audit-rules quick
    - Se alterou documents/: validate-docs-links check
 
 5b. Varrer quantificador e número órfão (seção 7):
@@ -304,7 +308,7 @@ Use conventional commit:
 ✅ READY TO COMMIT
 
 Próximo passo:
-git commit -m "type(scope): subject"
+git commit -m "type(scope): assunto-em-pt-br"
 
 Ou organize commits complexos:
 organize-commits
@@ -446,9 +450,9 @@ $ pre-commit-check
 
 ## Referências
 
-- `@rules/code-quality-standards.md` - Detalhes de padrões Python
-- `@rules/testing-requirements.md` - Requisitos de testes
-- `@rules/security-best-practices.md` - Práticas de segurança
+- `.claude/rules/code-quality-standards.md` - Detalhes de padrões Python
+- `.claude/rules/testing-requirements.md` - Requisitos de testes
+- `.claude/rules/security-best-practices.md` - Práticas de segurança
 
 ## Skills Relacionadas
 

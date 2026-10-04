@@ -1,10 +1,11 @@
-# Skill: audit-roadmap-refs
-
-
 ---
 name: audit-roadmap-refs
 description: Auditar referências a skills em Roadmap.md para garantir que todas skills úteis estão documentadas e acessíveis. Use após criar nova skill, antes de completar milestone, durante auditoria periódica, ou quando sentir que falta uma skill em contexto.
 ---
+
+# Skill: audit-roadmap-refs
+
+Auditar referências a skills em Roadmap.md.
 
 ## Quando Usar
 
@@ -69,7 +70,7 @@ Oportunidades de menção:
 ```markdown
 # Audit Report: Roadmap Refs
 
-**Data:** [YYYY-MM-DD]
+**Data:** [YYYY-MM-DD, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Escopo:** [full|skills|docs]
 
 ## Sumário

@@ -12,7 +12,6 @@ paths:
 - **Versão:** 1.0.0
 - **Status:** Template (Path-targeted)
 - **Última atualização:** Template
-- **Responsável:** Fernando Bertholdo
 - **Paths:** src/**/*, *.py, .env*
 
 ---
@@ -356,15 +355,6 @@ def logar_configuracao():
     logger.info(f"  API Password: {'*' * 8}")  # Mascarado
     logger.info(f"  E-mail Host: {settings.EMAIL_HOST}")
     logger.info(f"  E-mail Password: {'*' * 8}")  # Mascarado
-
-
-def processar_item(item: Dict[str, Any]):
-    """Processa item (sem logar PII)."""
-    # Log de metadados (não sensíveis)
-    logger.info(f"Processando item: id={item['id']}")
-
-    # NUNCA logar isso:
-    # logger.info(f"Dados completos: {item}")  # Pode conter PII!
 
 
 def logar_requisicao_http(url: str, headers: Dict[str, str]):

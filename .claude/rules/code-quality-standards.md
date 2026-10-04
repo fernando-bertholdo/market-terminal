@@ -11,7 +11,6 @@ paths:
 - **Versão:** 1.1.0
 - **Status:** ✅ Template (Path-targeted)
 - **Última atualização:** 01/Fevereiro/2026
-- **Responsável:** Fernando Bertholdo
 - **Paths:** src/**/*, *.py
 - **Config preferida de ferramentas:** `pyproject.toml` (ou `setup.cfg`/`mypy.ini` se necessário)
 

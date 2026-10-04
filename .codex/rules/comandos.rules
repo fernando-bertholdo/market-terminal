@@ -1,0 +1,39 @@
+# comandos.rules — a regra de comando da §6 do `.claude/CLAUDE.md`, por mecanismo no Codex.
+#
+# A norma nasce e muda no Claude, na prosa da §6 ("Commit Strategy"); este arquivo é o espelho
+# dela no execpolicy do Codex, escrito à mão (DL-4 da TECH-852). Cada comando em crase das linhas
+# "NUNCA" da §6 aparece aqui como alternativa de um `pattern` com `decision = "forbidden"`, e o
+# `scripts/validate/check-regra-comandos.sh` reprova quando a §6 ganha comando que este arquivo
+# não cobre.
+#
+# O Codex carrega `.codex/rules/*.rules` do projeto só quando ele é confiável
+# (`trust_level = "trusted"`). O casamento é por prefixo de tokens: `git -C . add -A` e
+# `git add src/ -A` escapam (medido com `codex execpolicy check`, TECH-846).
+#
+# `match` e `not_match` são o teste embutido: o Codex recusa carregar a política se um exemplo
+# de `match` não casar ou se um de `not_match` casar.
+#
+# Derivado que adaptar a regra declara a adaptação numa linha
+# `# adaptacao-local: <chave> — <motivo>`, a convenção dos cabeçalhos do `ci.yml`. Nenhum leitor
+# a reconhece em `.rules` hoje: que o Propagador a leia aqui é intenção, com a pendência na
+# TECH-808 (extensão da leitura às `.codex/rules/*.rules`), e até lá a propagação seguinte pode
+# sobrescrever a adaptação.
+
+prefix_rule(
+    pattern = ["git", "add", ["-A", ".", "--all"]],
+    decision = "forbidden",
+    justification = "§6 do .claude/CLAUDE.md (Commit Strategy): NUNCA git add . nem git add -A; faça o stage arquivo a arquivo, por task.",
+    match = [
+        "git add -A",
+        "git add .",
+        "git add --all",
+        "git add --all docs/",
+    ],
+    not_match = [
+        "git add arquivo.txt",
+        "git add src/app.py",
+        "git add .claude/settings.json",
+        "git add ./README.md",
+        "git status",
+    ],
+)

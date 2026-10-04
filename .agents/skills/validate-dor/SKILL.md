@@ -38,7 +38,10 @@ Este é um **gate bloqueador** - nenhum trabalho deve ser iniciado sem DoR valid
 
 4. Ler fontes de DoR por tipo:
    - MILESTONE: Roadmap.md § DoR do milestone
-   - DETOUR: Roadmap.md § Desvios — Nome + CONTEXT.md (Trigger + Milestones relacionados)
+   - DETOUR: a linha do detour na tabela `## Desvios (Detours)` do `.planning/README.md`
+     + o CONTEXT.md do detour (Trigger + Milestones relacionados), cujas seções
+     `## DoR` / `## DoD` são a fonte canônica (o Roadmap.md não tem seção de detours).
+     Registrar no report qual fonte foi usada.
 
 5. Extrair checklist de pré-requisitos por tipo:
    - COMUNS: diretório existe, CONTEXT.md tem escopo, decisões documentadas
@@ -352,7 +355,8 @@ Se outro formato → DETOUR (strip D- se presente)
 - `validate-dod` - Skill complementar para validar DoD
 - `init-milestone` - Criar infraestrutura de milestone (se ausente)
 - `init-detour` - Criar infraestrutura de detour (se ausente)
-- `documents/core/Roadmap.md` - DoR por milestone + seção Desvios para detours
+- `documents/core/Roadmap.md` - DoR por milestone
+- `.planning/README.md` - Hub: mapeamento initiative->diretório e a tabela `## Desvios (Detours)`
 - `documents/core/Projeto.md` - Decisões e requisitos
 - `.planning/milestones/MX.X-nome/` - Diretório do milestone
 - `.planning/detours/<nome>/` - Diretório do detour

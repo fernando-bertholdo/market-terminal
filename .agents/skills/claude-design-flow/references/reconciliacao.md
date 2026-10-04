@@ -29,13 +29,13 @@ Decisão surgida durante refino no canvas → registrar em DECISIONS.md aqui.
 
 1. Upsert em `documents/design/REGISTRY.md` (schema v2 — [registry-template.md](registry-template.md)): estados, `projectId`, paths, grupos, `last_published`, contagens de render-check, boards, bundles
 2. DECISIONS.md: novas decisões (append-only; superseder, nunca editar)
-3. Report em `.planning/<tipo>/<nome>/verification/reconcile-design-<data>.md` — evidência que `reconcile-initiative` (4e) verifica
+3. Report em `.planning/<tipo>/<nome>/verification/reconcile-design-<data>.md`, com a data do calendário do fuso do dono (`AGENTS.md`, "Horas e datas"), como o `reconcile-<id>-<data>.md` — evidência que `reconcile-initiative` (4e) verifica
 
 ## Fase 2 — Lado projeto Claude Design (pular se sem capacidade; registrar `publication-pending`)
 
 **Proteções (1º ciclo de qualquer projeto):**
 - **SEM hard delete.** Obsoleto → mover para quarentena: re-escrever em `zz_archive/<path>` e deletar o original SÓ com backup feito
-- **Backup antes de deletar:** `get_file` do conteúdo → salvar em `design/_backup/<data>/<path>` na iniciativa
+- **Backup antes de deletar:** `get_file` do conteúdo → salvar em `design/_backup/<data>/<path>` na iniciativa; o `<data>` é nome que só a máquina lê, e fica em UTC com o `Z` (`date -u +%Y%m%d-%H%MZ`)
 - Deletes sempre em **confirmação separada** do usuário (nunca no bolo do dry-run geral)
 
 **Aplicação (upsert por path via `finalize_plan` → `write_files`/`delete_files`):**

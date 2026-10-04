@@ -58,7 +58,8 @@ Slug kebab-case para o diretório. Se omitido:
    mkdir -p .planning/milestones/MX.X-nome/handoff/
    mkdir -p .planning/milestones/MX.X-nome/plans/
 
-   Criar .planning/milestones/MX.X-nome/CONTEXT.md:
+   Criar .planning/milestones/MX.X-nome/CONTEXT.md (datas do calendário do fuso do dono,
+   `AGENTS.md`, "Horas e datas"):
    ```markdown
    # CONTEXT: MX.X — [Título]
 
@@ -139,7 +140,7 @@ O skill `validate-dor` adiciona um step pré-checklist:
 ## Quando NÃO Usar
 
 - Para detours → usar skill `init-detour` (cria estrutura equivalente em `.planning/detours/`)
-- Para trabalho avulso (não altera o plano) → sem estrutura em `.planning/`; o registro é o histórico do git
+- Para issue avulsa (nenhum dos três sinais de detour, pela régua do `AGENTS.md` §2) → sem estrutura em `.planning/`; o registro é o histórico do git
 - Para milestone já existente → idempotente (reporta e sai)
 
 ## Referências

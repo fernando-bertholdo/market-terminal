@@ -9,8 +9,7 @@ paths:
 
 - **Versão:** 1.0.0
 - **Status:** ✅ Template (Path-targeted)
-- **Última atualização:** 2026-06-28
-- **Responsável:** Fernando Bertholdo
+- **Última atualização:** Template
 - **Paths:** scripts/**/*
 
 ---
@@ -146,6 +145,48 @@ Usage:
 """
 ```
 
+### Afirmação sobre outro artefato
+
+Comentário, cabeçalho ou mensagem de um script que afirma **em texto fixo** algo
+sobre um artefato que **não é ele** — outro repositório, outro gate, um arquivo
+de dados, ou uma propriedade deles como uma contagem — entra com **data** e com
+o **comando que a decide**, ou não entra.
+
+```bash
+# errado
+#   são 44 arquivos sem par
+
+# certo
+#   44 sem par no <repo> em 2026-09-20
+#   bash scripts/validate/<gate>.sh | grep -c '<padrão da saída do gate>'
+```
+
+Os `<…>` são placeholders: no comentário real entram o repositório, o gate e o
+padrão que ele imprime.
+
+O problema não é o número estar errado quando foi escrito: é que ele depende de
+um artefato que muda por conta própria, e o CI roda os gates sem conferir o
+texto dos comentários deles. Com data e comando, quem lê sabe quando aquilo foi
+verdade e como refazer a medição; sem eles, o texto passa a mentir em silêncio,
+e nada avisa o leitor de que deveria medir.
+
+O eixo é **poder envelhecer sem que o script mude**. Valor que o próprio
+script deriva do que está declarado nele não entra na conta: acrescentar um item
+ao array atualiza o número sozinho. Entra o que nomeia ou conta algo de fora,
+mesmo passando por uma constante — o nome de outro repositório guardado numa
+variável envelhece exatamente como se estivesse escrito no comentário.
+
+Duas consequências:
+
+- **Texto que se propaga byte a byte não usa dêixis.** "Aqui", "neste
+  repositório" e "hoje" mudam de referente quando o arquivo é copiado para um
+  derivado: o mesmo parágrafo pode ficar falso de um lado sem que ninguém edite
+  o arquivo. Nomeie o repositório e a data, ou defira a medição a quem ler.
+- **Cortar o número não basta.** Quando um número sai porque envelhece, o fato
+  que ele hospedava precisa ficar. Remover uma contagem junto com a distinção
+  que ela carregava troca uma medição velha por uma instrução errada — que é
+  pior, porque quem a seguir quebra o script.
+
 ---
 
 ## 5. Checklist (ao criar/modificar script)
@@ -155,6 +196,7 @@ Usage:
 - [ ] Adicionado ao `scripts/INDEX.md` (Active) na MESMA operação
 - [ ] Campo "Por quê" do INDEX é específico (não genérico tipo "script auxiliar")
 - [ ] Tem `--help` funcional
+- [ ] Afirmação **em texto fixo** sobre artefato que não é o script traz data e o comando que a decide
 - [ ] Idempotente se aplicável; `--dry-run` se destrutivo
 - [ ] Não cria artefatos persistentes em `scripts/`
 - [ ] `__pycache__/`, `.DS_Store` não estão sendo commitados
@@ -180,7 +222,7 @@ Usage:
 
 Para projetos onde scripts são executados frequentemente por agentes IA, cron/launchd, ou automação contínua, considere instrumentar tracking estruturado:
 
-- **`scripts/_runtime.py`** — função `track(__file__)` chamada no topo de cada script registra timestamp/agente/host/exit code/duração em `data/script-runs.jsonl` (append-only). Não-bloqueante, idempotente, fail-safe.
+- **`scripts/_runtime.py`** — função `track(__file__)` chamada no topo de cada script registra timestamp (em UTC, com o offset `+00:00` no carimbo)/agente/host/exit code/duração em `data/script-runs.jsonl` (append-only). Não-bloqueante, idempotente, fail-safe.
 - **`scripts/audit_script_usage.py`** — minera transcripts de agentes IA (Claude Code em `~/.claude/projects/**/*.jsonl`, Codex em `~/.codex/.../rollout-*.jsonl`) para detectar "última execução real" — sinal fiel quando atime/zsh history não servem.
 
 **Quando ativar:**

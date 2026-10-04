@@ -12,7 +12,6 @@ paths:
 - **Versão:** 1.0.0
 - **Status:** Template (Path-targeted)
 - **Última atualização:** Template
-- **Responsável:** Fernando Bertholdo
 - **Paths:** tests/**/*, test_*.py, *_test.py
 
 ---

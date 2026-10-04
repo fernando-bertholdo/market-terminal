@@ -70,7 +70,7 @@ Oportunidades de menção:
 ```markdown
 # Audit Report: Roadmap Refs
 
-**Data:** [YYYY-MM-DD]
+**Data:** [YYYY-MM-DD, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Escopo:** [full|skills|docs]
 
 ## Sumário

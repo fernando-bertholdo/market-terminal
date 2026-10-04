@@ -101,12 +101,33 @@ Escanear por blocos <!-- que contenham:
   → Estes deveriam ter sido removidos após o kickoff
 ```
 
-### 5. Gerar Relatório
+### 5. Verificar o Marcador de Linhagem
+
+O ponto de entrada de cada camada carrega a linha canônica de linhagem, gravada pelo
+Passo 2e do kickoff. Ela não é um placeholder `{{...}}`, então não aparece nas
+verificações acima — precisa da sua própria.
+
+```
+Para cada ponto de entrada — .claude/CLAUDE.md, .agents/README.md e .codex/README.md:
+  Se não existe linha que case com "^Template de origem: .+@.+$"
+    → CRITICAL: marcador de linhagem ausente
+
+Se as linhas existem mas não são idênticas entre as três camadas
+  → CRITICAL: camadas divergem sobre a origem do projeto
+
+Se o valor ainda contém "{{" ou "<template>"
+  → CRITICAL: marcador não preenchido
+```
+
+O marcador é o que a propagação lê para descobrir de qual template este projeto nasceu e
+qual versão ele já tinha — sem ele o repositório fica órfão de linhagem.
+
+### 6. Gerar Relatório
 
 ```markdown
 # Kickoff Validation Report
 
-**Data:** [YYYY-MM-DD HH:MM]
+**Data:** [YYYY-MM-DD HH:MM e o rótulo do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Status Geral:** COMPLETO | INCOMPLETO | INCONSISTENTE
 
 ## Sumário
@@ -117,6 +138,7 @@ Escanear por blocos <!-- que contenham:
 - Placeholders runtime (ignorados): W
 - Inconsistências: N
 - Comentários de instrução restantes: M
+- Marcador de linhagem: OK | AUSENTE | DIVERGENTE
 
 ## Placeholders Não Preenchidos
 
@@ -124,15 +146,15 @@ Escanear por blocos <!-- que contenham:
 
 | Placeholder | Arquivo(s) | Linha(s) |
 |-------------|-----------|----------|
-| {{PROJECT_NAME}} | .agents/AGENTS.md | 1, 3 |
+| {{PROJECT_NAME}} | .claude/CLAUDE.md | 1, 3 |
 | {{RESPONSIBLE_NAME}} | documents/core/Projeto.md | 20 |
 
 ### HIGH (comandos de stack)
 
 | Placeholder | Arquivo(s) | Linha(s) |
 |-------------|-----------|----------|
-| {{TEST_COMMAND}} | .agents/skills/pre-commit-check/SKILL.md | 97, 162 |
-| {{LINT_COMMAND}} | .agents/skills/pre-commit-check/SKILL.md | 50, 154 |
+| {{TEST_COMMAND}} | .claude/skills/pre-commit-check/SKILL.md | 97, 162 |
+| {{LINT_COMMAND}} | .claude/skills/pre-commit-check/SKILL.md | 50, 154 |
 
 ### MEDIUM (conteúdo de documentação)
 
@@ -150,7 +172,7 @@ Escanear por blocos <!-- que contenham:
 
 | Arquivo | Linha | Trecho |
 |---------|-------|--------|
-| .agents/AGENTS.md | 259 | <!-- Preencher com os scopes... |
+| .claude/CLAUDE.md | 259 | <!-- Preencher com os scopes... |
 
 ## Placeholders Runtime (Referência)
 
@@ -158,7 +180,7 @@ Estes placeholders foram corretamente ignorados (são templates dinâmicos):
 
 | Arquivo | Placeholders Runtime |
 |---------|---------------------|
-| .agents/skills/agent-team/SKILL.md | MILESTONE_ID, TASK_DESCRIPTION, FILE_1, ... |
+| .claude/skills/agent-team/SKILL.md | MILESTONE_ID, TASK_DESCRIPTION, FILE_1, ... |
 
 ## Próximos Passos
 
@@ -210,6 +232,7 @@ grep -rn 'INSTRUÇÃO\|PREENCHER\|Preencher\|Substitua' --include='*.md' . \
 3. **Novos arquivos são automaticamente cobertos** — Qualquer arquivo adicionado com `{{...}}` será detectado
 4. **Consistência é obrigatória** — Mesmo placeholder deve ter mesmo valor em todos os arquivos
 5. **Comentários de instrução devem ser removidos** — `<!-- INSTRUÇÕES DE PREENCHIMENTO -->` são helpers do template, não do projeto final
+6. **O marcador de linhagem é obrigatório** — A linha `Template de origem: <template>@<versão>` existe e é idêntica nos pontos de entrada das três camadas; ausência ou divergência é CRITICAL
 
 ## Integração com Outros Skills
 
@@ -230,13 +253,16 @@ Ao adicionar novos arquivos ao template com placeholders `{{...}}`:
 
 ## Exemplo de Uso
 
+O rótulo `BRT` do exemplo é o do fuso do dono deste template; o relatório leva o rótulo do fuso do dono
+de cada projeto.
+
 ```
 User: validate-kickoff
 
 Claude:
 # Kickoff Validation Report
 
-**Data:** 2026-02-07 15:30
+**Data:** 2026-02-07 15:30 BRT
 **Status Geral:** INCOMPLETO
 
 ## Sumário
@@ -252,7 +278,7 @@ Claude:
 ### CRITICAL (2)
 | Placeholder | Arquivo(s) |
 |-------------|-----------|
-| {{COMMIT_SCOPES}} | .agents/AGENTS.md, .agents/AGENTS.md, README.md |
+| {{COMMIT_SCOPES}} | .claude/CLAUDE.md, AGENTS.md (raiz), README.md |
 | {{ORGANIZATION_NAME}} | README.md, documents/core/Projeto.md |
 
 ### HIGH (4)

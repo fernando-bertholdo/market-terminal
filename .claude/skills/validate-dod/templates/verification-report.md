@@ -1,6 +1,6 @@
 # Verification Report: [MILESTONE-ID]
 
-**Data:** [DATA]
+**Data:** [DATA, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Status:** [PASS | FAIL | PARTIAL]
 **Cobertura:** [X]/[Y] critérios ([%])
 
@@ -149,7 +149,7 @@ Itens que requerem validação humana.
 
 | Data | Status | Mudanças |
 |------|--------|----------|
-| [DATA] | [STATUS] | Verificação inicial |
+| [DATA, calendário do fuso do dono] | [STATUS] | Verificação inicial |
 
 ---
 

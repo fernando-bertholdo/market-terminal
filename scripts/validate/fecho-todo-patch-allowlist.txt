@@ -65,17 +65,32 @@ todo	documents/superpowers/plans/2026-06-28-ciclo1-selfhost-foundation.md	- [ ] 
 # ponto cego num diretório real deste repositório.
 tipo	scripts/INDEX.md	| `validate/fecho-todo-patch.sh` | validate | bash | 2026-09-12 | Gate de fecho da TECH-220 (detour TECH-210): prova por execução que o TODO de `documents/core/` e o terceiro tipo de trabalho saíram do repositório e não voltaram. São nove asserções — as quatro do piso da régua, mais a ausência do arquivo, a ausência do nome do tipo, a ausência de citação ao arquivo, a ausência do limiar de duração que era a definição operacional do tipo, e a ausência do termo nu ao lado de outro documento core — classe coberta por construção, e não por enumeração de vetores: documento core (`Roadmap`, `Projeto`, `Project`, `CONTEXT`) × grafia nua ou com `.md` × markup inline nenhum, crase ou negrito × oito separadores, nas duas ordens. Vive como script, e não como regex na descrição da issue, porque o allowlist diverge sozinho entre repositórios quando é copiado em prosa: cada cópia sai exit 0 contra o seu próprio derivado. Isenção é por linha, com a razão declarada, em `validate/fecho-todo-patch-allowlist.txt`: cada entrada é o caminho mais o texto literal da linha inteira, sem número de linha, porque a âncora por posição dava falso vermelho quando uma linha entrava acima e falso verde quando a linha isenta era reescrita (TECH-512, TECH-668, TECH-537) |
 
-# asserção 7. Changelog Local da skill `generate-session-prompt`, nas três
-# camadas, em paridade byte a byte com a v4.0.0 do template. Corrigir aqui cria
+# asserção 7. Changelog Local da skill `generate-session-prompt`, nas duas
+# camadas que restam, em paridade byte a byte com a v4.0.0 do template. Corrigir aqui cria
 # drift com a origem; se a linha estiver errada, o conserto é upstream.
 tipo	.claude/skills/generate-session-prompt/SKILL.md	  (vocabulário milestone/detour/patch/ajuste/avulso, leitura de Roadmap/CONTEXT)
 tipo	.claude/skills/generate-session-prompt/SKILL.md	- Suporte a iniciativa-agnóstico (milestone, detour, patch, ajuste, avulso)
 tipo	.agents/skills/generate-session-prompt/SKILL.md	  (vocabulário milestone/detour/patch/ajuste/avulso, leitura de Roadmap/CONTEXT)
 tipo	.agents/skills/generate-session-prompt/SKILL.md	- Suporte a iniciativa-agnóstico (milestone, detour, patch, ajuste, avulso)
-tipo	.codex/skills/generate-session-prompt/SKILL.md	  (vocabulário milestone/detour/patch/ajuste/avulso, leitura de Roadmap/CONTEXT)
-tipo	.codex/skills/generate-session-prompt/SKILL.md	- Suporte a iniciativa-agnóstico (milestone, detour, patch, ajuste, avulso)
 
-# asserção 7. Homônimo de domínio na `claude-design-flow`, nas três camadas:
+# asserções 4, 6 e 7. Linhas do Changelog da própria `generate-session-prompt` que a
+# 2.21.0 da origem traz (cópia literal em `6a60a5b`, nas duas camadas): registram que
+# `patches/` e o tipo `patch` saíram. Registro histórico datado, não vocabulário vivo;
+# corrigir aqui cria drift com a origem, e se a linha estiver errada o conserto é upstream.
+caminho	.claude/skills/generate-session-prompt/SKILL.md	  diretório e o passo do patch aponta `.planning/patches/{slug}/plan.md` (SYNC-20260513-001,
+caminho	.agents/skills/generate-session-prompt/SKILL.md	  diretório e o passo do patch aponta `.planning/patches/{slug}/plan.md` (SYNC-20260513-001,
+todo	.claude/skills/generate-session-prompt/SKILL.md	  da origem, `9056d20`); `TODO.md` e o tipo `patch` saem da coleta e dos templates (detour
+todo	.agents/skills/generate-session-prompt/SKILL.md	  da origem, `9056d20`); `TODO.md` e o tipo `patch` saem da coleta e dos templates (detour
+tipo	.claude/skills/generate-session-prompt/SKILL.md	  `git log 284100f.. -- .claude/skills/generate-session-prompt/SKILL.md`): `patches/` vira
+tipo	.agents/skills/generate-session-prompt/SKILL.md	  `git log 284100f.. -- .claude/skills/generate-session-prompt/SKILL.md`): `patches/` vira
+tipo	.claude/skills/generate-session-prompt/SKILL.md	  diretório e o passo do patch aponta `.planning/patches/{slug}/plan.md` (SYNC-20260513-001,
+tipo	.agents/skills/generate-session-prompt/SKILL.md	  diretório e o passo do patch aponta `.planning/patches/{slug}/plan.md` (SYNC-20260513-001,
+tipo	.claude/skills/generate-session-prompt/SKILL.md	  da origem, `9056d20`); `TODO.md` e o tipo `patch` saem da coleta e dos templates (detour
+tipo	.agents/skills/generate-session-prompt/SKILL.md	  da origem, `9056d20`); `TODO.md` e o tipo `patch` saem da coleta e dos templates (detour
+tipo	.claude/skills/generate-session-prompt/SKILL.md	  `aposentar-todo-md-e-patch`: `5818ee8`, `5c16300`)
+tipo	.agents/skills/generate-session-prompt/SKILL.md	  `aposentar-todo-md-e-patch`: `5818ee8`, `5c16300`)
+
+# asserção 7. Homônimo de domínio na `claude-design-flow`, nas duas camadas que restam:
 # ali a palavra quer dizer diff de design voltando do canvas, não tipo de
 # iniciativa.
 tipo	.claude/skills/claude-design-flow/SKILL.md	| **Sem pull de edições do designer** (canvas → repo) | Contrato: remoto é projeção; edição WYSIWYG deve ser refeita no repo OU voltar via handoff bundle com patch rastreável |
@@ -84,27 +99,14 @@ tipo	.claude/skills/claude-design-flow/references/etapa-5-hifi.md	5. **Edição 
 tipo	.agents/skills/claude-design-flow/SKILL.md	| **Sem pull de edições do designer** (canvas → repo) | Contrato: remoto é projeção; edição WYSIWYG deve ser refeita no repo OU voltar via handoff bundle com patch rastreável |
 tipo	.agents/skills/claude-design-flow/references/reconciliacao.md	- **(b) Remoto vence:** trazer a mudança para o repo como patch rastreável (reimplementar no HTML local a partir do `get_file`/handoff bundle; commit próprio) → então re-publicar
 tipo	.agents/skills/claude-design-flow/references/etapa-5-hifi.md	5. **Edição WYSIWYG no canvas NÃO é fonte:** o que for refinado lá deve ser **refeito no HTML local** antes de `local-approved`/`published` (contrato remoto-é-projeção) — ou entrar via handoff bundle como patch rastreável
-tipo	.codex/skills/claude-design-flow/SKILL.md	| **Sem pull de edições do designer** (canvas → repo) | Contrato: remoto é projeção; edição WYSIWYG deve ser refeita no repo OU voltar via handoff bundle com patch rastreável |
-tipo	.codex/skills/claude-design-flow/references/reconciliacao.md	- **(b) Remoto vence:** trazer a mudança para o repo como patch rastreável (reimplementar no HTML local a partir do `get_file`/handoff bundle; commit próprio) → então re-publicar
-tipo	.codex/skills/claude-design-flow/references/etapa-5-hifi.md	5. **Edição WYSIWYG no canvas NÃO é fonte:** o que for refinado lá deve ser **refeito no HTML local** antes de `local-approved`/`published` (contrato remoto-é-projeção) — ou entrar via handoff bundle como patch rastreável
 
-# asserção 7. Homônimo de código em `testing-requirements.md`, nas três
-# camadas: `unittest.mock.patch` e o pacote `pytest-mock`.
+# asserção 7. Homônimo de código em `testing-requirements.md`, em
+# `.claude/rules/` (as cópias de `.agents/rules/` e `.codex/rules/` saíram na 2.21.0): `unittest.mock.patch` e o pacote `pytest-mock`.
 tipo	.claude/rules/testing-requirements.md	from unittest.mock import patch, MagicMock
 tipo	.claude/rules/testing-requirements.md	    with patch('requests.get') as mock_get:
 tipo	.claude/rules/testing-requirements.md	    with patch('smtplib.SMTP') as mock_smtp:
 tipo	.claude/rules/testing-requirements.md	    with patch('src.services.api.buscar_dados') as mock_buscar:
 tipo	.claude/rules/testing-requirements.md	- **pytest-mock** - Mocks e patches
-tipo	.agents/rules/testing-requirements.md	from unittest.mock import patch, MagicMock
-tipo	.agents/rules/testing-requirements.md	    with patch('requests.get') as mock_get:
-tipo	.agents/rules/testing-requirements.md	    with patch('smtplib.SMTP') as mock_smtp:
-tipo	.agents/rules/testing-requirements.md	    with patch('src.services.api.buscar_dados') as mock_buscar:
-tipo	.agents/rules/testing-requirements.md	- **pytest-mock** - Mocks e patches
-tipo	.codex/rules/testing-requirements.md	from unittest.mock import patch, MagicMock
-tipo	.codex/rules/testing-requirements.md	    with patch('requests.get') as mock_get:
-tipo	.codex/rules/testing-requirements.md	    with patch('smtplib.SMTP') as mock_smtp:
-tipo	.codex/rules/testing-requirements.md	    with patch('src.services.api.buscar_dados') as mock_buscar:
-tipo	.codex/rules/testing-requirements.md	- **pytest-mock** - Mocks e patches
 
 # asserção 7. Changelog Local de 2026-09-12 (TECH-220) e de 2026-09-02
 # (`SYNC-20260805-005`): a entrada de 02/09 é histórica, e a desta migração cita
@@ -118,9 +120,8 @@ tipo	.agents/skills/README.md	| 2026-09-02 | `PENDING` | `SYNC-20260805-005` | `
 tipo	documents/core/Projeto.md	2. Atualizar a versão (semver: MAJOR.MINOR.PATCH).
 
 # asserção 7. A linha que declara, para o próximo agente, que o tipo `patch`
-# deixou de existir, nas três camadas. É o produto da TECH-210 (extinção do
+# deixou de existir, nas duas camadas que restam. É o produto da TECH-210 (extinção do
 # tipo), não vocabulário vivo dele: apagá-la ou reescrevê-la para o gate passar
 # destruiria a instrução que a iniciativa foi feita para escrever.
-tipo	.claude/skills/init-detour/SKILL.md	- O tipo `patch` deixou de existir; trabalho que não altera o plano é issue avulsa, sem estrutura em `.planning/`
-tipo	.agents/skills/init-detour/SKILL.md	- O tipo `patch` deixou de existir; trabalho que não altera o plano é issue avulsa, sem estrutura em `.planning/`
-tipo	.codex/skills/init-detour/SKILL.md	- O tipo `patch` deixou de existir; trabalho que não altera o plano é issue avulsa, sem estrutura em `.planning/`
+tipo	.claude/skills/init-detour/SKILL.md	- O tipo `patch` deixou de existir; o que ele cobria passa a ser issue avulsa, sem estrutura em `.planning/`
+tipo	.agents/skills/init-detour/SKILL.md	- O tipo `patch` deixou de existir; o que ele cobria passa a ser issue avulsa, sem estrutura em `.planning/`

@@ -58,7 +58,8 @@ archive-initiative api-integration --dry-run
 
 2. Extrair dados temporais:
    - Data inicio (do CONTEXT.md/handoff mais antigo)
-   - Data conclusao (hoje ou data do ultimo handoff)
+   - Data conclusao (hoje ou data do ultimo handoff; "hoje" e a data do calendario do fuso do
+     dono, `AGENTS.md`, "Horas e datas")
    - Milestones cobertos (da tabela em .planning/README.md)
    - Outcomes e decisoes chave (do CONTEXT.md)
 

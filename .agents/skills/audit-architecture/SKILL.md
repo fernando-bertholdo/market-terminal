@@ -20,9 +20,9 @@ O projeto segue a arquitetura de "fonte única de verdade":
 
 | Tipo de Conteúdo | Fonte Única | Carregamento |
 |------------------|-------------|--------------|
-| Regras operacionais | `.agents/AGENTS.md` | Sempre |
+| Regras operacionais | `AGENTS.md` | Sempre |
 | Contexto de negócio | `documents/core/Projeto.md` | Sob demanda |
-| Detalhes técnicos | `.agents/rules/*.md` | Path-targeted |
+| Detalhes técnicos | `.claude/rules/*.md` | Path-targeted |
 | Workflows | `.agents/skills/*/SKILL.md` | Quando trigga |
 | Timeline | `documents/core/Roadmap.md` | Sob demanda |
 
@@ -53,9 +53,9 @@ Checklist:
 
 ```
 Arquivos a comparar:
-1. .agents/AGENTS.md vs documents/core/Projeto.md
-2. .agents/rules/*.md vs .agents/skills/*/SKILL.md
-3. .agents/AGENTS.md vs .agents/rules/*.md
+1. AGENTS.md vs documents/core/Projeto.md
+2. .claude/rules/*.md vs .agents/skills/*/SKILL.md
+3. AGENTS.md vs .claude/rules/*.md
 ```
 
 ### 4. Verificar Links e @imports
@@ -83,7 +83,7 @@ Checklist:
 ```markdown
 # Relatório de Auditoria de Arquitetura
 
-**Data:** [data atual]
+**Data:** [data atual do calendário do fuso do dono, seção "Horas e datas" das regras do projeto]
 **Fase:** [fase atual do projeto]
 
 ## Resumo
@@ -186,6 +186,6 @@ Checklist:
 
 ## Referências
 
-- `.agents/AGENTS.md` - Regras operacionais
+- `AGENTS.md` - Regras operacionais
 - `documents/core/Projeto.md` - Contexto de negócio
-- `.agents/rules/` - Detalhes técnicos
+- `.claude/rules/` - Detalhes técnicos

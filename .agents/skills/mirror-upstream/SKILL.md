@@ -111,22 +111,32 @@ mirror-upstream --all --scope rules
      a. Ler versão atual do template
      b. Identificar blocos alterados vs. blocos originais
      c. Aplicar apenas os blocos novos/modificados
-   - REPLICAÇÃO ENTRE CAMADAS (obrigatório):
+   - REPLICAÇÃO ENTRE CÓPIAS (obrigatório):
      Para CADA repositório tocado (origem E templates destino):
-     a. Identificar em qual camada (.claude/, .codex/, .agents/) o arquivo foi escrito
-     b. Replicar o conteúdo final para as OUTRAS DUAS camadas, no mesmo path relativo
-     c. Se a camada destino não tem o subdiretório → criá-lo
-     d. Exemplo: `.claude/skills/foo/SKILL.md` →
-        `.codex/skills/foo/SKILL.md` e `.agents/skills/foo/SKILL.md`
-     NUNCA aplicar em apenas uma camada — as 3 devem ser atualizadas em conjunto
+     a. Skill → existe em duas cópias, `.claude/skills/` e `.agents/skills/`: escrever
+        o conteúdo final nas duas, no mesmo path relativo, criando o subdiretório se faltar
+     b. Rule → existe só em `.claude/rules/`; não há cópia a replicar
+     c. Exemplo: `.claude/skills/foo/SKILL.md` → `.agents/skills/foo/SKILL.md`
+     d. Repositório anterior à 2.19.0 que ainda tem `.codex/skills/`, `.codex/rules/*.md`,
+        `.agents/rules/`, `.agents/prompts/` ou `.codex/prompts/`: não escrever nelas;
+        são camadas sem leitor, que a propagação da 2.19.0 remove (TECH-852, TECH-894)
+     e. Prompt → existe só em `.claude/prompts/`; não há cópia a replicar
+     f. Stack → `.agents/stacks/` e `.codex/stacks/` são cópias idênticas, sem gate:
+        escrever o mesmo conteúdo nas duas até a TECH-923, que decide o destino delas
+     g. `.codex/rules/comandos.rules` → não se replica: nasce da regra de comando da
+        §6 do `.claude/CLAUDE.md`, é escrita à mão, e `scripts/validate/check-regra-comandos.sh`
+        reprova a §6 que ganha comando sem regra correspondente
+     NUNCA aplicar uma skill em apenas uma cópia — `scripts/validate/check-pareamento-instrucoes.sh`
+     reprova o par que diverge sem exceção declarada
 
 8. Atualização de índices:
-   - Se nova skill → adicionar à tabela em skills/README.md de CADA camada (.claude/, .codex/, .agents/)
-   - Se nova regra → adicionar à tabela em rules/README.md de CADA camada (.claude/, .codex/, .agents/)
-   - Manter formato e estilo do README de cada camada (podem diferir entre si)
+   - Se nova skill → adicionar à tabela em skills/README.md das duas cópias (.claude/, .agents/)
+   - Se nova regra → adicionar à lista em .claude/rules/README.md, o único índice de rules
+   - Manter formato e estilo do README de cada cópia (podem diferir entre si)
 
 9. Registro de Sync-ID (RASTREABILIDADE):
-   - Gerar Sync-ID no formato SYNC-YYYYMMDD-NNN
+   - Gerar Sync-ID no formato SYNC-YYYYMMDD-NNN, com a data do calendário do fuso do dono
+     (`AGENTS.md`, "Horas e datas"), a mesma da coluna Data
    - REGISTRAR no Changelog Local do subdiretório DESTINO (template)
    - ATUALIZAR o Changelog Local do subdiretório ORIGEM (projeto atual)
      preenchendo o Sync-ID da entrada que antes era "—"
@@ -211,6 +221,15 @@ Usuário: mirror-upstream a1b2c3d
 ---
 
 ## Changelog
+
+### v1.3.0
+
+**Camadas da 2.19.0 (TECH-852, TECH-894):**
+- Step 7: skill se replica nas duas cópias (`.claude/skills/`, `.agents/skills/`); rule e prompt
+  vivem só no `.claude/`; stack se copia em `.agents/stacks/` e `.codex/stacks/`; a `comandos.rules`
+  é escrita à mão a partir da §6; `.codex/skills/`, `.codex/rules/*.md`, `.agents/rules/`,
+  `.agents/prompts/` e `.codex/prompts/` não recebem escrita
+- Step 8: índice de skills nas duas cópias e de rules só em `.claude/rules/README.md`
 
 ### v1.2.0
 

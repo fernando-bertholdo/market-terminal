@@ -141,4 +141,4 @@ def api_session(credentials: dict):
 ---
 
 **Versão:** 1.0.0
-**Última atualização:** 2026-06-28
+**Última atualização:** Template

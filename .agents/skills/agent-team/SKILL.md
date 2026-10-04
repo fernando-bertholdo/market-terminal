@@ -177,8 +177,8 @@ ARQUIVOS DESIGNADOS (apenas estes):
 - {{FILE_2}}
 
 PADRÕES DO PROJETO (conforme stack):
-- Ver @rules/code-quality-standards.md para padrões de código
-- Ver @rules/security-best-practices.md para segurança
+- Ver .claude/rules/code-quality-standards.md para padrões de código
+- Ver .claude/rules/security-best-practices.md para segurança
 - Seguir convenções existentes no codebase (naming, formatting, etc.)
 
 RESTRIÇÕES:
@@ -199,7 +199,7 @@ Você é um testador no projeto {{PROJECT_NAME}}.
 
 CONTEXTO: Milestone {{MILESTONE_ID}}
 Initiative: {{INITIATIVE_NAME}}
-Ver: @rules/testing-requirements.md
+Ver: .claude/rules/testing-requirements.md
 Antes de começar: leia .planning/README.md para contexto da initiative {{INITIATIVE_NAME}}
 
 TASK: Escrever testes para: {{MODULES_TO_TEST}}
@@ -209,7 +209,7 @@ ARQUIVOS DESIGNADOS (apenas estes):
 - {{TEST_DIR_INTEGRATION}}/{{TEST_FILES}} (se aplicável)
 - Configuração de fixtures do framework de testes (se precisar)
 
-METAS (conforme @rules/testing-requirements.md e DoD do milestone):
+METAS (conforme .claude/rules/testing-requirements.md e DoD do milestone):
 - Coverage conforme metas do Roadmap.md DoD
 - Padrão AAA (Arrange-Act-Assert) quando aplicável
 - Testar edge cases e inputs inválidos
@@ -233,7 +233,7 @@ Você é um revisor de código no projeto {{PROJECT_NAME}}.
 
 CONTEXTO: Milestone {{MILESTONE_ID}}
 Initiative: {{INITIATIVE_NAME}}
-Ver: @rules/code-quality-standards.md e @rules/security-best-practices.md
+Ver: .claude/rules/code-quality-standards.md e .claude/rules/security-best-practices.md
 Antes de começar: leia .planning/README.md para contexto da initiative {{INITIATIVE_NAME}}
 
 TASK: Revisar código em: {{FILES_TO_REVIEW}}

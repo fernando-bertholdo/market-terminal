@@ -1,0 +1,501 @@
+# Fixture da medição do `test-hook-task-completed.sh --medir` (TECH-809).
+#
+# Origem: `git log --no-merges --format=%s fc6a882` do tech-product-template,
+# todos os 486 assuntos, na ordem do log. Assunto de commit é APROXIMAÇÃO de
+# assunto de task do Agent Teams: quase todo assunto daqui traz tipo
+# Conventional Commits, e assunto de task costuma não trazer. O ramo da
+# primeira palavra é coberto pelos casos do próprio harness.
+#
+# Rótulo: `pula` quando o assunto declara trabalho de documentação, revisão,
+# pesquisa ou planejamento; `roda` quando declara outra coisa ou nada. Com tipo
+# Conventional Commits, o tipo declarado decide (`docs` pula; `chore(planning)`
+# roda, porque `chore` não promete ausência de código). Os dez assuntos sem
+# tipo (TECH-223, TECH-420, TECH-694) rodam: os dez commits tocam `scripts/`.
+#
+# Formato: <rótulo><TAB><assunto>. Linha começada por `#` é comentário.
+pula	docs(scripts): o índice diz que a poda do init percorre só a FILES_TO_REMOVE (TECH-489)
+pula	docs(planning): o Diário do detour registra as aparas da 2.18.1 (TECH-489)
+pula	docs(scripts): o INDEX registra o requisito de bash dos harnesses e a poda do init (TECH-489)
+pula	docs(ci): o comentário do passo da régua qualifica o caminho do derivado (TECH-495)
+pula	docs(git): o comentário do harness no .gitattributes nomeia as três camadas (TECH-495)
+roda	fix(scripts): init poda do scripts/INDEX.md a entrada do script que remove (TECH-495)
+pula	docs(planning): ponteiros do MonoScribe ancorados em commit e frase, e a instância de audit-reports dita estrutural (TECH-489)
+roda	fix(scripts): test-fecho-regua declara bash >= 4.3 e recusa versão menor com mensagem (TECH-489)
+roda	fix(scripts): test-gates-validate roda no bash 3.2 do macOS (TECH-489)
+roda	test(scripts): P13 volta a medir a isenção por trecho, e o piso ganha cenário de fronteira (TECH-698)
+pula	docs(scripts): o INDEX cita o piso de texto comparado e a contagem atual do harness (TECH-698)
+roda	fix(scripts): isenção ampla reprova por piso de texto comparado, não só com o lado vazio (TECH-698)
+pula	docs(skills): Changelog Local da correção de camada no índice de skills de .agents (TECH-698)
+pula	docs(scripts): o INDEX descreve os gates como o PR #42 os deixou (TECH-850, item 1)
+pula	docs(scripts): o aviso do limite .codex/ diz em que rodadas ele aparece (TECH-695)
+roda	fix(scripts): título ATX com recuo de até 3 espaços encerra a seção declarada (TECH-698)
+roda	fix(scripts): trecho sem o lado é arquivo malformado (TECH-698)
+roda	feat(scripts): os trechos de agent-team e de skills/README.md declaram o lado (TECH-698)
+roda	feat(scripts): os trechos de duas rules e sete skills declaram o lado (TECH-698)
+roda	fix(skills): o índice de skills da camada .agents manda criar a skill em .agents/skills/ (TECH-698)
+roda	feat(scripts): trecho declara o lado de onde sai, e a cópia que cita a camada errada é acusada (TECH-698)
+roda	fix(scripts): isenção total do par só existe declarada com secao *, e a implícita reprova (TECH-698)
+pula	docs(scripts): o cabeçalho que o --help imprime declara o alcance do gate de pareamento (TECH-695)
+pula	docs(scripts): o exit 2 do gate de pareamento cita o drift fora do trecho (TECH-698)
+pula	docs(rules): Changelog Local das rules espelhadas pelo caminho 4 da TECH-698
+pula	docs(skills): a linha do SYNC-20260915-002 entra nas tabelas de skills das três camadas (TECH-793)
+pula	docs(scripts): cabeçalhos de gate deixam de afirmar sobre "este repositório" o que só vale no template (TECH-793)
+pula	docs(scripts): o cabeçalho do harness diz como cada gate resolve a raiz, e o bloco TEM_PYTHON3 aparece uma vez (TECH-793)
+roda	test(scripts): todo cenário do harness declara a razão, e a P10 vira limite de desenho declarado (TECH-695)
+roda	feat(scripts): o gate de linhagem reprova regra normativa nova sem subir a versão (TECH-695)
+roda	test(scripts): o harness da régua ancora o allowlist em trecho literal e mede as duas falhas da posição (TECH-512)
+pula	docs(planning): §9.5 da régua ancora a isenção de allowlist em trecho literal (TECH-512)
+roda	fix(scripts): divergencia sem trecho nem secao deixa de isentar o par inteiro (TECH-698)
+roda	feat(scripts): declara por trecho e por seção onde cada par divergencia pode divergir (TECH-698)
+roda	fix(scripts): secao casa o título inteiro, não o prefixo dele (TECH-698)
+roda	feat(scripts): secao de literal --- isenta o frontmatter YAML do topo do arquivo (TECH-698)
+roda	test(scripts): controle negativo da declaração secao no gate de pareamento (TECH-698)
+roda	feat(scripts): trecho ou seção que não casa em nenhum lado é exceção obsoleta (TECH-698)
+roda	feat(scripts): divergencia com trecho declarado compara o par fora do trecho (TECH-698)
+roda	feat(scripts): o gate de pareamento lê as declarações trecho e secao (TECH-698)
+roda	fix(rules): espelha o frontmatter paths: em .agents e .codex nas três rules que só divergiam por ele (TECH-698)
+roda	fix(scripts): ancora o --help do gate do plugin de UI no marcador set -euo (TECH-697)
+roda	fix(scripts): ancora o --help do gate de paridade de UI no marcador set -euo (TECH-697)
+roda	fix(scripts): ancora o --help do gate de linhagem no marcador set -euo (TECH-697)
+roda	fix(scripts): ancora o --help do gate de pareamento no marcador set -euo (TECH-697)
+pula	docs(scratch): registra a exploração de julgamento tipado com TypeSafe e Jev
+roda	chore(config): remove o pin de modelo do settings.json e sobe o template a 2.18.0 (TECH-763)
+roda	TECH-223 — PR-8: Reconciliar e arquivar o detour aposentar-todo-md-e-patch na origem (#36)
+roda	TECH-694: rodada 8 — o corte levou junto o fato que o número carregava
+roda	TECH-694: rodada 7 — o bloco para de afirmar sobre o repositório e passa a afirmar sobre este gate
+roda	TECH-694: rodada 6 — a sexta instância estava 34 linhas abaixo, e a tese era falsa sobre o próprio bloco
+roda	TECH-694: rodada 5 — a frase passa a descrever este gate, em vez do resto do repositório
+roda	TECH-694: rodada 4 — a negação sobre .codex era falsa, e a frase sobre o derivado ganha data
+roda	TECH-694: o parágrafo era dêitico, e texto que desce byte a byte não pode ser
+roda	TECH-694: rodada 2 — 33 era violações e não declarações, "sem par nenhum" era 1, e o kickoff tem contrapartida
+roda	TECH-694: o cabeçalho do gate de pareamento afirmava números e cobertura que não se reproduzem
+roda	test(scripts): ERE do C11 segue a mensagem da regra 5 (TECH-676)
+roda	fix(scripts): rodada 4 da TECH-676 — fence fecha como no CommonMark (mesmo caractere, comprimento >=), a regra 5 diz em que linha abriu; cenário C12; changelog sem ponteiro relativo
+roda	fix(scripts): rodada 3 da TECH-676 — fence aberto e nunca fechado é violação em qualquer posição (regra 5, cenário C11); changelog cita os commits por SHA
+roda	fix(scripts): rodada 2 da TECH-676 — separador é a linha inteira; heading em fence não abre seção; tabela ainda vazia passa; 'da mesma tabela'; cenários C9 e C10
+roda	fix(scripts): rodada 1 da TECH-676 — validador ancorado na linha separadora, fence zera na seção e aceita tildes, seção sem linha conferida é violação; cenários C6–C8; limites do hook declarados; §1.7 curta com a condição de exclusão
+roda	fix(hooks): 2.17.1 — o hook decodifica o \n do payload, o validador de changelog ignora fence e recomeça em tabela nova, a §7 nomeia os PRs (TECH-676)
+pula	docs(changelog): SYNC-20260920-002 — a 2.17.0 chegou ao lab-contratos (LAS-115, TECH-665)
+pula	docs(changelog): SYNC-20260920-001 — a 2.17.0 chegou ao lass-project-template (LAS-114, TECH-664)
+roda	fix(skills): rodada 1 da TECH-651 — filtro de tabela antes do -n, cobertura honesta do hook, validador com borda e linha em branco
+pula	docs(camadas): tabelas Changelog Local reordenadas, a mais recente primeiro; marcador 2.17.0 no .codex e no .agents; linha da 2.17.0 nos changelogs de skills (TECH-651)
+pula	docs(claude): comentário no rastreador não é destino (§1.7); handoff lê o rastreador; CONTEXT com procedência; audit-rules cobra o changelog (TECH-651)
+roda	feat(skills): varredura de quantificador e número órfão no pre-commit-check e no organize-commits, com hook de aviso na mensagem (TECH-651)
+roda	feat(scripts): check-changelog-local.sh cobra 5 colunas, data ISO e a mais recente primeiro nas tabelas Changelog Local (TECH-651)
+pula	docs(planning): detour produtizacao-do-template, com a exploracao de maio como referencia
+roda	fix(docs): o marcador @kickoff-instrucao faltou no AGENTS.md
+pula	docs(skills): anota os placeholders que sao citacao do mecanismo
+roda	feat(docs): Nivel 1 da auditoria, e eleva o template para 2.16.0
+roda	feat(docs): a exatidao vira a regua de dado, e eleva o template para 2.15.0
+pula	docs(scripts): a terceira camada que o gate de pareamento nao olha
+roda	ci: roda o controle negativo antes dos gates que ele audita
+roda	test(scripts): harness sai SKIP, nunca PASS, no que nao rodou
+roda	test(scripts): controle negativo do gate de paridade de UI
+roda	fix(scripts): paridade de UI passa a varrer a raiz do repositorio
+roda	test(scripts): controle negativo do gate de pareamento de instrucoes
+roda	test(scripts): controle negativo do gate de versao de linhagem
+pula	docs(scratch): onda 2.14.0 entregue e as seis oportunidades sem endereco
+pula	docs(scratch): as tres etapas executadas, a limpeza e a onda disparada a mao
+pula	docs(scratch): a leitura da outra sessao, a correcao da minha medicao e as 14 fechadas
+pula	docs(planning): o hub para de mandar cumprir a regra que ele mesmo declara revogada
+pula	docs(scratch): a onda 2.14.0, a pausa do gerador e os tres conflitos resolvidos
+roda	chore(release): eleva o template para 2.14.0
+roda	chore(validate): declara o hook de índice como solo do Claude Code
+roda	fix(rules): dá ao AGENTS.md a tabela de destinos e neutraliza jargão vazado
+roda	feat(hooks): backstop de entrada para iniciativas fora do índice
+roda	fix(planning): reconcilia a definição de detour e aposenta a linha de delta
+pula	docs(planning): registra o detour onde ele já morava e reverte a linha no Roadmap
+pula	docs(scratch): a medicao derruba A1 e a premissa de que a fila de merge conflita
+pula	docs(scratch): estado do board ao fim de 14/09 no prompt
+pula	docs(scratch): revisa o prompt com o estado real e a decisao de 14/09
+roda	fix(scratch): UNKNOWN do mergeStateStatus deixa de virar evento
+pula	docs(scratch): incorpora ao prompt a investigacao do merge automatico
+pula	docs(scratch): prompt de retomada para a sessao seguinte
+roda	fix(scratch): leitura parcial de PR deixa de virar evento no monitor
+pula	docs(scratch): trilha de como o git add -A do kickoff foi achado
+pula	docs(scratch): handoff do Laboratorio para a sessao dedicada
+pula	docs(scratch): registro da sessao de 13-14/09 — o Laboratorio destravado
+pula	docs(roadmap): cria a seção de deltas e paga a dívida da TECH-531
+roda	fix(release): alinha o marcador de linhagem nas três camadas
+roda	chore(planning): fecha o PR 6 com os oito destinos da propagação
+roda	fix(scripts): init poda as excecoes de pareamento que ele mesmo orfana
+roda	fix(kickoff): Passo 6 para de mandar git add -A, que o CLAUDE.md proibe
+roda	chore(gitignore): ignora .claude/worktrees/, artefato de runtime de agente
+roda	chore(planning): registra o PR 5 entregue e o bloqueio do PR 6
+roda	chore(planning): fecha os PRs 1-4 na tabela de progresso
+pula	docs(sync): registra scope-horizons nos changelogs e no Roadmap
+roda	chore(sync): replica scope-horizons para codex e agents
+pula	docs(rules): roteia horizonte de escopo e eleva o template para 2.13.0
+roda	feat(skills): adiciona scope-horizons com captura e triagem
+pula	docs(docs): indexa o registro de horizontes e nomeia sua exceção
+roda	feat(docs): cria o registro de horizontes de escopo
+roda	chore(planning): adiciona plano de implementação do registro de horizontes
+roda	chore(planning): abre a iniciativa de registro de horizontes de escopo
+pula	docs(scratch): serializar deixa de ser recomendação — a causa do estouro era outra
+pula	docs(scratch): reorganiza o prompt por trilhas paralelas e torna o monitor durável
+pula	docs(scratch): as alavancas de consumo viram hipóteses com suíte de teste obrigatória
+pula	docs(scratch): incorpora a análise de consumo ao prompt de retomada
+pula	docs(scratch): prompt de retomada para a sessão nova de 13/09
+pula	docs(scratch): registra o arco da noite e corrige uma leitura minha sobre runs
+pula	docs(scratch): registra a saída (a) da TECH-483 e o mapa do que corre sozinho
+pula	docs(scratch): registra a execução das cinco decisões e a medição do MÉDIO 1
+pula	docs(scratch): retifica a premissa do kickoff e mede o estado do gate 3
+pula	docs(scratch): acrescenta a busca nos transcripts e o prazo de validade de D4
+pula	docs(scratch): registra a execução da ordem da §6 e corrige três conclusões medidas
+roda	TECH-420 — PR-3b: Emendar a régua com as quatro lacunas que o piloto mediu (#20)
+pula	docs(scratch): agrega o estado das duas frentes lido dos três cwd e do board
+roda	fix(skills): pareia init-detour nas três camadas e registra o Sync-ID (TECH-471)
+roda	feat(planning): detour aninhado sob milestone e classificação antes de criar issue
+pula	docs(planning): corrige o gargalo da Lass — o cadastro foi feito, falta o label
+pula	docs(planning): o caminho até retomar o Laboratório de Contratos
+pula	docs(planning): o gate de contradição é do Sentinela, e duas razões de plataforma a mais caíram
+pula	docs(planning): TECH-370 eleva a medição a 5 de 5 e acrescenta cancelled ao no-op
+pula	docs(planning): revalida a TECH-255 contra o playbook de 08/09 e fecha D-1..D-3
+pula	docs(detour): devolve o qualificador "por derivado" ao stage 3 e completa o Diário
+pula	docs(detour): qualifica pelo stage o recorte da sugestão barato→caro
+pula	docs(detour): tira a contagem de fatias da prosa e devolve a distribuição ao quadro do Board
+pula	docs(detour): troca enumeração por descrição e apara os achados da 4ª rodada
+pula	docs(planning): tira do índice a contagem de decisões travadas que envelhece
+pula	docs(planning): apara os dois MÉDIOs e dois BAIXOs do CONTEXT.md do detour
+pula	docs(planning): política dos três gates, LAS-21 despachada e prompt da sessão 10 revisto
+pula	docs(planning): trilha da sessão 9 e prompt da sessão 10
+pula	docs(planning): fecho da sessão 8 e prompt da sessão 9
+pula	docs(planning): tira do índice a faixa de DL que uma das iniciativas não tem
+pula	docs(planning): alinha a régua à ordem real do board e tira os números que envelheceram
+pula	docs(planning): registra o detour no README e fecha o diário da rodada
+pula	docs(planning): reconta as camadas por git ls-files e corrige patches.md do my-sm-persona
+pula	docs(planning): tira o teto de resgate e registra o candidato do Market-Terminal
+pula	docs(planning): tira decisão pendente da cascata e exige prova de cobertura em T3
+pula	docs(planning): abre a régua em duas formas por estado do derivado
+pula	docs(planning): corrige premissa de datas e resolve colisão de DL-4
+pula	docs(planning): reescreve a régua do detour sob a decisão A
+pula	docs(planning): fecho da sessão 8: a adocao-lass arquivada e o lab destravado
+pula	docs(planning): trilha da sessão 8: o wsl.conf editado, o gate 3 que reprovava e a allowlist que nunca casou
+pula	docs(planning): fecho da sessão 7 e prompt da sessão 8
+pula	docs(planning): trilha da sessão 7, rodadas 7 e 8: o smoke fechou e virou texto
+pula	docs(planning): trilha da sessão 7, rodadas 3 a 6: o Lab de pé, o smoke rodado, o suplente no lass
+pula	docs(planning): trilha da sessão 7: o login existia, a credencial git não
+roda	chore(gitignore): ignora .claude/settings.local.json no repositório (TECH-364)
+roda	chore(gitignore): ignora as skills que o daemon do Multica injeta (TECH-364)
+pula	docs(planning): fecho da sessão 6 e prompt da sessão 7
+pula	docs(planning): rodada 6: o revisor achou furo de segurança e desmentiu meu diagnóstico
+pula	docs(planning): rodada 5 da sessão 6: auditoria das aparas e a infra do Lab pelo root
+pula	docs(planning): rodada 4 da sessão 6: stage 4 fechado em 17 de 17, DoD em 5 de 7
+pula	docs(planning): rodada 3 da sessão 6: 11 alvos implantados no lass, board adequado
+pula	docs(planning): rodada 2 da sessão 6: merges dele e a corrida entre merge e veredito
+pula	docs(planning): trilha da sessão 6: stage 3 fechado, stages 4 a 7 abertos, PR-13 escrito
+pula	docs(planning): fecho da sessão 5: PR 52 revisado e em in_review, LAS-50, lições do verify e do stage; prompt 6 final
+pula	docs(planning): sessão 5, rodada 11: Decisão 2 reescrita, LAS-8 assinada, PR-12 aberto; prompt 6 com o stage 4 começando pela LAS-26
+pula	docs(planning): sessão 5, rodada 10: stage 3 fechado, redeploy pós-marcador, LAS-8 com D4 e D6 resolvidas e D2 em aberto
+pula	docs(planning): sessão 5, rodada 9: decisões do Fernando gravadas (LAS-49, LAS-26, LAS-8), PR único pendente para o context do lass
+pula	docs(planning): sessão 5, rodada 8: PR-7 aberto e revisado, diário no CONTEXT (PR 51), dones, redeploy pendente depois do merge, perguntas ao Fernando
+pula	docs(planning): sessão 5, rodada 7: os 10 PRs mergeados, 13 deploys no tech-projects em MATCH, prompt 6 com o estado novo
+pula	docs(planning): prompt da sessão 6: o deploy.sh aceita MULTICA_BIN e cai para o PATH; falta provar no homelab
+pula	docs(planning): prompt da sessão 6 corrigido: ordem de merge lida nos PRs (42 antes de 43 e 47), ordem de deploy, atos pendentes fora da pai, formalidades não cumpridas; trilha com o erro da lista de PRs livres
+pula	docs(planning): prompt da sessão 6 do detour adocao-lass: atos do Fernando, PR-7, stages 4 a 7, decisões 15 a 19, estado dos 10 PRs e das 16 Deploy:, helpers e armadilhas
+pula	docs(planning): fecho da trilha da sessão 5: stage 3 entregue, correção das 8 Deploy: de dois workspaces, atos do Fernando, prompt da sessão 6
+pula	docs(planning): trilha da sessão 5: rodada 1 do PR 49 liberada e aplicada, stage 3 fechado do lado do condutor
+pula	docs(planning): trilha da sessão 5: rodada 1 do PR 48 liberada, Closes nos PRs da iniciativa, ordem de merge do Orquestrador
+pula	docs(planning): trilha da sessão 5: rodadas 3 dos PRs 46 e 43 liberadas e aplicadas, lista dos atos do Fernando atualizada
+pula	docs(planning): trilha da sessão 5: PR-10 aberto sobre o PR-4b, achado do vocabulário desvio/patch no Lab
+pula	docs(planning): trilha da sessão 5: PR-4b aberto, PR-10 criada, armadilhas do zsh (índice de array e word splitting)
+pula	docs(planning): rodada 5 da trilha da sessão 5: rodadas 2 e 3 dos PRs 46 e 44, pendência da decisão do acervo, lição da âncora não conferida
+pula	docs(planning): trilha da sessão 5, rodada 4: vereditos dos PRs 8 e 9, retificação do #47, teste 3 fechado, objetos a apagar
+pula	docs(planning): trilha da sessão 5, rodada 3: vereditos e rodadas 1 dos 5 PRs, PRs 8 e 9, apara, terceiro teste da matriz
+pula	docs(planning): trilha da sessão 5, rodada 2: matriz medida, drift e deploy, PRs 3 a 6, diffs do PR-7, retrovisor, achados do Leve e da skill, armadilhas
+pula	docs(planning): retrovisor da vizinhança sobre os 2 boards: pares por arquivo e por título, os 3 casos de calibração, limiar e o que muda no script do Sentinela (TECH-312)
+pula	docs(planning): trilha da sessão 5: kickoff da adocao-lass (TECH-299, 18 issues, PR #39 no playbook), achados com endereço, armadilhas e parada para o Fernando
+pula	docs(planning): prompt da sessão 5: kickoff do detour adocao-lass com motivações, 14 decisões fechadas, estado medido, tarefas A a D, regras e estado operacional
+pula	docs(planning): fecho da trilha da sessão 4: rotina fechada em 6 versões, TECH-298 criada, kickoff adiado para a sessão 5, armadilhas medidas
+pula	docs(planning): v6 da rotina: decisões 10 a 13 fechadas, nenhuma em aberto, plano de kickoff aprovado com a ressalva do nome
+pula	docs(planning): rascunho v5 da rotina: 9 respostas do Fernando, runtimes medidos nos 2 workspaces, Vigia dividido em infra e board, régua por agente do lass, plano de kickoff, pontos 10 e 11 explicados
+pula	docs(planning): rascunho v4 da rotina: madrugada dependente do merge, um briefing por parte da vida, Sentinela a cada 30 min com cenários de teste, memórias com triagem proativa do Escriba, 11 pontos em aberto
+pula	docs(planning): prompt da sessão apartada de varredura do Multica (TECH-298): leitura, o que medir, regras e pontos de parada
+pula	docs(planning): rascunho v3 da rotina: template de briefing com exemplo real, bloco Para o Fernando, observância entre iniciativas, inbox por workspace, memórias das duas máquinas, MCP, TECH-298
+pula	docs(planning): rascunho v2 da rotina nas duas superfícies: visão do Fernando, gates e autonomia, contexto por superfície, know-how fora do CWD com opções, 9 pontos a confirmar
+pula	docs(planning): rascunho da rotina nas duas superfícies (hoje × depois da adoção do lass), por tipo de ato, com 8 pontos a confirmar
+pula	docs(planning): trilha da sessão 4 (adoção do lass): drift remedido, Revisor apurado, achado de id cross-workspace na TECH-297, proposta de casa e ordem
+pula	docs(planning): premissa das duas superfícies (CLI × Multica por workspace): seed com matriz de testes, seção no prompt da sessão 4, TECH-297
+pula	docs(planning): prompt da sessão 4 (adoção do lass) e fecho do handoff da sessão 3: TECH-291 implantada, #38 mergeado
+pula	docs(planning): handoff da sessão 3: F10 mergeada, skill implantada, TECH-265 fechada, PR #38 de arquivamento aberto
+pula	docs(planning): seed da avaliação de ordenamento e observância entre issues e iniciativas (medido em 05/09)
+pula	docs(planning): handoff da sessão 3: PR #37 revisado em duas rodadas e liberado; pós-merge com description
+pula	docs(planning): handoff da sessão 3: opção c decidida, F10 em PR, drift medido e pós-merge roteirizado
+pula	docs(planning): seed do protocolo cross-iniciativa consumido: opção c, F10 = TECH-294, DL-16
+pula	docs(planning): estado do seed do protocolo cross-iniciativa aponta para o handoff da sessão 3
+pula	docs(planning): handoff da sessão 3: F9 mergeada, DoD refeito, arquivamento preparado e decisão do protocolo
+pula	docs(planning): prompt da sessão 3 da frente de registro perene
+pula	docs(planning): handoff: F9 revisada e pronta para merge
+pula	docs(planning): handoff: TECH-284 implantada, TECH-285 decidida, F9 em PR
+pula	docs(planning): handoff da sessão 2: #35 mergeado, DoD da TECH-265 verificado
+pula	docs(planning): handoff da sessão 2: merge do #34 sobre o #33 e #35 pronto
+pula	docs(planning): rodada 3 dos PRs #34 e #35 no handoff da sessão 2
+pula	docs(planning): handoff da sessão 2 da frente de registro perene
+pula	docs(planning): emenda de sistema (§12) ao desenho de registro perene: estrutura, versionamento e propagação do Multica
+pula	docs(planning): fecha as decisões 7 e 8 da frente de registro no prompt da sessão 2
+pula	docs(planning): respostas do Fernando às decisões de F0 e prompt da sessão 2 da frente de registro
+pula	docs(planning): pesquisa A1/A2 que sustenta o desenho da superfície de registro
+pula	docs(planning): desenho MVP da superfície de registro do playbook e reconciliação das 25 issues
+pula	docs(planning): acrescenta a reconciliação de impacto ao prompt da frente de registro
+pula	docs(planning): prompt da frente de registro perene, com o autoaperfeiçoamento adiado
+pula	docs(planning): registra TECH-264 e TECH-265 como destino dos dois seeds de 03/09
+pula	docs(planning): registra TECH-256..263 como as oito sub-issues da TECH-255
+pula	docs(planning): DoR conferido da TECH-255 e os oito diffs propostos
+pula	docs(planning): caso de referência do loop, prompt da sessão de propagação e seed do playbook
+pula	docs(planning): fecha o seed de propagação como TECH-255, com fronteira declarada com a TECH-241
+pula	docs(planning): registra a rodada 2 da TECH-225 — plano, sub-issues TECH-242..254 e decisões pendentes
+pula	docs(planning): plano de implementação da TECH-225 via enhanced-planning
+pula	docs(planning): registra o desfecho da propagação duplicada (TECH-229 × TECH-230)
+pula	docs(planning): handoff de sessão da TECH-225 e seed de melhorias da propagação
+pula	docs(planning): espelha em handoff/ o comentário postado na TECH-225
+roda	fix(scripts): remove do pareamento as exceções dos stubs do claude-mem já apagados
+pula	docs(planning): aplica a revisão da §11 da spec e move as varreduras para research/
+pula	docs(planning): versiona as quatro varreduras que sustentam a spec da TECH-225
+pula	docs(planning): abre a iniciativa planejamento-canonico com CONTEXT e spec (TECH-225)
+pula	docs(skills): grava Sync-ID de 5818ee8 e 5c16300 nas três camadas
+pula	docs(planning): registra decisão e roteiro do detour aposentar-todo-md-e-patch
+pula	docs(specs): corrige a nota de reconciliação, que dizia pendente o que está feito
+pula	docs(specs): declara a reconciliação pendente da spec do case
+pula	docs(specs): versiona a spec de design do learning-project-template
+pula	docs(dl-5): corrige a contagem de camadas nos textos do gatilho do Vigia
+roda	style(gitattributes): alinha a coluna do export-ignore do gatilho do Vigia
+roda	fix(vigia): a notice de segredo ausente não mente mais no caso de fork
+pula	docs(skills): registra a taxonomia por obrigacao no changelog local das tres camadas
+roda	refactor(skills): reconcile-initiative produz e confirma a linha de delta
+roda	refactor(skills): tira a restricao sobre patches/ do agent-team
+roda	refactor(skills): tira o tipo patch da coleta do generate-session-prompt
+roda	refactor(skills): troca patch por criterio de escopo no enhanced-planning
+roda	refactor(skills): tira patches/ da arvore de planning do update-docs
+roda	refactor(skills): init-detour escreve a divida de reconciliacao no CONTEXT.md
+roda	refactor(skills): tira o tipo patch do init-milestone nas tres camadas
+pula	docs(github): tira o tipo patch das instrucoes do Copilot
+pula	docs(agents): tira o tipo patch das regras da raiz
+roda	refactor(claude): tira o tipo patch e o estado seed do CLAUDE.md
+roda	chore(setup): tira o residuo de patches.md do init-from-template
+roda	chore(template): tira o residuo de patches.md do gitattributes
+pula	docs(planning): tira o TODO.md do padrao de handoff
+pula	docs(planning): reescreve o hub com a taxonomia por obrigacao
+roda	chore(planning): remove o diretorio patches/
+roda	chore(template): impede o gatilho do Vigia de viajar para um derivado
+roda	feat(vigia): workflow que avisa o autopilot reativo a cada merge em main
+pula	docs(planning): registra o detour propagacao-webhook com as decisões DL-1 a DL-10
+roda	ci(propagacao): corrige comentários e diagnostica falha de rede no disparo
+pula	docs(skills): registra a saída do TODO.md no changelog local das três camadas
+roda	refactor(claude): tira TODO.md do CLAUDE.md e do settings.json
+roda	refactor(prompts): tira TODO.md do kickoff e do TAP nas três camadas
+roda	refactor(skills): tira TODO.md do validate-dor nas três camadas
+roda	refactor(skills): tira TODO.md do validate-dod nas três camadas
+roda	refactor(skills): troca o exemplo de link do validate-docs-links
+roda	refactor(skills): tira TODO.md do update-docs nas três camadas
+roda	refactor(skills): troca a dimensão TODO por Deferred no reconcile-initiative
+roda	refactor(skills): tira TODO.md do pre-commit-check nas três camadas
+roda	refactor(skills): tira o rastreamento em TODO.md do organize-commits
+roda	refactor(skills): tira TODO.md do init-milestone nas três camadas
+roda	refactor(skills): tira TODO.md do init-detour nas três camadas
+pula	docs(core): remove o TODO.md
+pula	docs(github): remove TODO.md das instrucoes do Copilot
+pula	docs(kickoff): remove TODO.md do checklist e da arvore pos-kickoff
+pula	docs(readme): remove TODO.md da estrutura e do indice
+pula	docs(agents): tira o TODO.md das regras da raiz
+roda	refactor(skills): tira TODO.md do generate-session-prompt nas três camadas
+roda	refactor(skills): tira TODO.md do fresh-context nas três camadas
+pula	docs(guides): tira o TODO.md do diagrama de sequencia do kickoff
+pula	docs(guides): tira o TODO.md do workflow assistido por IA
+roda	refactor(skills): tira TODO.md do plan-template do enhanced-planning
+pula	docs(agents): remove TODO.md das instrucoes locais de documents/
+pula	docs(readme): remove TODO.md do indice de documentacao
+roda	refactor(skills): tira TODO.md do audit-roadmap-refs nas três camadas
+pula	docs(projeto): remove referencias ao TODO.md
+pula	docs(roadmap): remove referencias ao TODO.md e declara a funcao do documento
+roda	refactor(skills): tira TODO.md do audit-architecture nas três camadas
+pula	docs(roadmap): converte DoR/DoD das fases 2 a 4 em lista de criterios
+pula	docs(roadmap): converte DoR/DoD das fases 0 e 1 em lista de criterios
+roda	refactor(skills): tira TODO.md do agent-team nas três camadas
+pula	docs(roadmap): remove indicadores de status das fases
+roda	ci(propagacao): remove --show-error do disparo do webhook
+roda	ci(propagacao): ignora push que so toca .planning/
+roda	ci(propagacao): guarda de realimentacao olha os commits do push
+roda	ci(propagacao): roda o gate de linhagem antes do pareamento
+roda	fix(scripts): impede que o contador de remocoes mate o init sob set -e
+roda	ci(scripts): gate que impede o template de mentir a propria versao
+roda	chore(scripts): impede que o disparo da propagacao viaje para os derivados
+roda	ci(propagacao): dispara o autopilot de propagacao a cada push em main
+pula	docs(skills): converge o changelog local e registra a triagem TECH-106 PR-3
+pula	docs(skills): restaura design-sprint no índice e na árvore de .agents/
+roda	chore(scripts): declara as divergências de mecanismo de audit-rules e agent-team
+roda	fix(skills): corrige a profundidade do link de exemplo em validate-docs-links
+roda	fix(skills): corrige a referência ao arquivo always-on em audit-architecture
+roda	fix(skills): move o frontmatter de audit-roadmap-refs para o topo do arquivo
+roda	fix(skills): reconcilia generate-tap entre .claude/ e .agents/
+roda	fix(skills): restaura a exigência de commit em pt-BR em organize-commits
+roda	fix(skills): restaura Scripts Governance e a regra de pt-BR em pre-commit-check
+roda	fix(skills): reconcilia validate-kickoff entre .claude/ e .agents/
+roda	fix(skills): reconcilia archive-initiative entre .claude/ e .agents/
+roda	fix(prompts): remove a auto-referência de camada do Passo 2e do kickoff
+pula	docs(rules): registra a triagem TECH-106 PR-2 nos changelogs locais
+roda	chore(scripts): declara as divergências de mecanismo das rules restantes
+roda	fix(rules): corrige link quebrado em code-quality-standards e declara a divergência
+roda	fix(rules): corrige título de security-best-practices e declara a divergência
+roda	fix(prompts): reconcilia tap-template entre .claude/ e .agents/
+roda	fix(prompts): reconcilia kickoff-prompt entre .claude/ e .agents/
+pula	docs(skills,codex): registra o marcador de linhagem nos changelogs locais
+roda	feat(skills): validate-kickoff falha sem o marcador de linhagem
+pula	docs(claude,codex,agents): kickoff confere a linha de linhagem no derivado
+pula	docs(claude,codex,agents): declara a linhagem de template no ponto de entrada
+pula	docs(scripts): registra o gate de pareamento no INDEX
+roda	ci: roda o gate de pareamento em pull request e push
+roda	feat(scripts): adiciona gate de pareamento .agents/ × .claude/
+roda	chore(scripts): declara exceções de pareamento entre .claude/ e .agents/
+roda	chore: estende o ignore de runtime a familia .agents/
+pula	docs(specs): versiona a spec de design do case-project-template
+pula	docs(planning): resolve Gate 3 do template-sync-audit
+pula	docs(skills): registra remocao dos stubs do claude-mem no changelog
+roda	chore(cleanup): remove stubs residuais gerados pelo claude-mem
+roda	chore: ignora artefatos de runtime do Multica
+roda	ci: adiciona verificação mínima em pull request
+pula	docs(planning): seed de mirror-upstream para a nota de path-targeting de UI
+pula	docs(skills): fecha hashes próprios e propagação para lass no changelog
+pula	docs(planning): seção Seeds e registro do sync-downstream para lass
+pula	docs(skills): fecha Sync-IDs do cluster design-flow propagado para lass
+roda	fix(rules): adiciona documents/design ao path-targeting de artifact-governance (SYNC-20260805-003)
+roda	fix(skills): neutraliza contexto de negócio e corrige paridade em generate-session-prompt (SYNC-20260805-005)
+pula	docs(rules): registra hash próprio e propagação para lass no changelog
+pula	docs(root): CLAUDE.md v2.12.0 com rules lazy e seção 3 enxuta
+pula	docs(rules): frontmatter paths em todas as rules para lazy loading
+pula	docs(root): CLAUDE.md v2.11.0 com registro contínuo de descobertas
+pula	docs(planning): prompt de sessão para o piloto do DS real da Lass (DoD nível 2)
+pula	docs(planning): fecha migração Claude Design com DoD v3 nível 1 PASS 10/10
+pula	docs(skills): registra migração claude-design-flow nos índices e changelogs das 3 camadas
+roda	chore(sync): replica claude-design-flow e alias deprecated para .codex e .agents
+roda	test(skills): smoke local v2 do claude-design-flow com migração de marcadores
+roda	feat(skills): semântica de estados de design em validate-dor e reconcile-initiative
+pula	docs(claude): CLAUDE.md v2.10.0 e docs migrados para claude-design-flow
+roda	refactor(skills): migra figma-design-flow para claude-design-flow (executor Claude Design)
+roda	test(skills): smoke de escrita na ponte Claude Design antes do cutover (S5.0)
+pula	docs(planning): PR-4.5 — CONTEXT v3 unificado e DoR v3 PASS com tag de baseline
+pula	docs(planning): emendas v3.1 pós-review Codex no plano de migração Claude Design
+pula	docs(planning): plano v3 de migração Figma → Claude Design no detour figma-design-flow
+pula	docs(planning): fecha detour figma-design-flow com validate-dod PASS 9/9
+pula	docs(skills): registra figma-design-flow nos índices e changelogs das 3 camadas
+roda	chore(sync): replica figma-design-flow para .codex/skills/ e .agents/skills/
+roda	feat(skills): dimensão 4e de design no reconcile-initiative com evidência objetiva
+roda	feat(skills): sugestão não-bloqueante de wireframe em validate-dor para milestones de UI
+roda	fix(skills): ajustes do smoke B1 nos references do figma-design-flow
+roda	test(skills): smoke test B1-fallback do figma-design-flow com evidências
+pula	docs(docs): integra documents/design/ ao índice, guia de workflow e artifact-governance
+pula	docs(claude): seção 1.6 de design de interface e prototipação visual (v2.9.0)
+pula	docs(design): seed de documents/design/ com papel, autoridade e templates
+roda	feat(skills): references transversais do figma-design-flow
+roda	feat(skills): references originais do figma-design-flow (wireframe lo-fi e protótipo)
+roda	feat(skills): references de delegação do figma-design-flow (etapas 1,2,4,5,7)
+roda	feat(skills): adiciona orquestrador figma-design-flow (7 etapas, 3 bundles)
+pula	docs(planning): plano v2.0 pós-review Codex + DoR/DoD/premissas no detour figma-design-flow
+roda	feat(skills): fallback meta-work de DoR/DoD via CONTEXT.md em validate-dor/dod
+roda	chore(planning): inicializa infraestrutura para detour figma-design-flow
+pula	docs(skills): backfill de Sync-IDs 20260724-001..004 (sync para my-sm-persona)
+roda	fix(hooks): espelha o fix do keep-active em linha própria (SYNC-20260707-001)
+roda	feat(hooks): espelha o detector de arquivamento pendente (SYNC-20260706-001)
+roda	chore(scripts): fecha gap em init-from-template + reconcile report scripts-governance
+pula	docs(planning): atualiza ref a scripts-governance pós-archive
+roda	chore(planning): arquiva detour scripts-governance em _archive/2026-05-
+roda	chore(rules): fecha SYNC-20260523-001 (scripts-governance) + verification camada 4
+roda	test(scripts): verification Camada 3 — propagação downstream
+roda	test(scripts): verification Camada 2 + roadmap Camada 3
+pula	docs(rules): rule §7 aponta para _optional/ (Camada 2)
+roda	feat(scripts): adiciona templates opt-in em _optional/ (Camada 2)
+roda	test(scripts): verification Camada 1 + plano de Camadas 2 e 3
+pula	docs(scripts): README + INDEX template alinhados com Camada 1
+roda	feat(skills): audit-scripts v1.1.0 reconhece _archived subcategorias + opt-in tracking
+roda	feat(scripts): _archived/ ganha subcategorias semânticas + opt-in tracking
+roda	feat(planning): cria detour template-sync-audit
+roda	chore: remove Serena do template
+roda	test(scripts): valida template com audit-scripts (0 blockers, 0 warnings)
+roda	fix(scripts): clarifica convenção de path no INDEX (relativo a scripts/)
+roda	chore(agents): replica scripts-governance rule + audit-scripts skill
+roda	chore(codex): replica scripts-governance rule + audit-scripts skill
+roda	refactor(scripts): move 4 scripts atuais para subdirs canônicas
+pula	docs(scripts): cria INDEX.md inicial
+pula	docs(scripts): reescreve README com taxonomia + glossário
+roda	chore(gitignore): documenta exclusões específicas para scripts/**
+roda	feat(skills): adiciona seção Scripts Governance ao pre-commit-check
+pula	docs(rules): registra scripts-governance no índice e changelog
+pula	docs(rules): registra scripts/** como exceção em artifact-governance
+pula	docs(claude): adiciona §1.5 manutenção de scripts/ + scope reservado
+roda	chore(settings): registra hook PreToolUse check-scripts-cruft
+roda	feat(hooks): adiciona check-scripts-cruft.sh
+roda	feat(skills): adiciona audit-scripts skill
+roda	feat(rules): adiciona scripts-governance rule path-targeted
+pula	docs(planning): adiciona plan de implementação do detour scripts-governance
+pula	docs(planning): adiciona spec do detour scripts-governance
+pula	docs(specs): status-bump - tech-spark-template v1 implementada
+pula	docs: spec v2 + plano de implementacao do tech-spark-template
+pula	docs(specs): adiciona design spec do tech-spark-template (v1)
+roda	refactor(planning): patches/ como diretório simétrico a milestones/detours
+roda	refactor(generate-session-prompt): adiciona modo dual (opinionated + generic) — v4.0.0
+roda	chore(skills): fecha SYNC-20260411-001 com hashes reais
+roda	feat(skills): adiciona G-BASELINE-PARITY ao catalog do enhanced-planning
+roda	chore(template): re-tracka artifacts de initiative com export-ignore e init script
+roda	chore(planning): marca detour ui-excellence-plugin como arquivado
+roda	chore(gitignore): exclui artefatos de initiative e plans do tracking do template
+pula	docs(planning): registra conclusao de PR-5 e encerramento do detour ui-excellence-plugin
+roda	chore(skills,codex,agents): changelog triplo com Sync-IDs para migracao UI
+pula	docs(claude): atualiza CLAUDE.md v2.7.0 com referencia ao marketplace externo
+roda	chore(rules): aposenta ui-excellence-standards (path-targeting migrou para plugin)
+roda	chore(skills): remove skills UI standalone legado (migradas para plugin marketplace)
+pula	docs(planning): registra conclusao de PR-4 da extensao ui-excellence-plugin
+roda	feat(settings): adiciona extraKnownMarketplaces e enabledPlugins para ui-excellence
+pula	docs(codex,agents): atualiza READMEs com 13 skills UI e changelog v3.0.0
+roda	refactor(sync-downstream): integra subrotina de marketplace externo (v1.3.0)
+roda	chore(codex,agents): replicacao flat das 13 skills UI via sync-ui-from-marketplace
+roda	feat(scripts): cria sync-ui-from-marketplace e validate-ui-parity para G-ISONOMIA
+pula	docs(planning): registra conclusao de PR-3 da extensao ui-excellence-plugin
+pula	docs(planning): registra conclusao de PR-2 da extensao ui-excellence-plugin
+pula	docs(planning): registra revisao codex de PR-1 e fixes aplicados
+pula	docs(scripts): adiciona README com metadata para reconciliar com artifact-governance
+roda	chore(scripts): adiciona bidirecionalidade manifest-disk e preflight python3 em validate-ui-plugin
+pula	docs(planning): registra conclusao de PR-1 da extensao ui-excellence-plugin
+roda	chore(scripts): adiciona validate-ui-plugin para marketplace externo
+pula	docs(planning): adiciona handoff snapshot para retomada do PR-1 em nova sessao
+pula	docs(planning): adiciona dor report para detour ui-excellence-plugin
+roda	chore(planning): cria infra do detour ui-excellence-plugin
+pula	docs(planning): adiciona plano ecosystem review com extensao ui-excellence plugin
+roda	feat(skills): adiciona skill design-sprint e templates de strategy docs
+roda	chore(skills): atribui SYNC-20260330-006 ao entry bafd406 nos changelogs
+roda	chore(skills): registra SYNC-20260404-001 no changelog local
+roda	chore(skills): atualiza hash d35ebba no changelog das 3 camadas
+roda	chore(skills): substitui skill-codex:codex por /codex:rescue no enhanced-planning
+roda	chore(skills): atualiza changelog com hash bafd406 para sync skills v1.2.0
+roda	chore(skills): adiciona replicação obrigatória entre camadas nas skills de sync (v1.2.0)
+roda	chore(sync): registra SYNC-20260330-003/004/005 nos changelogs locais
+roda	chore(sync): propaga UI Excellence para camadas .codex e .agents
+roda	chore(sync): registra SYNC-20260330-001/002 no changelog local
+roda	feat(ui): adiciona regra e skills para UI excellence
+roda	chore(sync): registra SYNC-20260324-003 no changelog local
+roda	chore(skills): atualiza enhanced-planning para v2.0.0
+roda	chore(planning): registra Sync-ID SYNC-20260324-002 no changelog local
+pula	docs(planning): atualiza CLAUDE.md e README para initiative unification
+roda	refactor(planning): atualiza skills auxiliares para conceito de initiative
+roda	refactor(planning): unifica validate-dor e validate-dod para initiatives
+roda	feat(planning): cria skill init-detour para inicializacao de detours
+roda	refactor(planning): atualiza init-milestone para CONTEXT.md unificado
+roda	refactor(validate-dor): extrai template de relatório para templates/dor-report.md
+roda	refactor(validate-dod): extrai exemplos e checklists para examples/ e references/
+roda	refactor(agent-team): extrai spawn prompts para flat companion files
+pula	docs(skills): espelha enhanced-planning para .codex e .agents
+pula	docs(skills): adiciona skill enhanced-planning v1.0.0 com guardrails tiered
+pula	docs(agents): registra changelogs da propagacao milestone-centric nos READMEs
+roda	refactor(agents): propaga modelo milestone-centric para skills e docs (SYNC-20260310-002)
+roda	feat(agents): adiciona skill init-milestone em .claude/, .codex/ e .agents/
+roda	refactor(codex): remove AGENTS.md local e aponta config para raiz do repo
+roda	chore(artifact-governance): propaga governanca de artefatos e estrutura padrao de dirs
+pula	docs(agents): popula changelogs retroativos a partir do histórico git
+pula	docs(skills): propaga fechamento git para claude e agents
+pula	docs(skills): fecha syncs com commits obrigatorios
+pula	docs(codex): alinha regras, perfis e skills do template
+pula	docs(claude): padroniza convenções de commit em pt-br
+pula	docs(planning): atualiza README.md com mapeamento de initiatives
+pula	docs(codex): atualiza skills v2.1.0, changelog governance e sync skills
+pula	docs(claude): atualiza skills v2.1.0, changelog governance e sync skills
+pula	docs(agents): adiciona AGENTS.md root com governança de changelog
+pula	docs(agents): adiciona diretório .agents/ com skills, rules, workflows e prompts
+roda	chore: initialize tech-product-template

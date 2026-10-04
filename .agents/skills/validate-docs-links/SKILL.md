@@ -36,7 +36,7 @@ Tentar corrigir automaticamente links quebrados identificados pelo check.
 | Diretório | Pattern | Propósito |
 |-----------|---------|-----------|
 | `documents/` | `**/*.md` | Documentação core, technical, strategy |
-| `.agents/rules/` | `*.md` | Regras Tier 1 e Tier 2 |
+| `.claude/rules/` | `*.md` | Regras Tier 1 e Tier 2 |
 | `.agents/skills/` | `**/*.md` | Skills operacionais |
 | Raiz | `README.md`, `CHANGELOG.md` | Docs principais |
 
@@ -51,7 +51,7 @@ Tentar corrigir automaticamente links quebrados identificados pelo check.
 | Tipo | Exemplo | Validação |
 |------|---------|-----------|
 | **Relativo (mesmo dir)** | `[Roadmap.md](../../../documents/core/Roadmap.md)` | Arquivo existe |
-| **Relativo (pai)** | `[AGENTS.md](../../AGENTS.md)` | Resolve path e verifica |
+| **Relativo (pai)** | `[AGENTS.md](../../../AGENTS.md)` | Resolve path e verifica |
 | **Relativo (subdir)** | `[arch.md](../../../documents/technical/architecture.md)` | Path completo |
 | **Âncora (mesmo arquivo)** | `[Seção](#secao)` | Âncora existe |
 | **Âncora (outro arquivo)** | `[Proj](../../../documents/core/Projeto.md#resumo)` | Arquivo E âncora |
@@ -155,7 +155,7 @@ Alerta se backlink está faltando (não crítico, apenas informativo).
 ```markdown
 # 📊 Relatório de Validação de Links
 
-**Data:** [DATA]
+**Data:** [DATA, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 **Escopo:** [N] arquivos .md
 
 ## Resumo Executivo
@@ -273,7 +273,7 @@ Total de links: 187
    Problema: Path incorreto
    Sugestão: `Projeto.md`
 
-2. .agents/rules/architecture-guidelines.md:287
+2. .claude/rules/architecture-guidelines.md:287
    Link: `integration.md` (referência ausente)
    Problema: Arquivo não existe
    Sugestão: Criar arquivo ou remover link
@@ -312,7 +312,7 @@ Requerem manual: 1
 ## Referências
 
 - `documents/README.md` - Índice central
-- `.agents/rules/README.md` - Índice de regras
+- `.claude/rules/README.md` - Índice de regras
 - `.agents/skills/README.md` - Índice de skills
 
 ## Skills Relacionadas

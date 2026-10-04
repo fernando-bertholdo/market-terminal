@@ -18,7 +18,7 @@
 | **Organização** | [Nome da organização] |
 | **Responsável** | [Nome do owner/responsável] |
 | **Autor do documento** | [Nome do autor] |
-| **Data** | [YYYY-MM-DD] |
+| **Data** | [YYYY-MM-DD, calendário do fuso do dono] |
 | **E-mail de contato** | [email@exemplo.com] |
 | **Status** | [Rascunho / Aprovado] |
 | **Versão** | 1.0 |

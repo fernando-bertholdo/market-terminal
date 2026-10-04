@@ -92,7 +92,8 @@ depuração ou de investigação nasce de topo, e isso é normal.
    mkdir -p .planning/detours/<nome>/handoff/
    mkdir -p .planning/detours/<nome>/plans/
 
-   Criar .planning/detours/<nome>/CONTEXT.md:
+   Criar .planning/detours/<nome>/CONTEXT.md (datas do calendário do fuso do dono,
+   `AGENTS.md`, "Horas e datas"):
    ```markdown
    # CONTEXT: <Nome Humanizado>
 
@@ -158,7 +159,8 @@ depuração ou de investigação nasce de topo, e isso é normal.
 
 4. Registrar em .planning/README.md:
    - Adicionar linha na tabela de detours
-   - Formato: | <nome> | (ativo) | .planning/detours/<nome>/CONTEXT.md |
+   - Formato: | <nome> | <milestones relacionados, ou — (transversal)> | (ativo) | .planning/detours/<nome>/CONTEXT.md |
+   - As quatro colunas são as da tabela `## Desvios (Detours)`: Detour, Milestones Relacionados, Status e Path
 
 5. Responder a pergunta de entrada e gravá-la no CONTEXT.md:
    - Perguntar ao usuário: **"O que este trabalho muda no plano?"**
@@ -183,7 +185,7 @@ O skill `validate-dor` detecta tipo automaticamente:
 ## Quando NÃO Usar
 
 - Para milestones → usar skill `init-milestone`
-- Para trabalho avulso (não altera o plano) → sem estrutura em `.planning/`; o registro é o histórico do git
+- Para issue avulsa (nenhum dos três sinais de detour, pela régua do `AGENTS.md` §2) → sem estrutura em `.planning/`
 - Para detour já existente → idempotente (reporta e sai)
 
 ## Referências
@@ -213,7 +215,7 @@ O skill `validate-dor` detecta tipo automaticamente:
 ### v1.1.0 (Agosto/2026)
 
 **Taxonomia por obrigação:**
-- O tipo `patch` deixou de existir; trabalho que não altera o plano é issue avulsa, sem estrutura em `.planning/`
+- O tipo `patch` deixou de existir; o que ele cobria passa a ser issue avulsa, sem estrutura em `.planning/`
 - CONTEXT.md e DoD do Roadmap passam a registrar, na criação, a dívida de reconciliação do detour: linha de delta no `Roadmap.md` com o identificador da issue
 
 ### v1.0.0 (Março/2026)
