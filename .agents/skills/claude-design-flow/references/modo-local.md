@@ -1,6 +1,6 @@
 # Modo Local — o meio primário de trabalho (e `--publish`)
 
-O modo local **não é fallback**: é onde o design acontece. Zero dependência externa — funciona em qualquer camada (`.claude/`, `.codex/`, `.agents/`), qualquer máquina, sem auth. A ponte Claude Design entra como **publicação** do que for durável e curado.
+O modo local **não é fallback**: é onde o design acontece. Zero dependência externa — funciona em qualquer harness que leia a skill (`.claude/skills/` ou `.agents/skills/`), qualquer máquina, sem auth. A ponte Claude Design entra como **publicação** do que for durável e curado.
 
 ## Localização dos artefatos
 
@@ -20,7 +20,7 @@ O modo local **não é fallback**: é onde o design acontece. Zero dependência 
 | 7 | Handoff | `design/handoff-<unidade>.md` | Bundle nasce no app |
 
 **Marcador de estado** na 1ª linha de todo artefato de iniciativa, na sintaxe de comentário do formato (`<!-- -->` HTML/markdown; `%%` Mermaid):
-`claude-design-flow: <estado> | etapa N | <unidade> | YYYY-MM-DD` — estados: `local-draft` → `local-approved` → `publication-pending` → `published`.
+`claude-design-flow: <estado> | etapa N | <unidade> | YYYY-MM-DD` — estados: `local-draft` → `local-approved` → `publication-pending` → `published`. A data é a do calendário do fuso do dono (`AGENTS.md`, "Horas e datas").
 
 ## Contrato de publicabilidade (o que pode virar card)
 
@@ -41,7 +41,7 @@ Navegação entre telas (`<a href>`) funciona no browser local; no pane de desig
 5. Verificar: `list_files` contém os paths → REGISTRY: estado `published`, `last_published` (hash git curto + data), grupos
 6. Design system completo → **preferir `/design-sync`** (conversão + render-check + incremental); `--publish` direto é para lotes pequenos de cards prontos
 
-**Publication request (camadas sem a tool):** escrever `design/publication-request.md` na iniciativa — paths `local-approved` a publicar, projeto alvo (ou "criar"), grupos, estado. Uma sessão Claude Code consome com `--publish` e atualiza o REGISTRY.
+**Publication request (harness sem a tool):** escrever `design/publication-request.md` na iniciativa — paths `local-approved` a publicar, projeto alvo (ou "criar"), grupos, estado. Uma sessão Claude Code consome com `--publish` e atualiza o REGISTRY.
 
 ## Erros comuns
 

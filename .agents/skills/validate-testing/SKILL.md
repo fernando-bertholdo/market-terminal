@@ -98,4 +98,4 @@ Regras:
 
 ## Referências
 
-- `@rules/testing-requirements.md` - Requisitos de testes (quando aplicável ao stack)
+- `.claude/rules/testing-requirements.md` - Requisitos de testes (quando aplicável ao stack)

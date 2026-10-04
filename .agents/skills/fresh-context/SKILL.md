@@ -158,6 +158,8 @@ número sem recorte é o que a próxima sessão vai repetir errado.
 
 **Output:** Arquivo `.planning/btg-collectors/handoff/M1.2-CONTEXT.md`
 
+As datas `Gerado em` e `Última atualização` do cabeçalho são do calendário do fuso do dono (`AGENTS.md`, "Horas e datas").
+
 ```markdown
 # CONTEXT: M1.2 - Coletor Básico
 
@@ -255,7 +257,7 @@ Vamos continuar M1.2 (Coletor Básico).
 
 **Referências:**
 - @.planning/btg-collectors/handoff/M1.2-CONTEXT.md (handoff)
-- @rules/api-integration-patterns.md (portal do fornecedor)
+- @.claude/rules/api-integration-patterns.md (portal do fornecedor)
 ```
 
 ## Parâmetros

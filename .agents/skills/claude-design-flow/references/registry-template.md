@@ -2,6 +2,8 @@
 
 Criados na **primeira reconciliação** do projeto. Mantidos via `--reconcile` (upsert; edição manual permitida — a reconciliação detecta divergências).
 
+As datas `YYYY-MM-DD` dos dois modelos são do calendário do fuso do dono (`AGENTS.md`, "Horas e datas").
+
 ## Template: REGISTRY.md
 
 ```markdown

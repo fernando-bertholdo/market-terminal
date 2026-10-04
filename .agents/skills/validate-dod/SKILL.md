@@ -38,7 +38,10 @@ Este é um **gate bloqueador** - nenhuma initiative deve ser marcada como comple
 
 4. Ler fontes de DoD por tipo:
    - MILESTONE: Roadmap.md § DoD do milestone + CONTEXT.md § DoD (verify: steps)
-   - DETOUR: Roadmap.md § Desvios — Nome (DoD) + CONTEXT.md § DoD (verify: steps)
+   - DETOUR: a linha do detour na tabela `## Desvios (Detours)` do `.planning/README.md`
+     + a seção `## DoD` do CONTEXT.md do detour (com seus `verify:` steps), que é a
+     fonte canônica (o Roadmap.md não tem seção de detours).
+     Registrar no report qual fonte foi usada.
 
 5. Extrair verify: steps do DoD (Roadmap.md e CONTEXT.md da iniciativa)
 
@@ -300,7 +303,8 @@ O relatório gerado inclui:
 - `validate-dor` - Skill complementar para validar DoR
 - `init-milestone` - Criar infraestrutura de milestone (se ausente)
 - `init-detour` - Criar infraestrutura de detour (se ausente)
-- `documents/core/Roadmap.md` - DoD por milestone + seção Desvios para detours
+- `documents/core/Roadmap.md` - DoD por milestone
+- `.planning/README.md` - Hub: mapeamento initiative->diretório e a tabela `## Desvios (Detours)`
 - `.planning/milestones/MX.X-nome/` - Diretório do milestone
 - `.planning/detours/<nome>/` - Diretório do detour
 - `.planning/*/verification/` - DoD reports co-localizados

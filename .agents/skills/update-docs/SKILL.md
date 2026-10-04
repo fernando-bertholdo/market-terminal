@@ -82,7 +82,7 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap após
 
 2. Ler DoD da initiative:
    - Milestone: Roadmap.md § DoD do milestone
-   - Detour: Roadmap.md § Desvios — Nome (DoD)
+   - Detour: CONTEXT.md § DoD do detour
 
 3. Atualizar documents/core/Projeto.md:
    - Atualizar seções relevantes (decisões, arquitetura, regras de negócio, etc.)
@@ -90,7 +90,10 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap após
 
 4. Atualizar documents/core/Roadmap.md:
    - Milestone: seção do milestone — adicionar referência ao Projeto.md
-   - Detour: seção Desvios — Nome — adicionar referência ao Projeto.md
+   - Detour: o Roadmap.md não tem seção de detours (o índice deles é a tabela
+     `## Desvios (Detours)` do `.planning/README.md`). Se o detour mudou o plano,
+     a referência vai na fase ou no milestone que ele alterou (`reconcile-initiative`,
+     4a.1); se não mudou, o Roadmap.md não é tocado
    - Preferir referência de Changelog (ex.: "Projeto.md: v1.0.19 (M1.2 — requests-first)")
 
 5. Verificar .planning/README.md:
@@ -154,7 +157,7 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap após
 ## Metadata
 - **Versão:** 1.X.0
 - **Status:** ✅ Atualizado
-- **Última atualização:** [DATA]
+- **Última atualização:** [DATA, calendário do fuso do dono — `AGENTS.md`, "Horas e datas"]
 - **Baseado em:** Projeto.md v[X]
 
 ## Visão Geral
@@ -172,14 +175,14 @@ Revisar e atualizar o **ordenamento planejado** e dependências no Roadmap após
 [Contexto, alternativas, decisão, consequências]
 
 ## Changelog
-### v1.X.0 ([DATA])
+### v1.X.0 ([DATA, calendário do fuso do dono])
 - [Mudança]
 ```
 
 ### Projeto.md - Changelog (Milestone)
 
 ```markdown
-### vX.Y.Z ([DATA])
+### vX.Y.Z ([DATA, calendário do fuso do dono])
 
 **{milestone-id} — [Título curto]:**
 - ✅ [Decisão/entrega 1] (keywords úteis para busca)

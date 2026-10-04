@@ -51,7 +51,7 @@ reconcile-initiative btg-collectors
    - Fallback legado: _archive/milestones/MX.X-*/ -> _archive/detours/<nome>/ -> _archive/<id>/
 
 4. Ler documentos core:
-   - Roadmap.md -> milestones futuros, DoR/DoD + seção Desvios para detours
+   - Roadmap.md -> milestones futuros, DoR/DoD
    - Projeto.md -> decisoes de negocio/arquitetura
 
 5. Analise em 4 dimensoes:
@@ -73,6 +73,7 @@ reconcile-initiative btg-collectors
 
 6. Gerar Reconciliation Report:
    .planning/audit-reports/reconcile-<id>-<YYYY-MM-DD>.md
+   (data do calendario do fuso do dono, `AGENTS.md`, "Horas e datas": a mesma do **Data:** do relatorio)
 
 7. Em modo interativo: apresentar sugestoes, aplicar com confirmacao
 
@@ -109,28 +110,15 @@ entregou.
 - **Não mudou** → o `Roadmap.md` não é tocado. `documents/README.md` manda
   atualizá-lo quando o plano muda e **nunca para registrar avanço**. Registrar
   aqui que não houve mudança é suficiente.
-- **Não mudou e o detour tinha 3 sinais fracos** → sinalizar ao humano que a
-  classificação pode ter sido generosa. Não reclassificar sozinho.
+- **Não mudou e, olhado de novo, o detour não sustenta dois de três sinais**
+  (`AGENTS.md` §2) → sinalizar ao humano que a classificação pode ter sido
+  generosa. Não reclassificar sozinho.
 
 > **Mudou em 14/09/2026 (TECH-574).** Antes, esta dimensão exigia uma linha de
 > delta datada no `Roadmap.md`, "sem a qual o detour não fecha", verificada por
 > `grep <ID>`. Medição: **66 detours** na linhagem e **zero** linhas cumpridas. A
 > obrigação vinha de uma definição de detour que já não era a régua, criava um
 > sétimo lugar de status e nunca funcionou como gate.
-
-
-**Gate:** depois de escrever, confirmar com
-
-```bash
-grep <ID> documents/core/Roadmap.md
-```
-
-Exit 0 é a evidência; exit 1 significa que o detour não está reconciliado e não
-pode ser arquivado. `archive-initiative` recebe este skill como gate justamente
-para que a linha exista antes do arquivamento.
-
-Milestone não contrai essa dívida: ele já estava no plano, e fechá-lo faz o
-Roadmap andar pelo caminho normal (`update-docs task`).
 
 ### 4b. Deferred
 
@@ -177,7 +165,7 @@ em documento core — DL-4 tirou o tracking de status do repositorio.
 ```markdown
 # Reconciliation Report: <initiative-id>
 
-**Data:** <YYYY-MM-DD>
+**Data:** <YYYY-MM-DD, calendario do fuso do dono>
 **Initiative:** <initiative-id>
 **Status da Initiative:** (concluido)
 **Milestones cobertos:** <lista>
@@ -266,9 +254,9 @@ Se outro formato → DETOUR (strip D- se presente)
 - `.planning/detours/<nome>/CONTEXT.md` — Contexto vivo de detour
 - `.planning/*/handoff/*.md` — Handoff snapshots
 - `.planning/_archive/` — Initiatives arquivadas
-- `documents/core/Roadmap.md` — Milestones futuros, DoR/DoD + seção Desvios
+- `documents/core/Roadmap.md` — Milestones futuros, DoR/DoD
 - `documents/core/Projeto.md` — Decisoes de negocio/arquitetura
-- `.planning/README.md` — Hub: mapeamento initiative->diretório
+- `.planning/README.md` — Hub: mapeamento initiative->diretório e a tabela `## Desvios (Detours)`
 
 ## Skills Relacionadas
 

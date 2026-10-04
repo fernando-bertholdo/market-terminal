@@ -36,26 +36,33 @@ Executa o preenchimento completo dos templates do projeto com informações espe
    - Mesmo placeholder = mesmo valor em todos os arquivos
    - `Market Terminal`, `web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning`, `npm run type-check` etc.
 
-5. **Criar estrutura de diretórios**
+5. **Conferir a linhagem de template** (Passo 2e do `.claude/prompts/kickoff-prompt.md`)
+   - `.claude/CLAUDE.md`, `.agents/README.md` e `.codex/README.md` carregam a linha
+     `Template de origem: <template>@<versão>`, igual byte a byte nas três
+   - `<template>` é o repositório de template de origem, nunca este projeto; `<versão>` sai
+     do rodapé `**Versão:**` da origem no momento do kickoff
+   - Não é placeholder: não fica vazia nem sai no kickoff
+
+6. **Criar estrutura de diretórios**
    - Criar dirs de código e testes conforme o stack
 
-6. **Configurar ambiente**
+7. **Configurar ambiente**
    - Ajustar `.env.example`
    - Configurar settings do projeto
 
-7. **Remover comentários de instrução**
+8. **Remover comentários de instrução**
    ```bash
    grep -rn 'INSTRUÇÃO\|PREENCHER\|Preencher\|Substitua' --include='*.md' . | grep '<!--'
    ```
    - NÃO remover `@runtime-placeholders` e `@kickoff-exclude`
 
-8. **Validar**
+9. **Validar**
    - Invocar skill `validate-kickoff`
    - Invocar skill `validate-docs-links check`
 
 ## Referências
 
 - `.agents/skills/design-sprint/SKILL.md` — Exploracao colaborativa de design (pre-TAP)
-- `.agents/prompts/kickoff-prompt.md` — Prompt detalhado
+- `.claude/prompts/kickoff-prompt.md` — Prompt detalhado
 - `.agents/skills/validate-kickoff/SKILL.md` — Validacao pos-kickoff
 - `.agents/skills/generate-tap/SKILL.md` — Gerar TAP

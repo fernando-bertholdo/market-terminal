@@ -54,4 +54,4 @@ Checklist de qualidade obrigatório antes de fazer commit.
 
 - `.agents/skills/pre-commit-check/SKILL.md` — Skill completa
 - `.agents/skills/organize-commits/SKILL.md` — Se múltiplas mudanças
-- `.agents/rules/code-quality-standards.md` — Padrões de código
+- `.claude/rules/code-quality-standards.md` — Padrões de código

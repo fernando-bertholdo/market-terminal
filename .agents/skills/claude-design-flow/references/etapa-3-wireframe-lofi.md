@@ -27,7 +27,7 @@ HTML local (meio primário). Uma página autocontida por tela em `.planning/<tip
 ## Protocolo
 
 1. Um arquivo por tela do flow (etapa 2), nomeado `NN-<tela>.html` (NN = ordem no caminho feliz)
-2. Marcador na 1ª linha: `<!-- claude-design-flow: local-draft | etapa 3 | <unidade> | YYYY-MM-DD -->`
+2. Marcador na 1ª linha: `<!-- claude-design-flow: local-draft | etapa 3 | <unidade> | YYYY-MM-DD -->` (data do calendário do fuso do dono)
 3. Clicável: CTAs e links `<a href="NN-....html">` cobrindo caminho feliz + desvios do flow (inclusive voltar)
 4. Estados relevantes anotados inline (comentário visível em cinza no próprio wireframe quando ajudar a conversa)
 5. Gate: usuário navega no browser → aprovação → marcador vira `local-approved`

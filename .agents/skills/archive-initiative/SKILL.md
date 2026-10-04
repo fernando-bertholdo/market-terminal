@@ -49,7 +49,7 @@ archive-initiative api-integration --dry-run
 
 ```bash
 1. Verificar pre-condicoes (BLOQUEADORES):
-   a. Initiative existe em .planning/<id>/
+   a. Initiative existe em .planning/milestones/MX.X-nome/
    b. Status = (concluido) no .planning/README.md
    c. reconcile-initiative foi executado (buscar reconcile-<id>-*.md
       em .planning/audit-reports/)
@@ -58,7 +58,8 @@ archive-initiative api-integration --dry-run
 
 2. Extrair dados temporais:
    - Data inicio (do CONTEXT.md/handoff mais antigo)
-   - Data conclusao (hoje ou data do ultimo handoff)
+   - Data conclusao (hoje ou data do ultimo handoff; "hoje" e a data do calendario do fuso do
+     dono, `AGENTS.md`, "Horas e datas")
    - Milestones cobertos (da tabela em .planning/README.md)
    - Outcomes e decisoes chave (do CONTEXT.md)
 
@@ -69,7 +70,7 @@ archive-initiative api-integration --dry-run
 
 4. Mover diretorio:
    mkdir -p .planning/_archive/
-   mv .planning/<id>/ .planning/_archive/<id>/
+   mv .planning/milestones/MX.X-nome/ .planning/_archive/<id>/
 
 5. Atualizar .planning/README.md:
    - Status: (concluido) -> (arquivado)
@@ -85,7 +86,7 @@ archive-initiative api-integration --dry-run
 
 ```bash
 # Verificar
-ls .planning/<id>/
+ls .planning/milestones/MX.X-nome/
 # Deve existir CONTEXT.md e/ou handoff/
 ```
 
@@ -223,7 +224,7 @@ Nenhuma acao executada (dry-run).
 ## Path Resolution apos Archival
 
 Apos arquivamento, skills que resolvem paths de initiative usam fallback em 3 niveis:
-1. `.planning/<id>/` (ativo)
+1. `.planning/milestones/MX.X-nome/` (ativo)
 2. `.planning/_archive/<id>/` (arquivado)
 3. Perguntar ao usuario (nao encontrado)
 
