@@ -1,6 +1,6 @@
 #!/bin/bash
 # Hook: TaskCompleted
-# Version: 1.0.0 | Status: Template
+# Version: 1.1.0 | Status: Template
 #
 # Fires when a task is being marked as completed.
 # Exit 0 = allow completion. Exit 2 + stderr = block completion with feedback.
@@ -22,8 +22,38 @@ INPUT=$(cat)
 TASK_SUBJECT=$(echo "$INPUT" | jq -r '.task_subject // empty' 2>/dev/null || echo "")
 TEAMMATE_NAME=$(echo "$INPUT" | jq -r '.teammate_name // empty' 2>/dev/null || echo "")
 
-# Skip validation for documentation-only or planning tasks
-if echo "$TASK_SUBJECT" | grep -qiE '(review|research|document|plan|analys)'; then
+# Pula o gate quando o assunto declara trabalho de documentação, revisão,
+# pesquisa ou planejamento (TECH-809). Antes o filtro casava substring em inglês
+# e pulava `implementa parser de planilha` (`plan`) e todo `fix(planning): …`.
+# A falha segura é rodar a suíte, então a decisão é positiva e por palavra:
+#   1. Tipo Conventional Commits no início: pula só o `docs`; os outros rodam.
+#   2. Sem tipo: pula se a PRIMEIRA palavra é verbo da lista abaixo e o resto
+#      não tem coordenação (` e `, ` ou `, ` and `, ` or `, `,`, `;`, `:`, `+`,
+#      `&`, `/`). Coordenação declara mais de um trabalho, e o outro pode ser
+#      código: `Revisar e atualizar o parser` roda. O veto cobre a coordenação
+#      lexical acima, não qualquer conector, e não depende de lista de verbos
+#      de implementação.
+# A lista tem só verbo, sem acento, e a decisão inteira é ASCII: não depende de
+# locale. Ficam fora `revisa` (no template, "altera"), `revise`, e os
+# substantivos, que também nomeiam funcionalidade de produto (`revisão`,
+# `documentação`, `pesquisa`, `plano`, `análise`, `analysis`, `documentation`,
+# `planning`). Resíduo conhecido: em inglês `plan`, `review`, `research` e
+# `document` também são substantivo (`Plan limit enforcement` pula), e oração
+# subordinada não é coordenação (`Revisar o parser que atualiza o cache` pula),
+# e conector fora do conjunto também não é (`Planejar depois implementar…`,
+# `Plan then implement…`, `Revisar para corrigir…`, `Revisar antes de reescrever…`
+# pulam).
+# Medido por `scripts/validate/test-hook-task-completed.sh` (casos, limites e `--medir`).
+PALAVRAS_SEM_CODIGO='review|reviewing|research|researching|document|documenting|docs|plan|analyze|analyse|analyzing|analysing'
+PALAVRAS_SEM_CODIGO="$PALAVRAS_SEM_CODIGO"'|revisar|pesquisar|pesquise|documentar|documenta|documente|planejar|planeja|planeje|analisar|analisa'
+TIPO_CC='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]*\))?!?:'
+ASSUNTO=$(printf '%s\n' "$TASK_SUBJECT" | head -n 1 | sed -E 's/^[[:space:]]+//')
+if printf '%s' "$ASSUNTO" | grep -qiE "$TIPO_CC"; then
+  if printf '%s' "$ASSUNTO" | grep -qiE '^docs(\([^)]*\))?!?:'; then
+    exit 0
+  fi
+elif printf '%s' "$ASSUNTO" | grep -qiE "^(${PALAVRAS_SEM_CODIGO})([[:space:]]|\$)" \
+  && ! printf '%s' "$ASSUNTO" | grep -qiE '[[:space:]](e|ou|and|or)[[:space:]]|[,;:+&/]'; then
   exit 0
 fi
 

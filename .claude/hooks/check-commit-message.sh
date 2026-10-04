@@ -5,8 +5,10 @@
 # Trigger: PreToolUse matcher "Bash". Fast-exit (exit 0) se o comando não for `git commit`.
 # Comportamento: AVISO (não bloqueia; exit 0 com o achado no stderr, salvo erro do próprio hook). É aviso e não blocker
 # porque a régua é "fonte ao lado", que só quem escreve sabe conferir — o hook aponta a linha,
-# a skill decide. Hooks são CWD-only e o sync entre templates não os carrega (hooks/README.md):
-# o gate de skill vale em todo derivado; este hook, só onde foi aplicado à mão.
+# a skill decide. Hooks são CWD-only e o sync entre templates não os carrega: o gate de skill vale
+# em todo derivado; este hook, onde o `settings.json` o liga. O Propagador o atualiza no derivado em
+# que ele é cópia literal (conteúdo e modo) de alguma versão da origem até a propagada; com diferença
+# local, ou no derivado que ainda não o tem, ele segue à mão.
 # Limites declarados: só o `\n` do payload é decodificado (`\t`, `\\` e `\uXXXX` ficam literais), e um
 # `\n` que seja texto da mensagem também vira quebra; a varredura é por linha, então um numeral pode
 # perder o marcador que o filtrava na linha vizinha — aviso a mais, nunca a menos.
@@ -14,14 +16,18 @@ set -euo pipefail
 input=$(cat)
 command=$(printf '%s' "$input" | grep -oE '"command"[[:space:]]*:[[:space:]]*"([^"\\]|\\.)*"' | head -1 | sed 's/^"command"[[:space:]]*:[[:space:]]*"//; s/"$//' || true)
 command=${command//\\\"/\"}
-printf '%s' "$command" | grep -qE '(^|[[:space:];&|])git[[:space:]]+commit([[:space:];&|]|$)' || exit 0
+# Opção global entre `git` e `commit` (`git -C <dir> commit`, `git -c k=v commit`) não tira o
+# comando do alcance: antes só `git commit` colado casava (TECH-793).
+printf '%s' "$command" | grep -qE '(^|[[:space:];&|])git([[:space:]]+(-[Cc][[:space:]]+("[^"]*"|'"'"'[^'"'"']*'"'"'|[^[:space:]]+)|--?[[:alnum:]][^[:space:]]*))*[[:space:]]+commit([[:space:];&|]|$)' || exit 0
 # A mensagem: cada -m/--message (um commit pode ter vários: subject e body), mais o conteúdo de
-# -F/--file quando for arquivo legível. Heredoc por `-F -`, `--amend --no-edit` e commit sem -m
-# ficam fora: o hook não vê stdin do comando, e nesses casos a varredura é a da skill, à mão.
-msg=$(printf '%s' "$command" | grep -oE -- '(-m|--message)[[:space:]=]+("([^"\\]|\\.)*"|'"'"'[^'"'"']*'"'"'|[^[:space:]]+)' \
-  | sed -E 's/^(-m|--message)[[:space:]=]+//; s/^["'"'"']//; s/["'"'"']$//' || true)
+# -F/--file quando for arquivo legível. Opção curta agrupada conta (`-am`, `-aF`): o `m` e o `F`
+# levam argumento, então fecham o grupo, que começa depois de espaço e com um traço só, para
+# `--platform x` não virar mensagem (TECH-793). Heredoc por `-F -`, `--amend --no-edit` e
+# commit sem -m ficam fora: o hook não vê stdin do comando, e nesses casos a varredura é a da skill, à mão.
+msg=$(printf '%s' "$command" | grep -oE -- '[[:space:]](-[[:alpha:]]*m|--message)[[:space:]=]+("([^"\\]|\\.)*"|'"'"'[^'"'"']*'"'"'|[^[:space:]]+)' \
+  | sed -E 's/^[[:space:]](-[[:alpha:]]*m|--message)[[:space:]=]+//; s/^["'"'"']//; s/["'"'"']$//' || true)
 msg=${msg//\\n/$'\n'}   # o payload traz a quebra como \n literal; sem isto a mensagem inteira vira uma linha
-f=$(printf '%s' "$command" | grep -oE -- '(-F|--file)[[:space:]=]+[^[:space:]]+' | head -1 | sed -E 's/^(-F|--file)[[:space:]=]+//' || true)
+f=$(printf '%s' "$command" | grep -oE -- '[[:space:]](-[[:alpha:]]*F|--file)[[:space:]=]+[^[:space:]]+' | head -1 | sed -E 's/^[[:space:]](-[[:alpha:]]*F|--file)[[:space:]=]+//' || true)
 [[ -n "$f" && "$f" != "-" && -f "$f" ]] && msg="$msg
 $(cat "$f" 2>/dev/null || true)"
 [[ -z "$msg" ]] && exit 0
