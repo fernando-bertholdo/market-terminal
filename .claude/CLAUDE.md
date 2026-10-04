@@ -2,7 +2,7 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
-Template de origem: tech-product-template@2.18.0
+Template de origem: tech-product-template@2.21.0
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
@@ -275,6 +275,20 @@ Hooks configurados em `.claude/settings.json`:
 - **Validar** implementação contra requisitos
 - **Testar** com dados reais quando possível
 
+### Horas e datas
+
+A regra inteira, com a linha única que declara o fuso do dono do repositório, está no
+`AGENTS.md`, §4, "Horas e datas". Este arquivo não repete o fuso: ele fica escrito num lugar só,
+que é o que o kickoff de um derivado de outro dono troca. Em resumo:
+- **Texto para gente** leva hora e data do fuso do dono, com o rótulo dele, medidas logo antes de
+  escrever com `TZ=<fuso do dono> date`
+- **Hora cruzada com carimbo de API** leva o UTC ao lado, entre parênteses, e a data dia/mês quando
+  o UTC cai em outro dia
+- **Segundos** só entram copiados de um carimbo de máquina, com a zona dele, nunca lidos do relógio
+  na hora de escrever: a hora medida para no minuto
+- **Carimbo de máquina** fica em UTC, com `Z` ou `+00:00`
+- **Hora sem zona é defeito**
+
 ---
 
 ## 5. Segurança e Fidelidade de Dados
@@ -348,6 +362,14 @@ Commits atômicos permitem:
 3. **MÁXIMO** 100 linhas por commit
 4. **FORMATO:** `{type}({milestone}-{task}): {descricao-em-pt-br}`
 
+> **Bloqueio por mecanismo:** o Claude Code (`deny` do `.claude/settings.json`) e o Codex
+> (`.codex/rules/comandos.rules`) bloqueiam por prefixo as formas proibidas no item 1, como guarda
+> contra acidente e não contra contorno; as que escapam estão em `.codex/README.md`, "Limite da
+> regra de comando". O gate `scripts/validate/check-regra-comandos.sh` cobre só o lado do Codex,
+> e só o comando entre crases numa linha desta seção que traga a palavra em maiúsculas do item 1:
+> sob outra palavra (PROIBIDO, Nunca, Não use) o comando passa calado. O `deny` do Claude Code
+> nenhum gate confere: ele entra à mão no `.claude/settings.json`.
+
 ### Triggers para Commits
 
 1. Após completar DoR de milestone → `chore(milestone): prepara ambiente para M1.X`
@@ -391,7 +413,7 @@ Exemplo para API: api, auth, db, models, routes, middleware, docs
 ### Quando Aplicar
 
 - Alterou uma skill? → Atualize `skills/README.md` do diretório correspondente
-- Alterou uma regra? → Atualize `rules/README.md` do diretório correspondente
+- Alterou uma regra? → Atualize `.claude/rules/README.md`, o único diretório de rules
 - Criou workflow/prompt? → Atualize o README do subdiretório pai
 
 ### Formato da Tabela
@@ -408,12 +430,12 @@ Exemplo para API: api, auth, db, models, routes, middleware, docs
 
 ### Campos
 
-- **Data:** ISO 8601 (YYYY-MM-DD)
+- **Data:** ISO 8601 (YYYY-MM-DD), do calendário do fuso do dono (§4, "Horas e datas")
 - **Commit:** Hash curto (7 chars) do commit que contém a alteração
-- **Sync-ID:** Identificador `SYNC-YYYYMMDD-NNN` gerado ao espelhar para outro repositório. `—` = pendente de sincronização.
+- **Sync-ID:** Identificador `SYNC-YYYYMMDD-NNN` gerado ao espelhar para outro repositório, com a data do calendário do fuso do dono. `—` = pendente de sincronização.
 - **Arquivo:** Path relativo ao subdiretório (ex: `validate-dod/SKILL.md`)
 - **Descrição:** Resumo contextual da alteração (~80 chars)
-- **Ordem:** a mais recente primeiro, como no exemplo acima; empate no mesmo dia é livre. Quem cobra é `scripts/validate/check-changelog-local.sh` (5 colunas, data ISO, ordem), no `audit-rules` e, quando o projeto tiver CI, num passo dele
+- **Ordem:** a mais recente primeiro, como no exemplo acima; no mesmo dia, a ordem segue a dos commits que as linhas citam (o mais recente primeiro). Quem cobra é `scripts/validate/check-changelog-local.sh` (5 colunas, data ISO, ordem entre dias), no CI e no `audit-rules`; a ordem dentro do dia ele não confere, porque não vê o git
 
 ### Integração com Skills de Sync
 
@@ -455,14 +477,23 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 - **Marketplace:** [`4-successful-ai-life`](https://github.com/fernando-bertholdo/4-successful-AI-life) → Plugin `ui-excellence` (13 skills UI/UX)
 - **Instalação:** Configurado via `extraKnownMarketplaces` + `enabledPlugins` em `.claude/settings.json` (auto-prompt em novos projetos)
 - **Invocação:** `/ui-excellence:coordinator` (triage), `/ui-excellence:animation-motion`, etc.
-- **Replicação flat:** `.codex/skills/ui-*/` e `.agents/skills/ui-*/` sincronizadas via `scripts/release/sync-ui-from-marketplace.sh`
+- **Replicação flat:** `.agents/skills/ui-*/` sincronizadas via `scripts/release/sync-ui-from-marketplace.sh`
 - **Validação:** `scripts/validate/validate-ui-plugin.sh` (schema + drift) e `scripts/validate/validate-ui-parity.sh` (G-ISONOMIA)
 
 ---
 
-**Versão:** 2.13.0
-**Última atualização:** 2026-09-30
+**Versão:** 2.14.0
+**Última atualização:** 2026-10-04
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.14.0:**
+- Sync downstream do tech-product-template de 2.18.0 a 2.21.0 (`6a60a5b`, merge do PR #85 da origem), por mescla em três vias, com a base da mescla em `b51dbf9` (TECH-1020, pai TECH-1015). Arquivo a arquivo, a base foi a versão da origem mais próxima da deste repositório. Referência na origem: o changelog v2.19.0 a v2.21.0 do template; os Sync-IDs pendentes dela estão citados nas linhas de Changelog Local de cada camada
+- Camadas: saem `.codex/skills/`, `.codex/rules/*.md`, `.codex/prompts/`, `.agents/rules/` e `.agents/prompts/`, que a origem aposentou na 2.19.0 (TECH-852); entra `.codex/rules/comandos.rules`, a regra de comando da §6, e o `.codex/config.toml` perde os `[profiles.*]` e o `[mcp_servers.chrome-devtools]` e aponta `[paths] skills` para `.agents/skills`
+- Seção 4: nova subseção "Horas e datas", que resume a regra do fuso do dono e aponta o `AGENTS.md`, §4. Seção 6: o bloqueio por mecanismo das formas proibidas de `git add`, com o limite dele. Seção 8: a ordem do Changelog Local dentro do mesmo dia segue a dos commits, e o gate roda também no CI (a frase da propagação anterior dizia "quando o projeto tiver CI", e o CI existe desde a TECH-567)
+- Gates de `scripts/validate/`: `check-versao-linhagem.sh`, `check-changelog-local.sh`, `validate-clean-tree.sh` e `test-gates-validate.sh` passam à versão da origem no SHA; entram `check-agents-md-teto.sh`, `check-skill-frontmatter.sh`, `check-regra-comandos.sh`, `test-ci-invariantes.sh`, `test-hook-task-completed.sh` com o arquivo de assuntos e `test-entrega-clipboard.sh`. O `ci.yml` acompanha a origem, com as adaptações declaradas por linha `adaptacao-local` no cabeçalho dele
+- Hooks: os quatro que eram cópia literal de uma versão da origem (`check-commit-message.sh`, `check-planning-index.sh`, `check-task-completed.sh`, `check-teammate-idle.sh`) passam à do SHA (régua do Passo 5 da `propagar-template`); o `check-scripts-cruft.sh` já era o do SHA, e o `check-pending-archival.sh`, que só a origem tem, não entra
+- `AGENTS.md`: acompanha a origem de v2.5.0 a v2.8.0, com o rodapé dela. O arquivo mede 50124 bytes (42042 na `main`, medido em 04/10/2026), acima do teto de 32768 do `check-agents-md-teto.sh`: a parte do projeto, que repete o `CLAUDE.md` da raiz, não cabe, e o que sai dela é decisão do dono deste repositório, aberta na TECH-1020. O bloco `@kickoff-instrucao` do `AGENTS.md`, que este repositório removeu ao preencher, não volta
+- Fora desta propagação, por decisão declarada ou por ser de outro mecanismo: `check-pareamento-instrucoes.sh` e a lista de exceções (linha `sem-pareamento` do `ci.yml`), `validate-ui-parity.sh` e `validate-ui-plugin.sh`, `test-fecho-regua.sh` (`export-ignore`, DL-5), `test-hooks-sessionstart.sh` (lê o `check-pending-archival.sh`, que este repositório não tem), `test-ci-testes-python.sh` (lê o passo "Testes Python" do `ci.yml`, que este repositório não tem: `sem-testes-de-aplicacao`), `.github/copilot-instructions.md` (este repositório não o tem), os workflows `entrega-clipboard.yml`, `hooks-matriz.yml`, `propagar-template.yml` e `vigia-pos-merge.yml` (DL-5), `.gitignore`, `.gitattributes`, `KICKOFF_GUIDE.md`, `documents/`, `scripts/setup/` e `scripts/release/`
 
 **Changelog v2.13.0:**
 - Sync downstream do tech-product-template de 2.14.0 a 2.18.0 (`b51dbf9`), por mescla em três vias com base em `08538b4` (TECH-668). Referência na origem: entradas SYNC-20260915-001, SYNC-20260915-002, SYNC-20260920-001/002 e SYNC-20260920-003 do changelog do template
@@ -523,7 +554,7 @@ INSTRUÇÕES DE PREENCHIMENTO:
 
 1. Substitua Market Terminal pelo nome do projeto
 2. Substitua web, sim, market, news, macro, auth, infra, scheduler, deploy, fetchers, docs, planning pelos scopes específicos do projeto
-3. Substitua 2026-06-28 pela data atual
+3. Substitua 2026-06-28 pela data atual do calendário do fuso do dono (§4, "Horas e datas")
 4. Substitua Fernando Bertholdo pelo responsável
 5. Remova deste arquivo todo bloco marcado com @kickoff-instrucao após preencher
 -->
