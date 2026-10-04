@@ -3,8 +3,7 @@
 # É o ci.yml da origem com as adaptações locais abaixo, uma por linha, na forma
 # `adaptacao-local: <chave> — <motivo>`, para a propagação ler e não tratar como drift.
 # adaptacao-local: sem-pareamento — check-pareamento-instrucoes.sh não existe neste repositório (medido em 30/09/2026); instalá-lo é a TECH-810
-# adaptacao-local: sem-testes-de-aplicacao — a decisão cobre os gates de scripts/validate/, não a suíte da aplicação
-# adaptacao-local: invariantes-exit-1 — `|| exit 1` nas linhas negadas das invariantes, que sob `bash -e` não reprovariam; a origem ainda não tem (TECH-842), e esta linha some quando tiver
+# adaptacao-local: sem-testes-de-aplicacao — a decisão cobre os gates de scripts/validate/, não a suíte da aplicação; por isso o `test-ci-testes-python.sh`, que lê o passo "Testes Python" deste arquivo na origem, não existe aqui (sem o passo ele sai 2)
 # adaptacao-local: fecho-sobre-a-arvore — passo do fecho-todo-patch.sh, que a origem não tem: lá o fecho não existe e o CI roda só o harness da régua (TECH-537)
 name: CI
 on:
@@ -16,18 +15,33 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
+      # Histórico completo: sem ele a regra 4 do gate de linhagem (conteúdo ×
+      # versão) diz "não rodou: clone raso" e o passo sai verde sem medir (TECH-850).
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # Invariantes do repositório: valem desde já, com código ou sem
+      # Invariantes do repositório: valem desde já, com código ou sem.
+      # O shell é `bash -e`, que ignora comando negado com `!`: das linhas negadas,
+      # só a última decidia o passo, e o marcador de conflito nunca reprovava.
+      # `! … || exit 1` também não basta, porque o `!` faz do `grep` saindo 2 (erro
+      # de leitura) um sucesso. A do marcador guarda o código do `grep` e aceita só
+      # o 1, "nenhuma ocorrência". A do `.multica/` pergunta ao próprio git, por
+      # pathspec, e reprova com qualquer saída: um `grep` sobre a lista não via nome
+      # não-ASCII, que o `git ls-files` imprime entre aspas e com escape octal, e sem
+      # `pipefail` o erro do `git` sumia no pipe. A invariante é sobre o diretório:
+      # `.multica` rastreado como arquivo ou symlink não é visto. Cada linha
+      # continua reprovável sozinha (TECH-842; harness em
+      # `scripts/validate/test-ci-invariantes.sh`).
       - name: Invariantes do repositório
         run: |
           test -f documents/core/Projeto.md
-          ! grep -rnE --exclude-dir=.git '^(<{7} |>{7} )' . || exit 1
-          ! git ls-files | grep -E '^\.multica/' || exit 1
+          rc=0; grep -rnE --exclude-dir=.git '^(<{7} |>{7} )' . || rc=$?; [ "$rc" -eq 1 ] || exit 1
+          rastreados=$(git ls-files -- .multica/) || exit 1; [ -z "$rastreados" ] || { printf '%s\n' "$rastreados"; exit 1; }
 
       # Vem ANTES dos gates que ele audita, e a ordem é o argumento: gate que
-      # nunca foi visto reprovando é indistinguível de gate quebrado, e os dois
-      # passos abaixo saem 0 nos dois casos. Se o controle negativo falha, o
+      # nunca foi visto reprovando é indistinguível de gate quebrado, e os gates
+      # abaixo que ele audita saem 0 nos dois casos. Se o controle negativo falha, o
       # verde deles não quer dizer nada, e é melhor o CI parar aqui do que
       # seguir e certificar a árvore com gates que já não vigiam.
       - name: Controle negativo dos gates
@@ -39,13 +53,30 @@ jobs:
       - name: Changelog local (5 colunas, data ISO, a mais recente primeiro)
         run: bash scripts/validate/check-changelog-local.sh
 
+      # O Codex lê o AGENTS.md da raiz até 32768 bytes e corta o resto (TECH-803).
+      - name: AGENTS.md dentro do teto do Codex (32768 bytes)
+        run: bash scripts/validate/check-agents-md-teto.sh
+
+      # O Codex não carrega SKILL.md sem `---` na linha 1 e só avisa no stderr (TECH-834).
+      - name: Frontmatter das skills na linha 1
+        run: bash scripts/validate/check-skill-frontmatter.sh
+
+      # A regra de comando da §6 do `.claude/CLAUDE.md` nasce no Claude e chega ao
+      # Codex pela `.codex/rules/comandos.rules`, escrita à mão: a §6 que ganha
+      # comando sem `prefix_rule` proibitiva reprova aqui (TECH-893, DL-4 da TECH-852).
+      - name: Regra de comando da §6 no execpolicy do Codex
+        run: bash scripts/validate/check-regra-comandos.sh
+
       # Gate de comportamento do fecho da régua do detour
       # `aposentar-todo-md-e-patch`: confere que o fecho escrito no harness
       # continua idêntico ao que a régua prescreve, e que ele aborta na
-      # asserção certa nos sete cenários. Sem este passo, a mudança de critério
-      # da 4ª rodada do PR #20 dependeria de alguém lembrar de rodar o script.
+      # asserção certa em cada cenário. Sem este passo, a mudança de critério
+      # da 4ª rodada do `tech-product-template#20` dependeria de alguém lembrar
+      # de rodar o script.
       # A régua é `export-ignore` e o `init-from-template.sh` a remove: num
-      # derivado ela não existe, e sem o `if:` este passo quebra o CI de lá.
+      # derivado criado pelo `init` ou por `git archive` ela não existe, e sem
+      # o `if:` este passo quebra o CI de lá. Pelo "Use this template" sem o
+      # `init`, que não respeita `export-ignore`, ela existe e o passo roda.
       - name: Fecho da régua (aposentar-todo-md-e-patch)
         if: ${{ hashFiles('.planning/_archive/aposentar-todo-md-e-patch/CONTEXT.md') != '' }}
         run: bash scripts/validate/test-fecho-regua.sh
@@ -59,3 +90,31 @@ jobs:
       - name: Fecho (TODO.md e tipo patch aposentados)
         if: ${{ hashFiles('scripts/validate/fecho-todo-patch.sh') != '' }}
         run: bash scripts/validate/fecho-todo-patch.sh
+
+      # Harnesses de comportamento. O primeiro mede quando o filtro do hook
+      # `TaskCompleted` pula o gate de testes, nos casos, nos limites declarados e
+      # na medição sobre assuntos reais (TECH-809). O segundo prova que o passo de
+      # invariantes acima reprova por cada uma das suas linhas (TECH-842).
+      - name: Filtro do hook TaskCompleted
+        run: |
+          bash scripts/validate/test-hook-task-completed.sh
+          bash scripts/validate/test-hook-task-completed.sh --medir
+
+      # Os hooks de `SessionStart` (arquivamento pendente e iniciativa fora do
+      # índice) e o de `TeammateIdle`: o harness confere o que os hooks enxergam do
+      # `.planning/README.md` e do `git status` contra os formatos que as skills
+      # gravam, e reprova por cenário (TECH-851). O `if:` é pelo harness: num
+      # derivado que não o recebeu, o passo não quebra o CI de lá. Na origem, o
+      # macOS e o Windows rodam o mesmo harness em `hooks-matriz.yml`, que não
+      # viaja ao derivado (DL-5).
+      # `--exigir`: o `K23` (nome com byte inválido em UTF-8) é a trava da regressão do
+      # filtro em `LC_ALL=C` e pula, com exit 0, quando o fixture não monta. No ubuntu ele
+      # monta, e a flag faz o pulo reprovar em vez de sumir com o CI verde (TECH-926, como
+      # o `test-entrega-clipboard.sh`). A matriz roda sem a flag: no log do
+      # `hooks (macos-latest)` de 02/10/2026 o `K23` pulou, porque o APFS recusa o nome.
+      - name: Hooks de SessionStart e TeammateIdle
+        if: ${{ hashFiles('scripts/validate/test-hooks-sessionstart.sh') != '' }}
+        run: bash scripts/validate/test-hooks-sessionstart.sh --exigir
+
+      - name: Invariantes reprovam linha a linha
+        run: bash scripts/validate/test-ci-invariantes.sh
