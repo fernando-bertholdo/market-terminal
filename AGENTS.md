@@ -529,7 +529,7 @@ As skills `mirror-upstream` e `sync-downstream` utilizam estas tabelas para:
   UTC com `Z` ou `+00:00`; e data de identificador lido por gente no calendário do fuso do dono.
   Skills e modelos apontam para ela
 - Seção 9: a coluna Data e o `YYYYMMDD` do Sync-ID saem do calendário do fuso do dono
-- Instruções de preenchimento: `{{DATE}}` é a data do fuso do dono, e o kickoff confere a linha do
+- Instruções de preenchimento: o placeholder de data (`DATE`, entre chaves duplas) é a data do fuso do dono, e o kickoff confere a linha do
   fuso, trocando-a quando o dono do derivado vive em outro
 - Seção 4 (TECH-958): o UTC em outro dia do calendário vale também para o dono a leste de
   Greenwich, nas primeiras horas do dia, e não só nas últimas a oeste
