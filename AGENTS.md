@@ -250,8 +250,9 @@ pedido, sem leitor automático medido (TECH-852):
 | `.agents/` | vários harnesses (convenção de pasta; o Codex lê `skills/`) | skills (agentskills.io), workflows, stacks |
 
 As regras deste arquivo (`AGENTS.md`) são o **denominador comum**. As rules de código vivem só em
-`.claude/rules/`, e as skills em duas cópias, `.claude/skills/` e `.agents/skills/`, que o
-`scripts/validate/check-pareamento-instrucoes.sh` mantém pareadas. Não há rule a replicar em
+`.claude/rules/`, e as skills em duas cópias, `.claude/skills/` e `.agents/skills/`, pareadas à mão:
+o gate de pareamento da origem (`check-pareamento-instrucoes.sh`) não existe neste repositório
+(`sem-pareamento` no `ci.yml`, TECH-810). Não há rule a replicar em
 outro diretório. `.codex/stacks/` e `.agents/stacks/` são cópias idênticas que nenhum gate
 compara (`diff -rq .codex/stacks .agents/stacks`, vazio em 02/10/2026).
 
