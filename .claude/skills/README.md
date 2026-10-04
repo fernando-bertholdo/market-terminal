@@ -27,16 +27,16 @@ Este diretório contém **Agent Skills** - instruções especializadas que ensin
 
 ## Índice de Skills
 
-### Skills Essenciais (12)
+### Skills Essenciais (14)
 
-Operacoes recorrentes de documentacao, validacao, manutencao e lifecycle de initiatives.
+Operações recorrentes de documentação, validação, manutenção e lifecycle de initiatives.
 
-| Skill | Arquivo | Descricao | Uso Frequente |
+| Skill | Arquivo | Descrição | Uso Frequente |
 |-------|---------|-----------|---------------|
-| `design-sprint` | [design-sprint/SKILL.md](design-sprint/SKILL.md) | Exploracao colaborativa de design → strategy docs | Inicio de projeto, antes de generate-tap |
+| `design-sprint` | [design-sprint/SKILL.md](design-sprint/SKILL.md) | Exploração colaborativa de design → strategy docs | Início de projeto, antes de generate-tap |
+| `claude-design-flow` | [claude-design-flow/SKILL.md](claude-design-flow/SKILL.md) | Fluxo de prototipação visual: 7 etapas, 3 bundles, modo local + publicação no Claude Design | Ao trabalhar interface, identidade visual, fluxos de usuário |
 | `enhanced-planning` | [enhanced-planning/SKILL.md](enhanced-planning/SKILL.md) | Guardrails estruturais para planos | Ao criar planos, antes de writing-plans |
 | `audit-rules` | [audit-rules/SKILL.md](audit-rules/SKILL.md) | Auditar qualidade e integridade das regras | Antes de commits, ao completar fases |
-| `claude-design-flow` | [claude-design-flow/SKILL.md](claude-design-flow/SKILL.md) | Fluxo de prototipacao visual: 7 etapas, 3 bundles, modo local + publicacao no Claude Design | Ao trabalhar interface, identidade visual, fluxos de usuario |
 | `audit-roadmap-refs` | [audit-roadmap-refs/SKILL.md](audit-roadmap-refs/SKILL.md) | Auditar referências a skills no Roadmap | Após criar skill, auditoria periódica |
 | `audit-architecture` | [audit-architecture/SKILL.md](audit-architecture/SKILL.md) | Auditar redundância e sincronização entre arquivos | Antes de completar fase, após criar docs |
 | `organize-commits` | [organize-commits/SKILL.md](organize-commits/SKILL.md) | Organizar mudanças em commits granulares | Após trabalho extenso, antes de push |
@@ -70,7 +70,7 @@ Coordenação de múltiplos agentes para trabalho paralelo.
 
 ### Skills de UI Excellence (migradas para plugin externo)
 
-Skills UI agora vivem no plugin `ui-excellence` do marketplace [`4-successful-ai-life`](https://github.com/fernando-bertholdo/4-successful-AI-life). Invoke via `/ui-excellence:coordinator`, `/ui-excellence:animation-motion`, etc. Veja `.codex/skills/README.md` ou `.agents/skills/README.md` para o catálogo completo de 13 skills flat.
+Skills UI agora vivem no plugin `ui-excellence` do marketplace [`4-successful-ai-life`](https://github.com/fernando-bertholdo/4-successful-AI-life). Invoke via `/ui-excellence:coordinator`, `/ui-excellence:animation-motion`, etc. Veja `.agents/skills/README.md` para o catálogo completo de 13 skills flat.
 
 ### Skills de Sincronização (2)
 
@@ -124,13 +124,13 @@ Para procedimento completo de correção automática, veja:
 
 ## Workflow Típico por Fase
 
-### Antes do Kick-off (Exploracao de Design)
+### Antes do Kick-off (Exploração de Design)
 
 **Skills usadas:**
 1. `design-sprint` - Explorar design colaborativamente, gerar strategy docs
 2. `generate-tap` - Consolidar strategy docs + materiais brutos em TAP
 
-### Apos Kick-off
+### Após Kick-off
 
 **Skills usadas:**
 1. `validate-kickoff` - Validar que todos os placeholders foram preenchidos
@@ -232,6 +232,9 @@ git commit -m "docs(milestone): finaliza [milestone-id]"
 │   └── SKILL.md
 ├── design-sprint/
 │   └── SKILL.md
+├── claude-design-flow/
+│   ├── SKILL.md
+│   └── references/          # 10 arquivos (7 etapas + modo-local, reconciliação, templates)
 ├── enhanced-planning/
 │   ├── SKILL.md
 │   └── references/
@@ -293,6 +296,8 @@ git commit -m "docs(milestone): finaliza [milestone-id]"
 mkdir .claude/skills/skill-name
 touch .claude/skills/skill-name/SKILL.md
 ```
+
+Toda `SKILL.md` abre com `---` na linha 1: o frontmatter YAML vem antes de qualquer outra linha, comentário de proveniência inclusive. O `scripts/validate/check-skill-frontmatter.sh` reprova a que não abre assim, no CI, e o Codex pula a skill sem frontmatter.
 
 **4. Escrever SKILL.md:**
 ```markdown
@@ -365,10 +370,12 @@ Skills seguem padrão MCP (Model Context Protocol) Agent Skills:
 ### Conjunto de Skills
 
 **Métricas:**
-- Total de skills: 17
-- Skills essenciais: 10
+- Total de skills: 26
+- Skills essenciais: 14
 - Skills de validação: 5
 - Skills de orquestração: 1
+- Skills de sincronização: 2
+- Sem seção no índice: 4 (`audit-scripts`, `fresh-context`, `generate-tap`, `scope-horizons`)
 - Linhas médias por skill: ~350
 - Coverage de workflows: 100%
 
@@ -379,11 +386,11 @@ Skills seguem padrão MCP (Model Context Protocol) Agent Skills:
 ### Documentação Core
 - `documents/core/Projeto.md` - Contexto do projeto
 - `documents/core/Roadmap.md` - Milestones e fases
-- `CLAUDE.md` - Regras sempre ativas
+- `.claude/CLAUDE.md` - Regras sempre ativas
 
 ### Regras
 - `.claude/rules/README.md` - Índice de regras
-- `.claude/rules/*.md` - Regras path-targeted
+- `.claude/rules/*.md` - Regras por glob (`paths:`), o único diretório de rules: o Claude Code as carrega ao editar arquivo do glob, e noutro harness lê-se a rule do glob antes (`AGENTS.md`, §6)
 
 ---
 
@@ -493,6 +500,7 @@ Total: 15 skills (de 13)
 
 | Data | Commit | Sync-ID | Arquivo | Descrição |
 |------|--------|---------|---------|-----------|
+| 2026-10-04 | `—` | — | `agent-team`, `archive-initiative`, `audit-architecture`, `audit-roadmap-refs`, `audit-rules`, `claude-design-flow`, `enhanced-planning`, `fresh-context`, `generate-session-prompt`, `init-detour`, `init-milestone`, `mirror-upstream`, `pre-commit-check`, `reconcile-initiative`, `sync-downstream`, `update-docs`, `validate-docs-links`, `validate-dod`, `validate-dor`, `validate-kickoff`, `validate-testing`, `../prompts/kickoff-prompt.md`, `../prompts/tap-generator-standalone.txt`, `../prompts/tap-template.md`, este README | Propagação do `tech-product-template` de 2.18.0 a 2.21.0 neste repositório (TECH-1020, SHA `6a60a5b` da origem, base da mescla `b51dbf9`): as skills e os prompts recebem as mudanças da origem por mescla em três vias, e a diferença local que a mescla preservou fica como estava (os valores que o kickoff preencheu nos prompts). O passo 4 do `validate-dod` e do `validate-dor` passa a ler a linha do detour na tabela `## Desvios (Detours)` do `.planning/README.md` e o `CONTEXT.md` do detour, como a origem diz; este repositório tem essa tabela no `.planning/README.md` e o `documents/core/Roadmap.md` não tem seção Desvios. O `validate-kickoff` era cópia da versão `452d3ed` da origem e passa à do SHA, com a conferência do marcador de linhagem. O `audit-roadmap-refs` perde as linhas que vinham antes do frontmatter, que o `check-skill-frontmatter.sh` reprova na linha 1. A linha do `audit-rules` que dizia "quando o projeto tiver CI" volta à frase da origem, porque este repositório tem CI (TECH-567). Referência na origem, Sync-IDs que ela registrou sobre conteúdo que este repositório já tinha: SYNC-20260724-001 (`audit-scripts`), SYNC-20260724-002 (`design-sprint`), SYNC-20260724-003 (`agent-team/spawn-*.md`), SYNC-20260724-004 (`validate-dod/examples`, `validate-dod/references`, `validate-dor/templates`), SYNC-20260830-002 e SYNC-20260831-001 (`generate-session-prompt`: a retirada do arquivo de progresso e do tipo de iniciativa que o detour TECH-210 fechou aqui na TECH-220). Sem `ui-*` nesta camada: são do plugin do marketplace |
 | 2026-09-30 | `—` | — | `audit-rules`, `enhanced-planning`, `fresh-context`, `generate-session-prompt`, `init-detour`, `init-milestone`, `mirror-upstream`, `organize-commits`, `pre-commit-check`, `sync-downstream` (SKILL.md), `README.md` (este arquivo) | Sync downstream do tech-product-template de 2.14.0 a 2.18.0 (`b51dbf9`) neste repositório, TECH-668, por mescla em três vias com base em `08538b4`: seção 7 do `pre-commit-check` (quantificador e número órfão) e a regra correspondente no `organize-commits`; `fresh-context` e `generate-session-prompt` passam a ler o rastreador; `init-detour` e `init-milestone` ganham a seção opcional "Medições e procedência"; `audit-rules` confere a tabela pelo `check-changelog-local.sh`, com o texto adaptado a um projeto sem CI; `enhanced-planning`, `mirror-upstream` e `sync-downstream` ganham o comentário `@runtime-placeholders` da origem, que lista os placeholders citados como mecanismo e não como campo a preencher. Lag anterior à 2.14.0 não portado nesta onda, porque a mescla parte da base 2.14.0: `validate-kickoff` (passo de linhagem), `validate-dor` e `validate-dod` (fallback de meta-work), `reconcile-initiative` (4e. Design), que a `.codex/` já tem → TECH-805. A tabela foi reordenada com a mais recente primeiro, só movendo linhas. Referência na origem: SYNC-20260915-002, SYNC-20260920-001/002 e SYNC-20260920-003 |
 | 2026-09-14 | `—` | SYNC-20260914-001 | scope-horizons/SKILL.md | Propaga scope-horizons do tech-product-template |
 | 2026-09-14 | `—` | SYNC-20260912-001 | `init-detour/SKILL.md`, `README.md` (este arquivo), `.claude/CLAUDE.md` | Propaga o delta `SYNC-20260912-001` do `tech-product-template` (TECH-459 + TECH-471): `init-detour` ganha `--parent-issue`, o CONTEXT.md gerado passa a registrar a issue-pai no board e a dívida de reconciliação, e o DoD do detour ganha a linha de delta verificável por `grep <ID> documents/core/Roadmap.md`. Junto entra o bloco "Classificar antes de criar issue" na §1.7 do `CLAUDE.md`. |

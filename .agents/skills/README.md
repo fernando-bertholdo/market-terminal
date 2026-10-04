@@ -27,15 +27,16 @@ Este diretório contém **Agent Skills** - instruções especializadas que ensin
 
 ## Índice de Skills
 
-### Skills Essenciais (11)
+### Skills Essenciais (14)
 
 Operações recorrentes de documentação, validação, manutenção e lifecycle de initiatives.
 
 | Skill | Arquivo | Descrição | Uso Frequente |
 |-------|---------|-----------|---------------|
+| `design-sprint` | [design-sprint/SKILL.md](design-sprint/SKILL.md) | Exploração colaborativa de design → strategy docs | Início de projeto, antes de generate-tap |
+| `claude-design-flow` | [claude-design-flow/SKILL.md](claude-design-flow/SKILL.md) | Fluxo de prototipação visual: 7 etapas, 3 bundles, modo local + publicação no Claude Design | Ao trabalhar interface, identidade visual, fluxos de usuário |
 | `enhanced-planning` | [enhanced-planning/SKILL.md](enhanced-planning/SKILL.md) | Guardrails estruturais para planos | Ao criar planos, antes de writing-plans |
 | `audit-rules` | [audit-rules/SKILL.md](audit-rules/SKILL.md) | Auditar qualidade e integridade das regras | Antes de commits, ao completar fases |
-| `claude-design-flow` | [claude-design-flow/SKILL.md](claude-design-flow/SKILL.md) | Fluxo de prototipacao visual: 7 etapas, 3 bundles, modo local + publicacao no Claude Design | Ao trabalhar interface, identidade visual, fluxos de usuario |
 | `audit-roadmap-refs` | [audit-roadmap-refs/SKILL.md](audit-roadmap-refs/SKILL.md) | Auditar referências a skills no Roadmap | Após criar skill, auditoria periódica |
 | `audit-architecture` | [audit-architecture/SKILL.md](audit-architecture/SKILL.md) | Auditar redundância e sincronização entre arquivos | Antes de completar fase, após criar docs |
 | `organize-commits` | [organize-commits/SKILL.md](organize-commits/SKILL.md) | Organizar mudanças em commits granulares | Após trabalho extenso, antes de push |
@@ -161,6 +162,12 @@ Para procedimento completo de correção automática, veja:
 
 ## Workflow Típico por Fase
 
+### Antes do Kick-off (Exploração de Design)
+
+**Skills usadas:**
+1. `design-sprint` - Explorar design colaborativamente, gerar strategy docs
+2. `generate-tap` - Consolidar strategy docs + materiais brutos em TAP
+
 ### Após Kick-off
 
 **Skills usadas:**
@@ -257,10 +264,15 @@ git commit -m "docs(milestone): finaliza [milestone-id]"
 ### Estrutura de Diretório
 
 ```
-.claude/skills/
+.agents/skills/
 ├── README.md                           # Este arquivo
 ├── agent-team/
 │   └── SKILL.md
+├── design-sprint/
+│   └── SKILL.md
+├── claude-design-flow/
+│   ├── SKILL.md
+│   └── references/          # 10 arquivos (7 etapas + modo-local, reconciliação, templates)
 ├── enhanced-planning/
 │   ├── SKILL.md
 │   └── references/
@@ -319,9 +331,11 @@ git commit -m "docs(milestone): finaliza [milestone-id]"
 
 **3. Criar estrutura:**
 ```bash
-mkdir .claude/skills/skill-name
-touch .claude/skills/skill-name/SKILL.md
+mkdir .agents/skills/skill-name
+touch .agents/skills/skill-name/SKILL.md
 ```
+
+Toda `SKILL.md` abre com `---` na linha 1: o frontmatter YAML vem antes de qualquer outra linha, comentário de proveniência inclusive. O `scripts/validate/check-skill-frontmatter.sh` reprova a que não abre assim, no CI, e o Codex pula a skill sem frontmatter.
 
 **4. Escrever SKILL.md:**
 ```markdown
@@ -394,11 +408,13 @@ Skills seguem padrão MCP (Model Context Protocol) Agent Skills:
 ### Conjunto de Skills
 
 **Métricas:**
-- Total de skills: 29
-- Skills essenciais: 10
+- Total de skills: 39
+- Skills essenciais: 14
 - Skills de validação: 5
 - Skills de orquestração: 1
 - Skills de UI excellence: 13 (5 originais + 8 wondelai)
+- Skills de sincronização: 2
+- Sem seção no índice: 4 (`audit-scripts`, `fresh-context`, `generate-tap`, `scope-horizons`)
 - Linhas médias por skill: ~350
 - Coverage de workflows: 100%
 
@@ -409,11 +425,11 @@ Skills seguem padrão MCP (Model Context Protocol) Agent Skills:
 ### Documentação Core
 - `documents/core/Projeto.md` - Contexto do projeto
 - `documents/core/Roadmap.md` - Milestones e fases
-- `CLAUDE.md` - Regras sempre ativas
+- `AGENTS.md` - Regras sempre ativas
 
 ### Regras
 - `.claude/rules/README.md` - Índice de regras
-- `.claude/rules/*.md` - Regras path-targeted
+- `.claude/rules/*.md` - Regras por glob (`paths:`), o único diretório de rules: o Claude Code as carrega ao editar arquivo do glob, e noutro harness lê-se a rule do glob antes (`AGENTS.md`, §6)
 
 ---
 
@@ -538,6 +554,7 @@ Total: 15 skills (de 13)
 
 | Data | Commit | Sync-ID | Arquivo | Descrição |
 |------|--------|---------|---------|-----------|
+| 2026-10-04 | `—` | — | `agent-team`, `archive-initiative`, `audit-architecture`, `audit-roadmap-refs`, `audit-rules`, `claude-design-flow`, `enhanced-planning`, `fresh-context`, `generate-session-prompt`, `generate-tap`, `init-detour`, `init-milestone`, `mirror-upstream`, `organize-commits`, `pre-commit-check`, `reconcile-initiative`, `sync-downstream`, `update-docs`, `validate-docs-links`, `validate-dod`, `validate-dor`, `validate-kickoff`, `validate-testing`, `../workflows/kickoff.md`, `../workflows/pre-commit.md`, este README | Propagação do `tech-product-template` de 2.18.0 a 2.21.0 neste repositório (TECH-1020, SHA `6a60a5b` da origem, base da mescla `b51dbf9`): as skills e os workflows recebem as mudanças da origem por mescla em três vias, e a diferença local que a mescla preservou fica como estava, como em `.claude/skills/`. O `audit-architecture` passa à versão da origem para esta camada, com `AGENTS.md` e `.claude/rules/` onde a cópia daqui citava `.agents/AGENTS.md` e `.agents/rules/`, que não existem mais. O `archive-initiative`, o `validate-kickoff`, o `pre-commit-check`, o `validate-docs-links` e as linhas de formato de commit do `organize-commits` seguiam versões antigas da origem e voltam ao texto do SHA, com a regra de commit em português do Brasil. A linha do `audit-rules` que dizia "quando o projeto tiver CI" volta à frase da origem, porque este repositório tem CI (TECH-567). Referência na origem, Sync-IDs que ela registrou sobre conteúdo que este repositório já tinha: SYNC-20260724-001 (`audit-scripts`), SYNC-20260724-002 (`design-sprint`), SYNC-20260830-002 e SYNC-20260831-001 (`generate-session-prompt`: a retirada do arquivo de progresso e do tipo de iniciativa que o detour TECH-210 fechou aqui na TECH-220). Sem `ui-*` nesta camada |
 | 2026-09-30 | `—` | — | `audit-rules`, `enhanced-planning`, `fresh-context`, `generate-session-prompt`, `init-detour`, `init-milestone`, `mirror-upstream`, `organize-commits`, `pre-commit-check`, `sync-downstream` (SKILL.md), `README.md` (este arquivo); as seções 6 e 7 do `pre-commit-check` e as linhas de pt-BR do `organize-commits`, que esta camada nunca teve, entram com a versão da origem | Sync downstream do tech-product-template de 2.14.0 a 2.18.0 (`b51dbf9`) neste repositório, TECH-668, por mescla em três vias com base em `08538b4`: seção 7 do `pre-commit-check` (quantificador e número órfão) e a regra correspondente no `organize-commits`; `fresh-context` e `generate-session-prompt` passam a ler o rastreador; `init-detour` e `init-milestone` ganham a seção opcional "Medições e procedência"; `audit-rules` confere a tabela pelo `check-changelog-local.sh`, com o texto adaptado a um projeto sem CI; `enhanced-planning`, `mirror-upstream` e `sync-downstream` ganham o comentário `@runtime-placeholders` da origem, que lista os placeholders citados como mecanismo e não como campo a preencher. Lag anterior à 2.14.0 não portado nesta onda, porque a mescla parte da base 2.14.0: `validate-kickoff` (passo de linhagem), `validate-dor` e `validate-dod` (fallback de meta-work), `reconcile-initiative` (4e. Design), que a `.codex/` já tem → TECH-805. A tabela foi reordenada com a mais recente primeiro, só movendo linhas. Referência na origem: SYNC-20260915-002, SYNC-20260920-001/002 e SYNC-20260920-003 |
 | 2026-09-30 | `—` | — | `../README.md` (marcador) | Marcador de linhagem da camada `.agents/` sobe para `tech-product-template@2.18.0` na mesma propagação (TECH-668); o README da camada não tem tabela própria, e a linha vive aqui |
 | 2026-09-14 | `—` | SYNC-20260914-001 | scope-horizons/SKILL.md | Propaga scope-horizons do tech-product-template |
