@@ -352,6 +352,7 @@ Os padrões de código estão nas rules abaixo, em `.claude/rules/`, cada uma co
 - `.claude/rules/api-integration-patterns.md` → `src/collectors/**/*`, `src/alerting/**/*`, `src/integrations/**/*`
 - `.claude/rules/documentation-templates.md` → `src/**/*`
 - `.claude/rules/scripts-governance.md` → `scripts/**/*`
+- `.claude/rules/afirmacao-de-ausencia.md` → `documents/**/*`, `.planning/**/*` (não é de código: quem afirma que uma fonte não tem algo declara quanto dela leu)
 
 ---
 
