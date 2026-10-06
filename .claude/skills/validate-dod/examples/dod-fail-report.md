@@ -73,7 +73,7 @@ Found 3 errors in 2 files
 |---|------|------------------------|
 | 1 | Adicionar type hints (3 funções) | `mypy src/processors/` |
 | 2 | Adicionar try/except em process_data | `pytest ...::test_process_error` |
-| 3 | Atualizar Projeto.md + Roadmap.md | `update-docs task M1.3` |
+| 3 | Registrar entregas nos documentos core | `update-docs task M1.3` |
 
 **Re-executar após correções:**
 ```bash
