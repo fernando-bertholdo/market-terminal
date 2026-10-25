@@ -752,7 +752,7 @@ generate-session-prompt
   da origem, `9056d20`); `TODO.md` e o tipo `patch` saem da coleta e dos templates (detour
   `aposentar-todo-md-e-patch`: `5818ee8`, `5c16300`)
 
-**Motivação:** o plugin vendorizado no marketplace `4-successful-AI-life` usa esta
+**Motivação:** o plugin vendorizado no marketplace `nbstack` (nome desde 25/10/2026, TECH-1244) usa esta
 versão no rótulo `+upstream-X.Y.Z`; sem a subida, versões diferentes da skill
 carregam o mesmo rótulo `4.0.0` (na camada `.claude/`, os commits listados acima mudaram o
 conteúdo da skill com o `version:` do frontmatter ainda em `4.0.0`).
@@ -775,7 +775,7 @@ conteúdo da skill com o `version:` do frontmatter ainda em `4.0.0`).
   diferença alguma — modo opinionated é selecionado automaticamente
 
 **Motivação:** Permitir uso da skill em qualquer projeto, viabilizando empacotamento
-como plugin no marketplace `4-successful-AI-life`. Sem este refactor, a skill
+como plugin no marketplace `nbstack` (nome desde 25/10/2026, TECH-1244). Sem este refactor, a skill
 produziria output esquisito em projetos sem `.planning/`.
 
 ### v3.0.0 (19/Fevereiro/2026)
