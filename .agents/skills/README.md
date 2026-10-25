@@ -554,6 +554,7 @@ Total: 15 skills (de 13)
 
 | Data | Commit | Sync-ID | Arquivo | Descrição |
 |------|--------|---------|---------|-----------|
+| 2026-10-25 | — | — | `../README.md` | Propagação do tech-product-template 2.21.0 → 2.21.1 (TECH-1258, SHA `06cee39` da origem): o marcador `Template de origem` de `.agents/README.md` sobe a 2.21.1, nas três camadas. O resto do arquivo não muda. |
 | 2026-10-25 | — | — | `README.md` (este arquivo) | Propagação do tech-product-template 2.21.0 → 2.21.1 (TECH-1258, SHA `06cee39` da origem): a frase do catálogo das skills de UI e o bullet de histórico que cita o marketplace citam `nbstack` (`fernando-bertholdo/nbstack`), como a origem. As linhas de tabela de histórico deste arquivo ficam como estavam |
 | 2026-10-25 | `adf45e0` | — | `sync-downstream/SKILL.md` | Propagação do tech-product-template 2.21.1 (TECH-1258): a linha do changelog v1.3.0 que diz onde as skills de UI vivem cita o marketplace `nbstack`, com a data desde a qual o nome vale. O resto da skill não muda |
 | 2026-10-25 | `f6e9d36` | — | `generate-session-prompt/SKILL.md` | Propagação do tech-product-template 2.21.1 (TECH-1258): as duas linhas do changelog que citavam o marketplace pelo nome antigo citam `nbstack`, com a data desde a qual o nome vale. O resto da skill não muda |

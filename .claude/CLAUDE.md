@@ -2,7 +2,7 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
-Template de origem: tech-product-template@2.21.0
+Template de origem: tech-product-template@2.21.1
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
@@ -474,7 +474,7 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 
 ### Plugins Externos
 
-- **Marketplace:** [`4-successful-ai-life`](https://github.com/fernando-bertholdo/4-successful-AI-life) → Plugin `ui-excellence` (13 skills UI/UX)
+- **Marketplace:** [`nbstack`](https://github.com/fernando-bertholdo/nbstack) → Plugin `ui-excellence` (13 skills UI/UX)
 - **Instalação:** Configurado via `extraKnownMarketplaces` + `enabledPlugins` em `.claude/settings.json` (auto-prompt em novos projetos)
 - **Invocação:** `/ui-excellence:coordinator` (triage), `/ui-excellence:animation-motion`, etc.
 - **Replicação flat:** `.agents/skills/ui-*/` sincronizadas via `scripts/release/sync-ui-from-marketplace.sh`
@@ -482,9 +482,22 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 
 ---
 
-**Versão:** 2.14.0
-**Última atualização:** 2026-10-04
+**Versão:** 2.15.0
+**Última atualização:** 2026-10-25
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.15.0 (2026-10-25, TECH-1258):**
+- Sync downstream do `tech-product-template` de 2.21.0 a 2.21.1 (`06cee39`), por mescla em três
+  vias arquivo a arquivo; o marcador de linhagem sobe nas três camadas. A branch parte do head do
+  PR #23 (TECH-1107, a série `cb209ce`, que não sobe versão e ainda não foi mergeada), e a base da
+  mescla desta rodada é `cb209ce`; o `delta-propagacao.sh` imprimiu a base `6a60a5b`. Referência na
+  origem: 2.21.1 (TECH-1244)
+- Seção 9 (Plugins Externos): o marketplace das skills de UI passa a ser `nbstack`
+  (`fernando-bertholdo/nbstack`), como a origem, e a linha do `Changelog v2.7.0` que o citava
+  também. Este repositório não versiona o `.claude/settings.json` (`.gitignore`) nem tem as skills
+  `ui-*`
+- Mantido como estava: o hook novo da origem (`check-pr-merge-ci.sh`, TECH-1221; endereço
+  TECH-1223), que o Passo 5 da `propagar-template` deixa à mão
 
 **Changelog v2.14.0:**
 - Sync downstream do tech-product-template de 2.18.0 a 2.21.0 (`6a60a5b`, merge do PR #85 da origem), por mescla em três vias, com a base da mescla em `b51dbf9` (TECH-1020, pai TECH-1015). Arquivo a arquivo, a base foi a versão da origem mais próxima da deste repositório. Referência na origem: o changelog v2.19.0 a v2.21.0 do template; os Sync-IDs pendentes dela estão citados nas linhas de Changelog Local de cada camada
@@ -523,7 +536,7 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 - Detour `scripts-governance` aplicado: rule path-targeted, skill, hook check-scripts-cruft, INDEX vivo
 
 **Changelog v2.7.0:**
-- Seção 9: Adicionada subseção "Plugins Externos" referenciando marketplace `4-successful-ai-life` e plugin `ui-excellence`
+- Seção 9: Adicionada subseção "Plugins Externos" referenciando marketplace `nbstack` (nome desde 25/10/2026, TECH-1244) e plugin `ui-excellence`
 - Seção 9: Documenta invocação, replicação flat, e scripts de validação
 - Skills UI standalone removidas de `.claude/skills/` (migradas para plugin marketplace)
 - Rule `ui-excellence-standards.md` aposentada (path-targeting via frontmatter do plugin)
