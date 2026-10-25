@@ -186,6 +186,21 @@ printf '%s\n' "$MSG" | grep -nEi '\b(nenhum|nenhuma|todas|todos|cada|sempre|nunc
 git diff --cached -U0 | grep -E '^\+' | grep -vE '^\+\+\+|^\+\|' \
   | grep -vE '`|\.(md|sh|py|json|csv|ya?ml)\b|§|#[0-9]+|\b[A-Z]+-[0-9]+\b|\b(19|20)[0-9]{2}\b|https?://' \
   | grep -nE '\b[0-9]+\b'
+
+# 3. Afirmação de ausência sem cobertura (aviso): parágrafo, item de lista ou linha de tabela
+#    tocado pelo diff, marcado [FATO], que afirma ausência e não traz a linha Cobertura:
+git -c core.quotepath=false diff --cached --name-only --diff-filter=AMR -- '*.md' | while IFS= read -r f; do
+  awk -v f="$f" '
+    function fim() { if (tocou && u ~ /\[FATO\]/ && u !~ /Cobertura:/ && u ~ /[Nn]enhum|[Nn]ão (há|havia|tem|têm|tinha|traz|exist(e|ia)|consta|aparec(e|ia)|contém|continha|registra|lista|guarda|encontr|possui|apresenta|menciona|foi (encontrad|localizad|identificad))|[Ss]em (aba|linha|registro|coluna|arquivo|página|resultado|entrada|menção|pendência|ocorrência)|inexistente|ausente|[Aa]usência de|[Ff]alta(m)? |(^|[ (])[Zz]ero /)
+                       print f ":" ini ": " substr(u, 1, 100); u = ""; tocou = 0 }
+    FILENAME == ARGV[1] { if ($1 == "@@") { split(substr($3, 2), h, ","); n = (h[2] == "") ? 1 : h[2]; for (i = h[1]; i < h[1] + n; i++) novo[i] = 1 } next }
+    { sub(/^[[:space:]]*(>[[:space:]]*)+/, "") }
+    /^[[:space:]]*$/ { fim(); next }
+    /^[[:space:]]*(\||[-*] |[0-9]+\. )/ { fim() }
+    { if (u == "") ini = FNR; u = u " " $0; if (FNR in novo) tocou = 1 }
+    END { fim() }
+  ' <(git diff --cached -U0 -- ":(top)$f") <(git show ":$f")
+done
 ```
 
 **Critérios de Aprovação:**
@@ -195,6 +210,7 @@ git diff --cached -U0 | grep -E '^\+' | grep -vE '^\+\+\+|^\+\|' \
 | Quantificador com o comando que o mediu ao lado | 100% dos casados | ✅ Sim |
 | Numeral com fonte na mesma frase | 100% dos casados | ✅ Sim |
 | Medição com mais de dois números | tabela com fonte por célula, nunca frase | ⚠️ Review |
+| Afirmação de ausência marcada `[FATO]` com a linha `Cobertura:` no mesmo parágrafo | 100% dos casados | ⚠️ Aviso |
 
 Cada linha que o `grep` devolve é hipótese: fica se a fonte está ao lado, sai ou vira "não
 medido" se não está. Número órfão numa mensagem de commit ou num corpo de PR é falha, não
@@ -208,6 +224,25 @@ são CWD-only. O Propagador atualiza no derivado só o hook que é cópia litera
 alguma versão da origem até a propagada; o hook com diferença local, o hook novo da origem, que o
 derivado ainda não tem, a remoção do hook que a origem apagou e o `settings.json`, que liga os
 hooks, seguem à mão.
+
+A varredura 3 cobra a rule `.claude/rules/afirmacao-de-ausencia.md`: quem afirma que uma fonte não
+tem algo declara quanto dela leu, no formato `Cobertura: <lido> de <total> <unidade>`. A unidade
+lida é o parágrafo, o item de lista ou a linha de tabela que o diff tocou, para a marca e a
+ausência não se juntarem vindas de linhas diferentes. Cada unidade devolvida ganha a linha
+`Cobertura:` ou troca a marca para `[NÃO DEFINIDO]`. É aviso, não bloqueio. Calibrada em
+06/10/2026 (TECH-1098), com o `awk` do macOS, sobre um documento real de varredura staged como
+arquivo novo: 13 unidades devolvidas, as 13 afirmações de ausência sobre a fonte. Sem a restrição
+a `[FATO]`, o mesmo comando devolvia 26 unidades nele e 18 no `AGENTS.md` de `origin/main`, 15
+destas prosa normativa ("nenhum secret hardcoded"). O padrão 1 acima já casa `nenhum`, mas
+pergunta quem mediu; a varredura 3 pergunta quanto foi lido, e a mesma linha pode precisar das
+duas respostas. Limites: o padrão é em português; afirmação sem a marca `[FATO]` não é devolvida;
+uma linha `Cobertura:` que a unidade já tinha satisfaz qualquer afirmação nova dentro dela; texto
+que cita a marca para falar dela é devolvido (2 unidades da própria rule, na mesma medição);
+apagar só a linha `Cobertura:` não devolve nada, porque o hunk só remove; `Cobertura:` em sub-item
+não cobre o item de cima; `registra`, `lista` e `consta` casam também o infinitivo e o derivado
+("não registrar"); e o aviso confere a presença de `Cobertura:`, não se `<lido>` chega ao
+`<total>`. O nome de arquivo com acento entra (`core.quotepath=false`), o blockquote é lido sem o
+`>`, e a varredura roda de qualquer diretório do repositório (`:(top)`).
 
 ## Procedimento Completo
 
@@ -261,6 +296,7 @@ hooks, seguem à mão.
 5b. Varrer quantificador e número órfão (seção 7):
    - Linhas adicionadas, mensagem planejada e corpo do PR
    - Cada linha casada: fonte ao lado, ou sai
+   - Varredura 3: cada unidade devolvida ganha `Cobertura:` ou vira `[NÃO DEFINIDO]` (aviso)
 
 6. Gerar relatório final: ✅ READY ou ❌ NOT READY
 ```
@@ -345,6 +381,7 @@ organize-commits
 ### Quantificador e número órfão
 - [ ] Nenhuma linha devolvida pela varredura 7 sem a fonte ao lado
 - [ ] Medição com mais de dois números em tabela com fonte por célula
+- [ ] Afirmação de ausência `[FATO]` devolvida pela varredura 3 com `Cobertura:`, ou remarcada `[NÃO DEFINIDO]`
 
 ## Quando Bloquear Commit
 
@@ -359,6 +396,7 @@ organize-commits
 - Arquivos não staged (revisar se devem ser incluídos)
 - .env.example desatualizado
 - Manifesto de dependências do stack desatualizado
+- Afirmação de ausência `[FATO]` sem a linha `Cobertura:` (varredura 3 da seção 7)
 
 ## Auto-Fix Disponível
 

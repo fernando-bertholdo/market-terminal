@@ -1,4 +1,6 @@
 ---
+paths:
+  - "src/**/*"
 description: Templates para documentação de código, decisões técnicas e explicações
 ---
 

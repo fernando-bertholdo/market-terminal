@@ -260,7 +260,7 @@ Usuário: sync-downstream /path/to/MonoScribe --all
 ### v1.3.0
 
 **Subrotina de Marketplace Externo:**
-- UI skills agora vivem no marketplace `4-successful-ai-life` (repo `fernando-bertholdo/4-successful-AI-life`)
+- UI skills agora vivem no marketplace `nbstack` (repo `fernando-bertholdo/nbstack`) (nome desde 25/10/2026, TECH-1244)
 - Ao sincronizar downstream um projeto que tem UI skills, chamar `scripts/release/sync-ui-from-marketplace.sh` no projeto alvo em vez de copiar skills UI diretamente
 - O script lê `plugin.json` do marketplace e replica em formato flat para `.codex/skills/ui-*/` e `.agents/skills/ui-*/`
 - A camada `.claude/` consome via plugin instalado (`extraKnownMarketplaces` em `settings.json`), não via flat copy
