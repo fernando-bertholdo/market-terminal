@@ -496,8 +496,8 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
   (`fernando-bertholdo/nbstack`), como a origem, e a linha do `Changelog v2.7.0` que o citava
   também. Este repositório não versiona o `.claude/settings.json` (`.gitignore`) nem tem as skills
   `ui-*`
-- Mantido como estava: o hook novo da origem (`check-pr-merge-ci.sh`, TECH-1221; endereço
-  TECH-1223), que o Passo 5 da `propagar-template` deixa à mão
+- Mantido como estava: o hook novo da origem (`check-pr-merge-ci.sh`, TECH-1221; decisão do
+  Fernando pendente na TECH-1266), que o Passo 5 da `propagar-template` deixa à mão
 
 **Changelog v2.14.0:**
 - Sync downstream do tech-product-template de 2.18.0 a 2.21.0 (`6a60a5b`, merge do PR #85 da origem), por mescla em três vias, com a base da mescla em `b51dbf9` (TECH-1020, pai TECH-1015). Arquivo a arquivo, a base foi a versão da origem mais próxima da deste repositório. Referência na origem: o changelog v2.19.0 a v2.21.0 do template; os Sync-IDs pendentes dela estão citados nas linhas de Changelog Local de cada camada
