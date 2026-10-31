@@ -2,7 +2,7 @@
 
 Este arquivo contém as **regras operacionais sempre ativas** para o projeto Market Terminal.
 
-Template de origem: tech-product-template@2.21.1
+Template de origem: tech-product-template@2.21.2
 
 > **Marcador de linhagem.** A linha acima é o sinal canônico, legível por máquina: o
 > template de origem e a versão dele que este repositório contém — é ela que diz à
@@ -482,9 +482,19 @@ Os seguintes arquivos são carregados automaticamente conforme contexto (via fro
 
 ---
 
-**Versão:** 2.15.0
-**Última atualização:** 2026-10-25
+**Versão:** 2.16.0
+**Última atualização:** 2026-10-31
 **Autor:** Fernando Bertholdo
+
+**Changelog v2.16.0 (2026-10-31, TECH-1324):**
+- Sync downstream do `tech-product-template` de 2.21.1 a 2.21.2 (`3f9acfa`), por mescla em três
+  vias arquivo a arquivo; o marcador de linhagem sobe nas três camadas. A base da mescla é
+  `06cee39`, a que o `delta-propagacao.sh` imprimiu. Referência na origem: 2.21.2 (TECH-1311);
+  nenhum Sync-ID
+- A 2.21.2 muda o `ci.yml`, o harness `test-ci-testes-python.sh` e o `scripts/INDEX.md` da origem, e
+  nada disso entra aqui: o `ci.yml` deste repositório declara `sem-testes-de-aplicacao`
+  (`# adaptacao-local`), que cobre o passo "Testes Python" e o harness, e o passo "Testes Python
+  (uv)" novo é do mesmo tipo
 
 **Changelog v2.15.0 (2026-10-25, TECH-1258):**
 - Sync downstream do `tech-product-template` de 2.21.0 a 2.21.1 (`06cee39`), por mescla em três
